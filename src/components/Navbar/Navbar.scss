@@ -1,0 +1,33 @@
+.navbar {
+  background: #2f2d2d;
+  .navbar__flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .navbar__logo{
+      margin-right: 20px;
+    }
+    .navbar__categories {
+      .navbar__link {
+        text-transform: uppercase;
+        text-decoration: none;
+        color: white;
+        &:not(:last-child) {
+          margin-right: 15px;
+        }
+      }
+    }
+    .navbar__wide-area{
+      flex: 1 1 auto;
+      display: flex;
+      justify-content: flex-end;
+      margin-right: 15px;
+    }
+    .navbar__account {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid #848282
+    }
+  }
+}
