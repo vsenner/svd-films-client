@@ -14,16 +14,16 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="navbar__categories">
-            <Link to='' className="navbar__link">
+            <Link to='/genres' className="navbar__link">
               Movies
             </Link>
-            <Link to='' className="navbar__link">
+            <Link to='/genres' className="navbar__link">
               Series
             </Link>
-            <Link to='' className="navbar__link">
+            <Link to='/genres' className="navbar__link">
               Cartoons
             </Link>
-            <Link to='' className="navbar__link">
+            <Link to='/genres' className="navbar__link">
               TV Shows
             </Link>
           </div>
