@@ -1,0 +1,13 @@
+*:focus{
+  outline: none;
+}
+
+.Input{
+  border: 1px solid lightgray;
+  padding: 10px;
+  font-size: 20px;
+  &:focus{
+    border: 1px solid grey;
+    border-radius: 0;
+  }
+}
