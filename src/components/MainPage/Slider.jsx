@@ -12,6 +12,7 @@ const Slider = () => {
     const [slides, setSlides] = useState([])
     useEffect(() => {
         MovieController.getPopular().then(resp => {
+            console.log(resp)
             setSlides(resp.results.slice(0, 10))
         });
 
@@ -19,7 +20,7 @@ const Slider = () => {
 
     return slides.length > 9 ?
         <Swiper navigation={true} className="mySwiper">
-            {slides.map(slide => <SwiperSlide style={{height: `calc(100vh - 67px)`}}>
+            {slides.map(slide => <SwiperSlide key={slide.id} style={{height: `calc(100vh - 67px)`}}>
                 <div className="slide-background-img">
                     <img src={`https://image.tmdb.org/t/p/w500/${slide.backdrop_path}`} alt=""/>
                 </div>
