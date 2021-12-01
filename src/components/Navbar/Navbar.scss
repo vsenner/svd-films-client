@@ -1,33 +1,59 @@
 .navbar {
   background: #2f2d2d;
-  .navbar__flex{
+  &__logo{
+    margin-right: 20px;
+  }
+
+  &__link {
+    text-transform: uppercase;
+    text-decoration: none;
+    color: white;
+    &:not(:last-child) {
+      margin-right: 15px;
+    }
+  }
+  &__wide-area{
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 15px;
+  }
+
+  &__account {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid #848282
+  }
+
+  &__flex{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .navbar__logo{
-      margin-right: 20px;
-    }
-    .navbar__categories {
-      .navbar__link {
-        text-transform: uppercase;
-        text-decoration: none;
-        color: white;
-        &:not(:last-child) {
-          margin-right: 15px;
-        }
+  }
+  &__film-list {
+    width: 220px;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    border-radius: 3px;
+    margin-top: 20px;
+    position: absolute;
+    background-color: black;
+    z-index: 2;
+    &__item {
+      text-decoration: none;
+      padding: 5px;
+      outline: none;
+      &_img {
+        height: 150px;
+        width: 100px;
       }
-    }
-    .navbar__wide-area{
-      flex: 1 1 auto;
-      display: flex;
-      justify-content: flex-end;
-      margin-right: 15px;
-    }
-    .navbar__account {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: 1px solid #848282
+      &_title {
+        width: 100px;
+        margin: 0;
+        color: white;
+      }
     }
   }
 }
