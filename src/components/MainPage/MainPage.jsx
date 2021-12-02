@@ -3,8 +3,6 @@ import "./MainPage.scss";
 import SliderComp from "./Slider";
 const MainPage = () => {
 
-
-
     return (
         <div>
             <SliderComp/>
