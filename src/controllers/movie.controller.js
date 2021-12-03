@@ -9,6 +9,14 @@ export default class MovieController {
     }
   }
 
+  static async getAllGenres() {
+    try {
+      return (await MovieService.getAllGenres())
+    } catch (err) {
+      throw err;
+    }
+  }
+
   static async search(query) {
     try{
       return MovieService.search(query).then(response => {

@@ -1,10 +1,10 @@
 import React from "react";
 import "./MainPage.scss";
 import SliderComp from "./Slider";
-const MainPage = () => {
 
+const MainPage = () => {
     return (
-        <div>
+        <div className='main-page'>
             <SliderComp/>
         </div>
     )

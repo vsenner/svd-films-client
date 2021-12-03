@@ -1,0 +1,26 @@
+.genre-list__column {
+  background: #154362;
+  min-width: 200px;
+  white-space: nowrap;
+  border: 1px solid teal;
+  padding: 10px;
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
+}
+
+.genre-list__header{
+  display: grid;
+  grid-template-columns: 40px 40px auto;
+  border-bottom: 1px solid teal;
+  padding-bottom: 5px;
+  & div:last-child {
+    margin-left: 5px;
+  }
+  & div:nth-child(1) {
+    color: #139613;
+  }
+  & div:nth-child(2) {
+    color: #ea0000;
+  }
+}
