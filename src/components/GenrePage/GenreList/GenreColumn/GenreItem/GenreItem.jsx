@@ -2,45 +2,69 @@ import React, {useState} from 'react';
 import './GenreItem.scss'
 
 const GenreItem = ({genre, selectedGenres, setSelectedGenres}) => {
-  const [lastValue, setLastValue] = useState({yes: false, no: false})
+  const [yes, setYes] = useState(false)
+  const [no, setNo] = useState(false)
 
-  const selectGenre = (e) => {
-    if (lastValue.yes) {
-      setSelectedGenres(selectedGenres.filter(sGenre => sGenre.id !== genre.id))
-      e.target.checked = false;
-    }
-    if (!lastValue.yes) {
-      lastValue.no ?
-        setSelectedGenres([...selectedGenres.filter(sGenre => sGenre.id !== genre.id), {...genre, select: true}])
-        :
-        setSelectedGenres(prev => [...prev, {...genre, select: true}])
-    }
-
-    setLastValue({...lastValue, yes: e.target.checked})
+  const checkGenre = () => {
+    return selectedGenres.findIndex(obj => obj.id === genre.id)
   }
 
-  const deleteGenre = (e) => {
-    if (lastValue.no) {
-      setSelectedGenres(selectedGenres.filter(sGenre => sGenre.id !== genre.id))
-      e.target.checked = false;
-    }
-    if (!lastValue.no) {
-      lastValue.yes ?
-        setSelectedGenres([...selectedGenres.filter(sGenre => sGenre.id !== genre.id), {...genre, select: false}])
-        :
-        setSelectedGenres(prev => [...prev, {...genre, select: false}])
-    }
+  const changeGenres = (index, value) => {
+    const arr = [...selectedGenres]
+    arr[index] = {...selectedGenres[index], select: value}
+    setSelectedGenres([...arr])
+  }
 
-    setLastValue({...lastValue, no: e.target.checked})
+  const enableGenre = () => {
+    const index = checkGenre();
+    if(index > -1) {
+      changeGenres(index, true)
+    }else {
+      setSelectedGenres([...selectedGenres, {...genre, select: true}])
+    }
+  }
+
+  const disableGenre = () => {
+    const index = checkGenre();
+    if(index > -1) {
+      changeGenres(index, false)
+    }else {
+      setSelectedGenres([...selectedGenres, {...genre, select: false}])
+    }
+  }
+
+  const removeGenre = () => {
+    setSelectedGenres(selectedGenres.filter(sGenre => sGenre.id !== genre.id))
   }
 
   return (
     <div className="genre-list__item">
       <div>
-        <input id={genre.id} type="radio" name={genre.id} onClick={selectGenre}/>
+        <input id={genre.id} type="radio" name={genre.id} checked={yes} onClick={() => {
+          if(no){
+            setYes(!yes)
+            setNo(!no)
+            enableGenre()
+          }else{
+            if(!yes){
+              enableGenre()
+            }else removeGenre()
+            setYes(!yes)
+        }}}/>
       </div>
       <div>
-        <input type="radio" name={genre.id} onClick={deleteGenre}/>
+        <input type="radio" name={genre.id} checked={no} onClick={() => {
+          if(yes){
+            setYes(!yes)
+            setNo(!no)
+            disableGenre()
+          }else{
+            if(!no) {
+              disableGenre()
+            }else removeGenre()
+            setNo(!no)
+          }
+        }}/>
       </div>
       <label htmlFor={genre.id} className="genre-list__name">
         {genre.name}
