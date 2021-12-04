@@ -40,7 +40,7 @@ const GenreItem = ({genre, selectedGenres, setSelectedGenres}) => {
   return (
     <div className="genre-list__item">
       <div>
-        <input id={genre.id} type="radio" name={genre.id} checked={yes} onClick={() => {
+        <input id={genre.id} type="radio" name={genre.id} checked={yes} onChange={() => {}} onClick={() => {
           if(no){
             setYes(!yes)
             setNo(!no)
@@ -53,7 +53,7 @@ const GenreItem = ({genre, selectedGenres, setSelectedGenres}) => {
         }}}/>
       </div>
       <div>
-        <input type="radio" name={genre.id} checked={no} onClick={() => {
+        <input type="radio" name={genre.id} checked={no} onChange={() => {
           if(yes){
             setYes(!yes)
             setNo(!no)
