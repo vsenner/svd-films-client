@@ -5,6 +5,7 @@ import logo from "../../images/icons8-film-64.png"
 import debounce from "debounce";
 import MovieController from "../../controllers/movie.controller";
 import NavbarFilmList from "./NavbarFilmList";
+import {useNavigate} from "react-router";
 
 
 
@@ -26,6 +27,7 @@ const Navbar = () => {
     }
   },[searchQuery])
 
+  const router = useNavigate()
 
   return (
     <div className='navbar'>
@@ -37,27 +39,32 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="navbar__categories">
-            <Link to='' className="navbar__link">
+            <Link to='/genres/movies' className="navbar__link">
               Movies
             </Link>
-            <Link to='' className="navbar__link">
+            <Link to='/genres/series' className="navbar__link">
               Series
             </Link>
-            <Link to='' className="navbar__link">
+            <Link to='/genres/cartoons' className="navbar__link">
               Cartoons
             </Link>
-            <Link to='' className="navbar__link">
+            <Link to='/genres/tv' className="navbar__link">
               TV Shows
             </Link>
           </div>
           <div className="navbar__wide-area">
             {/*TODO: Change to custom input*/}
-            <input
-              className={'navbar__search'}
-              type="text"
-              onChange={debounceInput}
-              placeholder={'Find movie'}
-            />
+            <form onSubmit={e => {
+              e.preventDefault();
+              router(`/genres/search/${e.target.firstChild.value}`)
+            }}>
+              <input
+                className={'navbar__search'}
+                type="text"
+                onChange={debounceInput}
+                placeholder={'Find movie'}
+              />
+            </form>
             {films.length > 0 ? <NavbarFilmList films={films} clearFilms={setSearchQuery}/> : null}
           </div>
           <Link to={'/account'}>

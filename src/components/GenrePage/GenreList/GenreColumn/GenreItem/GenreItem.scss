@@ -1,0 +1,13 @@
+.genre-list__item {
+  padding-top: 5px;
+  display: grid;
+  grid-template-columns: 40px 40px auto;
+  color: #fff;
+  input {
+    margin-right: 2px;
+  }
+}
+
+.genre-list__name {
+  margin-left: 5px;
+}

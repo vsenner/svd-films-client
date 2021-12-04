@@ -1,0 +1,33 @@
+$mainColor1: #3896b5;
+$mainColor2: rgba(56, 150, 181, 0.48);
+$mainColor3: #a3a0a0;
+
+.genre-list{
+  margin-top: 10px;
+  display: flex;
+  font-size: 20px;
+
+  &__flex {
+    background: $mainColor1;
+    padding: 10px;
+    box-shadow: 0 0 5px 5px $mainColor1;
+    border: 1px solid $mainColor3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  @media(max-width: 700px) {
+    &__row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+}
