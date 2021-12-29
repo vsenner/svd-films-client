@@ -1,5 +1,8 @@
 .navbar {
   background: #2f2d2d;
+  .container {
+    max-width: 1240px;
+  }
   &__logo{
     margin-right: 20px;
   }

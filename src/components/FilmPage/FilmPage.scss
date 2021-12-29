@@ -1,0 +1,128 @@
+$fontColor1: #b5b5b5;
+$fontColor2: #8c8c8c;
+
+.film-page {
+  flex: 1 1 auto;
+  background-image: linear-gradient(132.6deg, rgba(71, 139, 214, 1) 23.3%, rgba(37, 216, 211, 1) 84.7%);
+  display: flex;
+
+  .container {
+    display: flex;
+  }
+
+  .film {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    flex: 1 1 auto;
+    padding: 100px 20px 100px 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ebe8e8;
+
+    &__main {
+      position: relative;
+      z-index: 1;
+      display: flex;
+
+      .info {
+        flex: 1 1 auto;
+        margin-left: 20px;
+        font-size: 20px;
+        display: flex;
+        flex-direction: column;
+        padding: 10px 10px 10px 0;
+
+        &__header {
+          .info__title {
+            font-size: 32px;
+
+            span {
+              font-size: 0.7em;
+              margin-left: 10px;
+              color: $fontColor1;
+            }
+          }
+
+          .info__tagline {
+            margin-top: 5px;
+            font-size: 18px;
+            color: $fontColor1;
+          }
+
+          .info__row_start {
+            div {
+              margin-right: 30px;
+              padding-right: 5px;
+              color: $fontColor2;
+            }
+          }
+
+          .info__rating {
+            padding-right: 5px;
+            color: #f0c140 !important;
+          }
+        }
+
+        &__row {
+          display: flex;
+          align-items: center;
+          font-size: 0.9em;
+
+          &_start {
+            display: flex;
+            margin-top: 5px;
+
+            div {
+              margin-right: 20px;
+            }
+          }
+
+          span {
+            width: 220px;
+            color: $fontColor1;
+            margin-right: 30px;
+          }
+        }
+
+        &__main {
+          .info__row {
+            margin-top: 20px;
+
+            &:first-child {
+              margin-top: 30px;
+            }
+          }
+        }
+      }
+    }
+
+
+    &__bottom {
+      margin-top: 50px;
+      .film__description {
+        h2 {
+          margin-bottom: 10px;
+          font-size: 1.2em;
+        }
+
+        padding-right: 80px;
+        font-size: 18px;
+        margin-bottom: 40px;
+      }
+
+      .film__rating {
+        margin-top: 20px;
+        font-size: 36px;
+        .rating__row {
+          margin-top: 10px;
+          display: flex;
+          align-items: flex-end;
+          font-size: 46px;
+          line-height: 0.75;
+        }
+        .rating__value {
+          padding-left: 10px;
+        }
+      }
+    }
+  }
+}
+

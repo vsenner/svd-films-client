@@ -7,7 +7,7 @@ import SwiperCore from "swiper";
 import {SwiperSlide} from "swiper/react/swiper-react";
 import ratingStar from "../../images/star.png"
 import {Link} from "react-router-dom";
-
+import TruncatedText from "../UI/TruncatedText/TruncatedText";
 SwiperCore.use([Navigation]);
 
 const Slider = () => {
@@ -19,6 +19,8 @@ const Slider = () => {
         });
 
     }, [])
+
+
 
     return slides.length > 9 ?
         <Swiper navigation={true} className="mySwiper">
@@ -42,7 +44,7 @@ const Slider = () => {
                             </div>}
 
                             <div className="text-block__description">
-                                {slide.overview.length > 210 ? `${slide.overview.substring(0,210)}...` : slide.overview}
+                                <TruncatedText str={slide.overview} n={200} path={`/film/${slide.id}`}/>
                             </div>
                         </div>
                     </div>
