@@ -8,6 +8,7 @@ import {SwiperSlide} from "swiper/react/swiper-react";
 import ratingStar from "../../images/star.png"
 import {Link} from "react-router-dom";
 import TruncatedText from "../UI/TruncatedText/TruncatedText";
+import {getImage} from "../../UI/getImage";
 SwiperCore.use([Navigation]);
 
 const Slider = () => {
@@ -26,11 +27,11 @@ const Slider = () => {
         <Swiper navigation={true} className="mySwiper">
             {slides.map(slide => <SwiperSlide key={slide.id}>
                 <div className="slide-background-img">
-                    <img src={`https://image.tmdb.org/t/p/w500/${slide.backdrop_path}`} alt=""/>
+                    <img src={getImage(slide.backdrop_path)} alt=""/>
                 </div>
                 <div className="info-block">
                     <Link to={`/film/${slide.id}`} className="info-block__film-poster">
-                        <img src={`https://image.tmdb.org/t/p/w500/${slide.poster_path}`}
+                        <img src={getImage(slide.poster_path)}
                              alt=""/>
                     </Link>
                     <div className="text-block">

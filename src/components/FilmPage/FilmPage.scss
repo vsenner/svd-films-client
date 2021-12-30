@@ -63,7 +63,6 @@ $fontColor2: #8c8c8c;
 
         &__row {
           display: flex;
-          align-items: center;
           font-size: 0.9em;
 
           &_start {
@@ -76,7 +75,7 @@ $fontColor2: #8c8c8c;
           }
 
           span {
-            width: 220px;
+            min-width: 220px;
             color: $fontColor1;
             margin-right: 30px;
           }

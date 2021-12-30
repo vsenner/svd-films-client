@@ -58,7 +58,5 @@ export default class MovieController {
     }
   }
 
-  static getImage(path) {
-    return `https://image.tmdb.org/t/p/w500${path}`
-  }
+
 }

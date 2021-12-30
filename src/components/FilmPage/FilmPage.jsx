@@ -5,6 +5,7 @@ import {useParams} from "react-router-dom";
 import TruncatedText from "../UI/TruncatedText/TruncatedText";
 import ActorList from "./ActorList/ActorList";
 import Rate from "../UI/Rate/Rate";
+import {getImage} from "../../UI/getImage";
 
 const minsToHours = (mins) => `${Math.floor(mins / 60)}h ${mins % 60}m`;
 
@@ -20,7 +21,6 @@ const FilmPage = () => {
       console.log(film)
     })
     MovieController.getActorsById(params.id).then((actors) => {
-      console.log(actors)
       setActors(actors)
     })
 
@@ -36,7 +36,7 @@ const FilmPage = () => {
           <div className="film-page__film film">
             <div className="film__main">
               <div className="film__poster">
-                <img src={MovieController.getImage(film.poster_path)} alt="Poster" width='300px'/>
+                <img src={getImage(film.poster_path)} alt="Poster" width='300px'/>
               </div>
               <div className="film__info info">
                 <div className="info__header">

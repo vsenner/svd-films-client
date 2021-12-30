@@ -1,13 +1,13 @@
 import React from 'react';
 import './Actor.scss'
-import MovieController from "../../../../controllers/movie.controller";
+import {getImage} from "../../../../UI/getImage";
 
-const Actor = ({actor}) => {
+const Actor = ({profile_path, name}) => {
   return (
     <div className='actor'>
-      <img src={MovieController.getImage(actor.profile_path)} alt={actor.name} className='actor__photo'/>
+      <img src={getImage(profile_path)} alt={name} className='actor__photo'/>
       <div className="actor__name">
-        {actor.name}
+        {name}
       </div>
     </div>
   );

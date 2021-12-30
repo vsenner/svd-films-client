@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import './Rate.scss'
 import Star from "./Star/Star";
 
@@ -7,21 +7,17 @@ const Rate = ({avgRating}) => {
     width: avgRating * 10,
     color: '#ffd300',
   })
-  const [stars, setStars] = useState([])
 
-  useEffect(() => {
-    for (let i = 1; i <= 10; i++) {
-      setStars(prev => [...prev,
-        <Star
-          key={i}
-          type="radio"
-          className="rating__item"
-          value={i} name="rating"
-          onMouseEnter={() => {
-            setRatingActive({color: 'cyan', width: i*10});
-          }}
-        />])
-    }
+  const stars = useMemo(() => {
+    return [...new Array(10)].map((_,i) => <Star
+      key={i}
+      type="radio"
+      className="rating__item"
+      value={i} name="rating"
+      onMouseEnter={() => {
+        setRatingActive({color: 'cyan', width: (i+1)*10});
+      }}
+    />)
   }, [])
 
   const mouseLeaveHandler = () => {
