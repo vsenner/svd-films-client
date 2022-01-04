@@ -22,9 +22,14 @@
 
   &__item {
     white-space: nowrap;
-    &:not(:last-child) {
-      margin-bottom: 15px;
+    padding: 8px 0;
+    &:first-child {
+      padding-top: 0;
     }
+    &:last-child {
+      padding-bottom: 0;
+    }
+
     img {
       width: 25px;
       margin-right: 5px;
