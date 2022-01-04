@@ -5,6 +5,8 @@
   }
   &__logo{
     margin-right: 20px;
+    display: flex;
+    align-items: center;
   }
 
   &__link {
@@ -20,9 +22,21 @@
     display: flex;
     justify-content: flex-end;
     margin-right: 15px;
+
+    form {
+      margin-left: 20px;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
   }
 
-  &__account {
+  &__profile {
+    display: flex;
+    align-items: center;
+  }
+
+  &__profile-link img {
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -32,15 +46,20 @@
   &__flex{
     display: flex;
     justify-content: space-between;
+  }
+  &__categories {
+    display: flex;
     align-items: center;
   }
+
   &__film-list {
     width: 220px;
     display: grid;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 1fr;
     border-radius: 3px;
-    margin-top: 20px;
+    top: 100%;
+    left: 0;
     position: absolute;
     background-color: black;
     z-index: 2;
