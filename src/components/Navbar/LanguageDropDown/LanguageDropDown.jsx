@@ -2,13 +2,16 @@ import React, {useEffect, useMemo, useState} from 'react';
 import './LanguageDropDown.scss'
 
 const languages = [
-  {id: 0, name: 'Русский', shortname: 'RU', flag: 'https://www.worldometers.info/img/flags/rs-flag.gif'},
-  {id: 1, name: 'English', shortname: 'EN', flag: 'https://www.worldometers.info/img/flags/us-flag.gif'},
-  {id: 2, name: 'Українська', shortname: 'UA', flag: 'https://www.worldometers.info/img/flags/up-flag.gif'}
+  {id: 0, name: 'Русский', shortname: 'ru', flag: 'https://www.worldometers.info/img/flags/rs-flag.gif'},
+  {id: 1, name: 'English', shortname: 'en', flag: 'https://www.worldometers.info/img/flags/us-flag.gif'},
+  {id: 2, name: 'Українська', shortname: 'uk', flag: 'https://www.worldometers.info/img/flags/up-flag.gif'}
 ]
 
 const LanguageDropDown = () => {
-  const selectedLang = useMemo(() => localStorage.getItem('lang'), [localStorage.lang])
+  const selectedLang = useMemo(() => {
+      const clientLanguage = localStorage.getItem('lang');
+      return languages.find(lang => lang.shortname === clientLanguage) ? clientLanguage : 'EN'
+    }, [localStorage.lang])
   const [showDropDown, setShowDropDown] = useState(false)
 
   useEffect(() => {
@@ -25,7 +28,7 @@ const LanguageDropDown = () => {
          style={{background: showDropDown ? '#fff' : 'transparent'}}
     >
       <span className="lang__selected" style={{color: showDropDown ? 'orange' : 'gray'}}>
-        {selectedLang}
+        {selectedLang.toUpperCase()}
       </span>
       {showDropDown ?
         <div className='lang__dropdown'>
@@ -36,8 +39,10 @@ const LanguageDropDown = () => {
                   key={lang.id}
                   className='lang__item'
                   onClick={() => {
-                    localStorage.setItem('lang', lang.shortname)
-                  }}>
+                    localStorage.setItem('lang', lang.shortname);
+                    document.location.reload();
+                  }}
+                >
                   <img src={lang.flag} alt={lang.name}/>
                   <span className="lang__name">{lang.name}</span>
                 </li>

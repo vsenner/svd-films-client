@@ -13,15 +13,18 @@ SwiperCore.use([Navigation]);
 
 const Slider = () => {
     const [slides, setSlides] = useState([])
+
     useEffect(() => {
         MovieController.getPopular().then(resp => {
             console.log(resp)
             setSlides(resp.results.slice(0, 10))
         });
 
-    }, [])
+    }, [localStorage.lang])
 
-
+    useEffect(() => {
+        console.log(localStorage)
+    }, [localStorage.lang])
 
     return slides.length > 9 ?
         <Swiper navigation={true} className="mySwiper">
@@ -37,7 +40,7 @@ const Slider = () => {
                     <div className="text-block">
                         <div className="text-block__film-title">
                             <Link to={`/film/${slide.id}`} className="text-block__link">
-                                {slide.original_title}
+                                {slide.title}
                             </Link>
                             {slide.vote_average === 0 ? '' : <div className="text-block__rating">
                                 <span>{slide.vote_average}</span>
