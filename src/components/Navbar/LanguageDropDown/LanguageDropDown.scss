@@ -1,0 +1,33 @@
+.lang {
+  padding: 0 15px;
+  cursor: pointer;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  &__dropdown {
+    background: #fff;
+    color: #000;
+    z-index: 2;
+    padding: 15px;
+    position: absolute;
+    top: 100%;
+    right: 0;
+  }
+
+  &__list {
+    list-style: none;
+  }
+
+  &__item {
+    white-space: nowrap;
+    &:not(:last-child) {
+      margin-bottom: 15px;
+    }
+    img {
+      width: 25px;
+      margin-right: 5px;
+    }
+  }
+}

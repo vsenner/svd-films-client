@@ -6,12 +6,14 @@ import debounce from "debounce";
 import MovieController from "../../controllers/movie.controller";
 import NavbarFilmList from "./NavbarFilmList";
 import {useNavigate} from "react-router";
+import LanguageDropDown from "./LanguageDropDown/LanguageDropDown";
 
 
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [films, setFilms] = useState([])
+  const [activeSearch, setActiveSearch] = useState(false)
   const changeHandler = (e) => {
     setSearchQuery(e.target.value)
   }
@@ -53,6 +55,8 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="navbar__wide-area">
+            <LanguageDropDown/>
+
             {/*TODO: Change to custom input*/}
             <form onSubmit={e => {
               e.preventDefault();
@@ -62,16 +66,18 @@ const Navbar = () => {
                 className={'navbar__search'}
                 type="text"
                 onChange={debounceInput}
+                onFocus={() => {setActiveSearch(true)}}
+                onBlur={() => {setActiveSearch(false)}}
                 placeholder={'Find movie'}
               />
+              {films.length > 0 && activeSearch ? <NavbarFilmList films={films} clearFilms={setSearchQuery}/> : null}
             </form>
-            {films.length > 0 ? <NavbarFilmList films={films} clearFilms={setSearchQuery}/> : null}
           </div>
-          <Link to={'/account'}>
-            <div className='navbar__account'>
-              <img src="" alt=""/>
+            <div className="navbar__profile">
+              <Link to={'/account'} className='navbar__profile-link'>
+                <img src="" alt=""/>
+              </Link>
             </div>
-          </Link>
         </div>
       </div>
     </div>

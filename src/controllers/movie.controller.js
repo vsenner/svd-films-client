@@ -2,9 +2,17 @@ import MovieService from "../services/movie.service";
 
 export default class MovieController {
   static async getPopular() {
-    try{
+    try {
       return await MovieService.getPopular()
-    }catch (err) {
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getById(id) {
+    try {
+      return await MovieService.getById(id)
+    } catch (err) {
       throw err;
     }
   }
@@ -18,17 +26,37 @@ export default class MovieController {
   }
 
   static async search(query) {
-    try{
+    try {
       return MovieService.search(query).then(response => {
         return response.results.filter(elem => elem.media_type === 'movie' || elem.media_type === 'tv')
-          .sort((a,b) => {
+          .sort((a, b) => {
             return a.popularity - b.popularity
           })
           .reverse()
           .slice(0, 4)
       })
-    }catch (e) {
-      throw e
+    } catch (err) {
+      throw err
     }
   }
+
+  static async getActorsById(id) {
+    try {
+      return (await MovieService.getCreditsById(id)).cast
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getMovieDirectorById(id) {
+    try {
+      return MovieService.getCreditsById(id).then(resp => {
+        return resp.crew.find(obj => obj.job === 'Director');
+      })
+    } catch (err) {
+      throw err;
+    }
+  }
+
+
 }

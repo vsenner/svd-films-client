@@ -1,10 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-size: inherit;
 }
 
 .App{
+  font-family: Ubuntu, Arial, "Helvetica Neue", Helvetica, sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
