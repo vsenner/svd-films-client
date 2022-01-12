@@ -1,4 +1,19 @@
 .navbar {
+  &__search {
+    position: relative;
+    img {
+      cursor: pointer;
+      position: absolute;
+      left: 5px;
+      top: 3px;
+      height: 25px;
+    }
+    input {
+      padding: 5px 5px 5px 35px;
+      width: 200px;
+    }
+  }
+
   background: #2f2d2d;
   .container {
     max-width: 1240px;

@@ -2,6 +2,7 @@ import './App.scss';
 import Router from "./Router/Router";
 import Navbar from "./Navbar/Navbar";
 import {useEffect} from "react";
+import AuthController from "../controllers/auth-controller";
 
 
 function App() {
@@ -9,7 +10,12 @@ function App() {
     if(!localStorage.getItem('lang')) {
       localStorage.setItem('lang', navigator.language.split('-')[0].toUpperCase());
     }
+    if(localStorage.getItem('token')) {
+      AuthController.checkAuth();
+    }
   }, [])
+
+
 
   return (
       <div className="App">

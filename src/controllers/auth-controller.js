@@ -1,0 +1,50 @@
+import AuthService from "../services/auth-service";
+import store from "../store";
+
+export default class AuthController {
+  static async login(email, password) {
+    try {
+      const data = await AuthService.login(email, password);
+      localStorage.setItem('token', data.accessToken);
+      store.dispatch({type: 'CHANGE_AUTH', payload: true})
+      store.dispatch({type: 'CHANGE_USER', payload: data.user})
+      return data.user;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async registration(email, password) {
+    try {
+      const data = await AuthService.registration(email, password);
+      localStorage.setItem('token', data.accessToken);
+      store.dispatch({type: 'CHANGE_AUTH', payload: true})
+      store.dispatch({type: 'CHANGE_USER', payload: data.user})
+      return data.user;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async logout() {
+    try {
+      await AuthService.logout();
+      localStorage.removeItem('token');
+      store.dispatch({type: 'CHANGE_AUTH', payload: false})
+      store.dispatch({type: 'CHANGE_USER', payload: {}})
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async checkAuth() {
+    try {
+      const data = await AuthService.checkAuth();
+      localStorage.setItem('token', data.accessToken);
+      store.dispatch({type: 'CHANGE_AUTH', payload: true})
+      store.dispatch({type: 'CHANGE_USER', payload: data.user})
+    } catch (err) {
+      throw err;
+    }
+  }
+}

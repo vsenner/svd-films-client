@@ -11,6 +11,7 @@ const LanguageDropDown = () => {
   const selectedLang = useMemo(() => {
       const clientLanguage = localStorage.getItem('lang');
       return languages.find(lang => lang.shortname === clientLanguage) ? clientLanguage : 'EN'
+    // eslint-disable-next-line
     }, [localStorage.lang])
   const [showDropDown, setShowDropDown] = useState(false)
 

@@ -1,0 +1,15 @@
+.user-page {
+  background: #c4c4c4;
+  flex: 1 1 auto;
+  text-align: center;
+  .user {
+    background: #fff;
+    width: 100%;
+    margin-top: 150px;
+    padding: 20px 0;
+    &__name {
+      font-weight: 400;
+      font-size: 32px;
+    }
+  }
+}

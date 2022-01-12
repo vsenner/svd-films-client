@@ -19,11 +19,7 @@ const Slider = () => {
             console.log(resp)
             setSlides(resp.results.slice(0, 10))
         });
-
-    }, [localStorage.lang])
-
-    useEffect(() => {
-        console.log(localStorage)
+        // eslint-disable-next-line
     }, [localStorage.lang])
 
     return slides.length > 9 ?

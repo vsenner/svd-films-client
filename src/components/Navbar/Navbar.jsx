@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import './Navbar.scss'
 import {Link} from "react-router-dom";
 import logo from "../../images/icons8-film-64.png"
@@ -7,7 +7,8 @@ import MovieController from "../../controllers/movie.controller";
 import NavbarFilmList from "./NavbarFilmList";
 import {useNavigate} from "react-router";
 import LanguageDropDown from "./LanguageDropDown/LanguageDropDown";
-
+import searchIcon from '../../images/search.svg'
+import {useSelector} from "react-redux";
 
 
 const Navbar = () => {
@@ -18,6 +19,8 @@ const Navbar = () => {
     setSearchQuery(e.target.value)
   }
   const debounceInput = useCallback(debounce(changeHandler, 500), []) // eslint-disable-line react-hooks/exhaustive-deps
+  const searchInput = useRef();
+
 
   useEffect(() => {
     if(searchQuery.length > 1){
@@ -30,6 +33,8 @@ const Navbar = () => {
   },[searchQuery])
 
   const router = useNavigate()
+
+  const authReducer = useSelector(state => state.authReducer);
 
   return (
     <div className='navbar'>
@@ -58,23 +63,27 @@ const Navbar = () => {
             <LanguageDropDown/>
 
             {/*TODO: Change to custom input*/}
-            <form onSubmit={e => {
+            <form
+              onSubmit={e => {
               e.preventDefault();
-              router(`/genres/search/${e.target.firstChild.value}`)
+              router(`/genres/search/${searchInput.current.value}`)
             }}>
-              <input
-                className={'navbar__search'}
-                type="text"
-                onChange={debounceInput}
-                onFocus={() => {setActiveSearch(true)}}
-                onBlur={() => {setActiveSearch(false)}}
-                placeholder={'Find movie'}
-              />
+              <label className={'navbar__search'}>
+                <img src={searchIcon} alt="search"/>
+                <input
+                  type="text"
+                  ref={searchInput}
+                  onChange={debounceInput}
+                  onFocus={() => {setActiveSearch(true)}}
+                  onBlur={() => {setActiveSearch(false)}}
+                  placeholder={'Find movie'}
+                />
+              </label>
               {films.length > 0 && activeSearch ? <NavbarFilmList films={films} clearFilms={setSearchQuery}/> : null}
             </form>
           </div>
             <div className="navbar__profile">
-              <Link to={'/account'} className='navbar__profile-link'>
+              <Link to={authReducer.isAuth ? `/user/${authReducer.user.id}` : '/login'} className='navbar__profile-link'>
                 <img src="" alt=""/>
               </Link>
             </div>
