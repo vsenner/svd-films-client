@@ -21,16 +21,24 @@ const Navbar = () => {
   const debounceInput = useCallback(debounce(changeHandler, 500), []) // eslint-disable-line react-hooks/exhaustive-deps
   const searchInput = useRef();
 
-
   useEffect(() => {
-    if(searchQuery.length > 1){
+    if (searchQuery.length > 1) {
       MovieController.search(searchQuery).then(data => {
         setFilms(data)
       })
-    }else{
+    } else {
       setFilms([])
     }
-  },[searchQuery])
+  }, [searchQuery])
+
+  useEffect(() => {
+    document.addEventListener('click', (e) => {
+      if (!e.target.className.includes('navbar__film-list') && !e.target.className.includes('navbar__input')) {
+        setActiveSearch(false);
+      }
+
+    })
+  }, [])
 
   const router = useNavigate()
 
@@ -65,28 +73,32 @@ const Navbar = () => {
             {/*TODO: Change to custom input*/}
             <form
               onSubmit={e => {
-              e.preventDefault();
-              router(`/genres/search/${searchInput.current.value}`)
-            }}>
+                e.preventDefault();
+                router(`/genres/search/${searchInput.current.value}`)
+              }}>
               <label className={'navbar__search'}>
                 <img src={searchIcon} alt="search"/>
                 <input
+                  className='navbar__input'
                   type="text"
                   ref={searchInput}
+                  onFocus={() => setActiveSearch(true)}
                   onChange={debounceInput}
-                  onFocus={() => {setActiveSearch(true)}}
-                  onBlur={() => {setActiveSearch(false)}}
                   placeholder={'Find movie'}
                 />
               </label>
-              {films.length > 0 && activeSearch ? <NavbarFilmList films={films} clearFilms={setSearchQuery}/> : null}
+              {films.length > 0 && activeSearch ?
+                <NavbarFilmList films={films} clearFilms={setSearchQuery}/> : null}
             </form>
           </div>
-            <div className="navbar__profile">
-              <Link to={authReducer.isAuth ? `/user/${authReducer.user.id}` : '/login'} className='navbar__profile-link'>
-                <img src="" alt=""/>
-              </Link>
-            </div>
+          <div className="navbar__profile">
+            <Link to={authReducer.isAuth ? `/user/${authReducer.user.id}` : '/login'} className='navbar__profile-link'>
+              {authReducer.isAuth ?
+                <img src={authReducer.user.photo} alt="user" className='navbar__profile-photo'/>
+                :
+                <span className='navbar__profile-photo'>SIGN UP</span>}
+            </Link>
+          </div>
         </div>
       </div>
     </div>

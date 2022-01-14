@@ -46,6 +46,11 @@
         }
     }
 
+    &__error {
+        color: red;
+        font-size: 1.1em;
+    }
+
     &__btn {
         margin-top: 15px;
         cursor: pointer;

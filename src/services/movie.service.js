@@ -22,8 +22,32 @@ export default class MovieService {
     return (await instance.get(`/movie/${id}/credits`)).data
   }
 
-  static async getUserFilms(id, table) {
-    return (await $api.get(`/films/${id}/${table}`)).data;
+  static async getFavourite(userId, page = 1, limit = 'ALL') {
+    return (await $api.get(`/${userId}/films/favourite`, {params: {limit, page}})).data;
   }
 
+
+  static async addFavourite(filmId) {
+    return (await $api.post('/films/favourite/add', {film_id: filmId})).data;
+  }
+
+  static async removeFavourite(filmId) {
+    return (await $api.post('/films/favourite/remove', {film_id: filmId})).data;
+  }
+
+  static async getLater(userId, page = 1, limit = 'ALL') {
+    return (await $api.get(`/${userId}/films/later`, {params: {limit, page}})).data;
+  }
+
+  static async addLater(filmId) {
+    return (await $api.post('/films/later/add', {film_id: filmId})).data;
+  }
+
+  static async removeLater(filmId) {
+    return (await $api.post('/films/later/remove', {film_id: filmId})).data;
+  }
+
+  static async getUserFilmInfo(filmId) {
+    return (await $api.get(`/info/${filmId}`)).data;
+  }
 }

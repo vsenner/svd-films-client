@@ -6,24 +6,34 @@ import './LoginPage.scss'
 import {Link} from "react-router-dom";
 import {useNavigate} from "react-router";
 import {useSelector} from "react-redux";
+import Loader from "../UI/Loader/Loader";
 
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null)
+
 
   const router = useNavigate();
 
-  const login = async () => {
+  const login = async (e) => {
+    e.preventDefault();
     try {
       const user = await AuthController.login(email, password);
       router(`/user/${user.id}`);
     } catch (err) {
-      console.log(err.response?.data?.message)
+      setError(err);
     }
   }
 
   const authReducer = useSelector(store => store.authReducer);
+
+  if (authReducer.isLoading) {
+    return (
+      <Loader/>
+    )
+  }
 
   return (
     <div className='login-page'>
@@ -37,7 +47,7 @@ const LoginPage = () => {
           </div>
         </div>
         :
-        <div className="login">
+        <form className="login">
           <h1 className='login__title'>Login</h1>
           <span className='login__label'>Username</span>
           <label>
@@ -60,17 +70,17 @@ const LoginPage = () => {
               placeholder='Type your password'
             />
           </label>
+          {error ? <div className="login__error">{error}</div> : null}
           <Button className='login__btn' onClick={login}>
             Login
           </Button>
-
           <div className="login__sign-up">
             Haven't got an account yet?
             <div className="login__link">
               <Link to={'/signup'}>Sign up</Link>
             </div>
           </div>
-        </div>}
+        </form>}
 
     </div>
   );

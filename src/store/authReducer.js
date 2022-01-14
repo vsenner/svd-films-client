@@ -1,6 +1,7 @@
 const defaultState = {
   isAuth: false,
-  user: {}
+  user: {},
+  isLoading: false
 };
 
 const authReducer = (state = defaultState, {type, payload}) => {
@@ -9,6 +10,8 @@ const authReducer = (state = defaultState, {type, payload}) => {
       return {...state, isAuth: payload}
     case 'CHANGE_USER':
       return {...state, user: payload}
+    case 'CHANGE_LOADING':
+      return {...state, isLoading: payload}
     default:
       return state;
   }

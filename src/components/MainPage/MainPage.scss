@@ -2,9 +2,15 @@
   background: #000;
   flex: 1 1 auto;
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /*-------------SLIDER------------------*/
+
+.swiper {
+  align-self: stretch;
+}
 
 .swiper-slide {
   display: flex;

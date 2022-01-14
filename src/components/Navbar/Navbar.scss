@@ -1,20 +1,24 @@
 .navbar {
+  position: relative;
+  box-shadow: 0 2px 3px rgba(0,0,0,.2);
+  z-index: 20;
   &__search {
     position: relative;
     img {
       cursor: pointer;
       position: absolute;
       left: 5px;
-      top: 3px;
+      top: 8px;
       height: 25px;
     }
     input {
-      padding: 5px 5px 5px 35px;
-      width: 200px;
+      padding: 10px 5px 10px 35px;
+      width: 250px;
     }
   }
 
-  background: #2f2d2d;
+  padding: 5px 0;
+  background: rgb(55, 55, 55);
   .container {
     max-width: 1240px;
   }
@@ -27,6 +31,7 @@
   &__link {
     text-transform: uppercase;
     text-decoration: none;
+    font-size: 19px;
     color: white;
     &:not(:last-child) {
       margin-right: 15px;
@@ -51,11 +56,20 @@
     align-items: center;
   }
 
-  &__profile-link img {
+  &__profile-link{
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    border: 1px solid #848282
+    border: 1px solid #848282;
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+
+  &__profile-photo {
+    margin: 0 auto;
+    font-size: 14px;
+    color: orange;
   }
 
   &__flex{

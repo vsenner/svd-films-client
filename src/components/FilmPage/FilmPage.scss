@@ -30,6 +30,16 @@ $fontColor2: #8c8c8c;
         flex-direction: column;
         padding: 10px 10px 10px 0;
 
+        &__btn {
+          margin-top: 10px;
+          cursor: pointer;
+          color: #fff;
+          font-size: 26px;
+          &:not(:last-child) {
+            margin-right: 20px;
+          }
+        }
+
         &__header {
           .info__title {
             font-size: 32px;
@@ -97,6 +107,9 @@ $fontColor2: #8c8c8c;
     &__bottom {
       margin-top: 50px;
       .film__description {
+        margin-top: 60px;
+        padding-top: 40px;
+        border-top: 2px solid #454343;
         h2 {
           margin-bottom: 10px;
           font-size: 1.2em;
@@ -119,6 +132,18 @@ $fontColor2: #8c8c8c;
         }
         .rating__value {
           padding-left: 10px;
+        }
+
+        .rating__mine {
+          margin-top: 15px;
+          font-size: 20px;
+          letter-spacing: 0.1em;
+          span {
+            display: inline-block;
+            border-radius: 50%;
+            margin-left: 5px;
+            padding: 2px 7px;
+          }
         }
       }
     }

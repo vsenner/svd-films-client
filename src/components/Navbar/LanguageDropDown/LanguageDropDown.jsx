@@ -28,7 +28,7 @@ const LanguageDropDown = () => {
          onClick={() => setShowDropDown(!showDropDown)}
          style={{background: showDropDown ? '#fff' : 'transparent'}}
     >
-      <span className="lang__selected" style={{color: showDropDown ? 'orange' : 'gray'}}>
+      <span className="lang__selected" style={{color: showDropDown ? 'orange' : 'white'}}>
         {selectedLang.toUpperCase()}
       </span>
       {showDropDown ?

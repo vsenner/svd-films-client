@@ -8,14 +8,13 @@ import AuthController from "../controllers/auth-controller";
 function App() {
   useEffect(() => {
     if(!localStorage.getItem('lang')) {
-      localStorage.setItem('lang', navigator.language.split('-')[0].toUpperCase());
+      localStorage.setItem('lang', navigator.language.split('-')[0].toLowerCase());
+      window.location.reload();
     }
     if(localStorage.getItem('token')) {
       AuthController.checkAuth();
     }
   }, [])
-
-
 
   return (
       <div className="App">

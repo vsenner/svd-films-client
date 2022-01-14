@@ -58,5 +58,67 @@ export default class MovieController {
     }
   }
 
+  static async getFavourite(id) {
+    try {
+      return await MovieService.getFavourite(id);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async addFavourite(filmId) {
+    try {
+      return await MovieService.addFavourite(filmId);
+    } catch (err) {
+      throw err;
+    }
+  }
+  static async removeFavourite(filmId) {
+    try {
+      return await MovieService.removeFavourite(filmId);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getLater(id) {
+    try {
+      return await MovieService.getLater(id);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async addLater(filmId) {
+    try {
+      return await MovieService.addLater(filmId);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async removeLater(filmId) {
+    try {
+      return await MovieService.removeLater(filmId);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getRated() {
+    try {
+
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getUserFilmInfo(filmId) {
+    try {
+      return await MovieService.getUserFilmInfo(filmId);
+    } catch (err) {
+      throw err;
+    }
+  }
 
 }
