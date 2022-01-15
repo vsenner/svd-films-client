@@ -9,14 +9,25 @@
 
 a {
   text-decoration: none;
+  font-family: inherit;
   &:focus {
     text-decoration: none;
   }
 }
 
+img {
+  max-width: 100%;
+}
+
+ul, ol {
+  list-style: none;
+}
+
 button {
   background: transparent;
+  cursor: pointer;
   border: none;
+  font-family: inherit;
 }
 
 .App{

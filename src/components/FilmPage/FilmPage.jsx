@@ -46,7 +46,7 @@ const FilmPage = () => {
 
   const addFavourite = async () => {
     try {
-      await MovieController.addFavourite(params.id);
+      await MovieController.addFavourite(params.id, film.title);
       setUserFilmInfo(prev => ({...prev, isFavourite: true}));
     } catch (err) {
       console.log(err);
@@ -64,7 +64,7 @@ const FilmPage = () => {
 
   const addLater = async () => {
     try {
-      await MovieController.addLater(params.id);
+      await MovieController.addLater(params.id, film.title);
       setUserFilmInfo(prev => ({...prev, isLater: true}));
     } catch (err) {
       console.log(err);
@@ -80,7 +80,23 @@ const FilmPage = () => {
     }
   }
 
-  console.log(userFilmInfo)
+  const rateFilm = async (rating) => {
+    try {
+      await MovieController.addRated(params.id, rating, film.title);
+      setUserFilmInfo(prev => ({...prev, isRated: true, rating}));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const unRateFilm = async (rating) => {
+    try {
+      await MovieController.removeRated(params.id, rating);
+      setUserFilmInfo(prev => ({...prev, isRated: false, rating: null}));
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <div className='film-page'>
@@ -171,6 +187,7 @@ const FilmPage = () => {
                 </div>
               </div>
             </div>
+
             <div className="film__bottom">
               {actors ? <ActorList actors={actors.slice(0, 5)} className='film__actors'/> : ''}
               {film.overview ?
@@ -182,18 +199,23 @@ const FilmPage = () => {
               <div className="film__rating">
                 <h2>Film Rating</h2>
                 <div className="rating__row">
-                  <Rate avgRating={film.vote_average}/>
+                  <Rate avgRating={film.vote_average} action={authReducer.isAuth ? rateFilm : redirectToLogin}/>
                   <div className="rating__value">{film.vote_average}</div>
                 </div>
                 {userFilmInfo?.isRated ?
                   <div className="rating__mine">
                     My rating
                     <span style={{background: userFilmInfo.rating < 5 ? 'red' : 'green'}}>{userFilmInfo.rating}</span>
+                    <button
+                      onClick={unRateFilm}
+                      className="rating__remove"
+                    >
+                      Remove
+                    </button>
                   </div>
                   : null}
               </div>
             </div>
-
           </div>
           :
           ''}

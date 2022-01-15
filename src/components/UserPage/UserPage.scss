@@ -7,9 +7,46 @@
     width: 100%;
     margin-top: 150px;
     padding: 20px 0;
-    &__name {
-      font-weight: 400;
-      font-size: 32px;
+    box-shadow: 0 0 10px rgba(0,0,0,.5);
+    &__row {
+      display: flex;
+
+      .user__img {
+        width: 300px;
+      }
+
+      .user__info {
+        margin-top: 20px;
+        .user__name {
+          font-weight: 400;
+          font-size: 32px;
+        }
+      }
+    }
+
+
+    .films-header {
+      margin-top: 40px;
+      display: flex;
+      background: #cac8c8;
+      &__item {
+        font-size: 18px;
+        div {
+          font-weight: 600;
+          font-size: 1.5em;
+        }
+        padding: 10px 5px;
+        width: 33.33%;
+        transition: background-color .5s ease-in;
+
+        &:hover {
+          background: #9d9d9d;
+        }
+      }
+    }
+
+    .Button {
+      margin-top: 40px;
     }
   }
 }
