@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:5000/api'
+const API_URL = 'https://svd-films-server.herokuapp.com/api'
 
 const $api = axios.create({
   withCredentials: true,
@@ -30,7 +30,6 @@ $api.interceptors.response.use((config) => {
   }
   if (error.response?.status === 402) {
     if (error.response.data.errors.length) {
-      console.log('HERE')
       switch (error.response.data.errors[0].param) {
         case 'email':
           // eslint-disable-next-line no-throw-literal
@@ -38,13 +37,15 @@ $api.interceptors.response.use((config) => {
         case 'password':
           // eslint-disable-next-line no-throw-literal
           throw 'Password should be longer than 5 characters!';
+        case 'username':
+          // eslint-disable-next-line no-throw-literal
+          throw 'Username must be longer than 3 characters!'
         default:
       }
     }
     throw error.response.data.message
   }
 
-  throw new Error('Unexpected error! Please, contact us!')
 })
 
 export default $api;

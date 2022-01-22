@@ -1,7 +1,10 @@
 .user__film-list {
+  max-width: 1140px;
+  margin: 0 auto;
+  box-shadow: 0 0 5px rgba(0,0,0,0.4);
   .user__film-list-header, .film-list__item {
     display: grid;
-    grid-template-columns: 60px repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: 60px repeat(auto-fit, minmax(100px, 1fr));
   }
 
   .user__film-list-header {
@@ -12,10 +15,15 @@
   }
 
   .film-list__item {
-    padding: 10px;
-    font-size: 16px;
+    padding: 20px 10px;
+    font-size: 18px;
     &:nth-child(2n) {
-      background: #c6c6c6;
+      background: rgba(221, 221, 221, 0.67);
+    }
+
+    &:hover {
+      background-color: #26a1b3;
+      color: #fff;
     }
   }
 }

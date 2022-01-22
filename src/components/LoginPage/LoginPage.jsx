@@ -49,14 +49,14 @@ const LoginPage = () => {
         :
         <form className="login">
           <h1 className='login__title'>Login</h1>
-          <span className='login__label'>Username</span>
+          <span className='login__label'>Email</span>
           <label>
             <i className="far fa-user"/>
             <Input
               setValue={setEmail}
               value={email}
               type="text"
-              placeholder='Type your username'
+              placeholder='Type your email'
             />
           </label>
 
