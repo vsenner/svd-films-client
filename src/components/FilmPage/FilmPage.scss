@@ -17,6 +17,10 @@ $fontColor2: #8c8c8c;
     background: rgba(0, 0, 0, 0.8);
     color: #ebe8e8;
 
+    &__actors {
+      margin: 60px 0;
+    }
+
     &__main {
       position: relative;
       z-index: 1;
@@ -29,6 +33,16 @@ $fontColor2: #8c8c8c;
         display: flex;
         flex-direction: column;
         padding: 10px 10px 10px 0;
+
+        &__btn {
+          margin-top: 10px;
+          cursor: pointer;
+          color: #fff;
+          font-size: 26px;
+          &:not(:last-child) {
+            margin-right: 20px;
+          }
+        }
 
         &__header {
           .info__title {
@@ -97,6 +111,9 @@ $fontColor2: #8c8c8c;
     &__bottom {
       margin-top: 50px;
       .film__description {
+        margin-top: 60px;
+        padding-top: 60px;
+        border-top: 2px solid #454343;
         h2 {
           margin-bottom: 10px;
           font-size: 1.2em;
@@ -119,6 +136,27 @@ $fontColor2: #8c8c8c;
         }
         .rating__value {
           padding-left: 10px;
+        }
+
+        .rating__mine {
+          margin-top: 15px;
+          font-size: 20px;
+          letter-spacing: 0.1em;
+          span {
+            display: inline-block;
+            border-radius: 50%;
+            margin-left: 5px;
+            padding: 2px 7px;
+          }
+
+          .rating__remove {
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 15px;
+            color: #afafaf;
+            text-decoration: underline;
+            margin-left: 10px;
+          }
         }
       }
     }

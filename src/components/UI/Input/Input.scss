@@ -4,10 +4,9 @@
 
 .Input{
   border: 1px solid lightgray;
-  padding: 10px;
-  font-size: 20px;
+  padding: 5px;
   &:focus{
-    border: 1px solid grey;
+    border: 1px solid teal;
     border-radius: 0;
   }
 }

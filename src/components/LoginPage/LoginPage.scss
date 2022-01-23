@@ -1,0 +1,71 @@
+.login-page {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #a667a3 url("https://4k-wallpapers.net/uploads/posts/2021-02/medium/1614185673_valley-landscape-mountains-gradient-background-colorful-background.jpg") no-repeat;
+    background-size: cover;
+}
+
+.login {
+    text-align: center;
+    background: rgb(255, 255, 255);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    padding: 60px 30px;
+    &__title {
+        margin-bottom: 40px;
+        font-size: 40px;
+    }
+
+    &__label {
+        color: #8c8c8c;
+        margin-bottom: 5px;
+        text-align: left;
+        display: inline-block;
+    }
+
+    label {
+        position: relative;
+        text-align: left;
+        i {
+            position: absolute;
+            font-size: 18px;
+            bottom: 37px;
+            left: 15px;
+        }
+        input {
+            margin-bottom: 20px;
+            width: 100%;
+            padding: 15px 5px 15px 45px;
+            border-top: none;
+            border-right: none;
+            border-left: none;
+        }
+    }
+
+    &__error {
+        color: red;
+        font-size: 1.1em;
+    }
+
+    &__btn {
+        margin-top: 15px;
+        cursor: pointer;
+    }
+
+    &__sign-up {
+        margin-top: 20px;
+        font-size: 16px;
+        color: #616161;
+        line-height: 1.5;
+    }
+
+    &__link {
+        color: #000000;
+        font-size: 18px;
+    }
+
+}

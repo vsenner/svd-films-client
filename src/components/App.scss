@@ -7,6 +7,29 @@
   font-size: inherit;
 }
 
+a {
+  text-decoration: none;
+  font-family: inherit;
+  &:focus {
+    text-decoration: none;
+  }
+}
+
+img {
+  max-width: 100%;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button {
+  background: transparent;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+
 .App{
   font-family: Ubuntu, Arial, "Helvetica Neue", Helvetica, sans-serif;
   min-height: 100vh;

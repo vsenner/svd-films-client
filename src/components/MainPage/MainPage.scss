@@ -2,9 +2,15 @@
   background: #000;
   flex: 1 1 auto;
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /*-------------SLIDER------------------*/
+
+.swiper {
+  align-self: stretch;
+}
 
 .swiper-slide {
   display: flex;
@@ -51,7 +57,7 @@
 .text-block{
   box-shadow: 0 0 15px 5px rgb(0, 0, 0);
   width: 400px;
-  height: 400px;
+  height: 350px;
   color: #c9c9c9;
   margin: 10px 0 10px 60px;
   padding: 20px;
