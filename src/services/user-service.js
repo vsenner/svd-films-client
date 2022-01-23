@@ -9,8 +9,8 @@ export default class UserService {
     }
   }
 
-  static async changeUsername(username) {
-    return (await $api.post('/username/change', {username})).data
+  static async changeUsername(username, userId) {
+    return (await $api.post('/username/change', {username, userId})).data
   }
 
   static async changeUserImage(formData) {

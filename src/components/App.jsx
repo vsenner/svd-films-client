@@ -12,7 +12,7 @@ function App() {
       window.location.reload();
     }
     if(localStorage.getItem('token')) {
-      AuthController.checkAuth();
+      AuthController.refresh();
     }
   }, [])
 

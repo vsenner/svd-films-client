@@ -22,45 +22,45 @@ export default class MovieService {
     return (await instance.get(`/movie/${id}/credits`)).data
   }
 
-  static async getFavourite(userId, page = 1, limit = 'ALL') {
-    return (await $api.get(`/${userId}/films/favourite`, {params: {limit, page}})).data;
+  static async getFavourite(user_id, page = 1, limit = 'ALL') {
+    return (await $api.get(`/${user_id}/films/favourite`, {params: {limit, page}})).data;
   }
 
 
-  static async addFavourite(film_id, title) {
-    return (await $api.post('/films/favourite/add', {film_id, title})).data;
+  static async addFavourite(film_id, title, user_id) {
+    return (await $api.post('/films/favourite/add', {film_id, title, user_id})).data;
   }
 
-  static async removeFavourite(film_id) {
-    return (await $api.post('/films/favourite/remove', {film_id})).data;
+  static async removeFavourite(film_id, user_id) {
+    return (await $api.post('/films/favourite/remove', {film_id, user_id})).data;
   }
 
-  static async getLater(userId, page = 1, limit = 'ALL') {
-    return (await $api.get(`/${userId}/films/later`, {params: {limit, page}})).data;
+  static async getLater(user_id, page = 1, limit = 'ALL') {
+    return (await $api.get(`/${user_id}/films/later`, {params: {limit, page}})).data;
   }
 
-  static async addLater(film_id, title) {
-    return (await $api.post('/films/later/add', {film_id, title})).data;
+  static async addLater(film_id, title, user_id) {
+    return (await $api.post('/films/later/add', {film_id, title, user_id})).data;
   }
 
-  static async removeLater(film_id) {
-    return (await $api.post('/films/later/remove', {film_id})).data;
+  static async removeLater(film_id, user_id) {
+    return (await $api.post('/films/later/remove', {film_id, user_id})).data;
   }
 
-  static async getRated(userId, page = 1, limit = 'ALL') {
-    return (await $api.get(`/${userId}/films/rated`, {params: {limit, page}})).data;
+  static async getRated(user_id, page = 1, limit = 'ALL') {
+    return (await $api.get(`/${user_id}/films/rated`, {params: {limit, page}})).data;
   }
 
-  static async addRated(film_id, rating, title) {
-    return (await $api.post('/films/rated/add', {film_id, rating, title})).data;
+  static async addRated(film_id, rating, title, user_id) {
+    return (await $api.post('/films/rated/add', {film_id, rating, title, user_id})).data;
   }
 
-  static async removeRated(film_id) {
-    return (await $api.post('/films/rated/remove', {film_id})).data;
+  static async removeRated(film_id, user_id) {
+    return (await $api.post('/films/rated/remove', {film_id, user_id})).data;
   }
 
-  static async getUserFilmInfo(filmId) {
-    return (await $api.get(`/info/film/${filmId}`)).data;
+  static async getUserFilmInfo(film_id, user_id) {
+    return (await $api.get(`/info/film/${film_id}/${user_id}`)).data;
   }
 
 }

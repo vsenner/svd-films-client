@@ -10,19 +10,20 @@ export default class UserController {
     }
   }
 
-  static async changeUsername(username) {
+  static async changeUsername(username, userId) {
     try {
-      const data = await UserService.changeUsername(username);
+      const data = await UserService.changeUsername(username, userId);
       return data.username;
     } catch (err) {
       throw err;
     }
   }
 
-  static async changeUserImage(image) {
+  static async changeUserImage(image, userId) {
     try {
       const formData = new FormData();
-      formData.append(`image`, image)
+      formData.append(`image`, image);
+      formData.append('id', userId)
       await UserService.changeUserImage(formData);
     } catch (err) {
       throw err;

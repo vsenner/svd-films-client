@@ -58,80 +58,80 @@ export default class MovieController {
     }
   }
 
-  static async getFavourite(id) {
+  static async getFavourite(user_id) {
     try {
-      return await MovieService.getFavourite(id);
+      return await MovieService.getFavourite(user_id);
     } catch (err) {
       throw err;
     }
   }
 
-  static async addFavourite(filmId, title) {
+  static async addFavourite(film_id, title, user_id) {
     try {
-      return await MovieService.addFavourite(filmId, title);
+      return await MovieService.addFavourite(film_id, title, user_id);
     } catch (err) {
       throw err;
     }
   }
-  static async removeFavourite(filmId) {
+  static async removeFavourite(film_id, user_id) {
     try {
-      return await MovieService.removeFavourite(filmId);
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  static async getLater(id) {
-    try {
-      return await MovieService.getLater(id);
+      return await MovieService.removeFavourite(film_id, user_id);
     } catch (err) {
       throw err;
     }
   }
 
-  static async addLater(filmId, title) {
+  static async getLater(user_id) {
     try {
-      return await MovieService.addLater(filmId, title);
+      return await MovieService.getLater(user_id);
     } catch (err) {
       throw err;
     }
   }
 
-  static async removeLater(filmId) {
+  static async addLater(film_id, title, user_id) {
     try {
-      return await MovieService.removeLater(filmId);
+      return await MovieService.addLater(film_id, title, user_id);
     } catch (err) {
       throw err;
     }
   }
 
-  static async getRated(userId) {
+  static async removeLater(film_id, user_id) {
     try {
-      return await MovieService.getRated(userId);
+      return await MovieService.removeLater(film_id, user_id);
     } catch (err) {
       throw err;
     }
   }
 
-  static async addRated(filmId, rating, title) {
+  static async getRated(user_id) {
     try {
-      return await MovieService.addRated(filmId, rating, title);
+      return await MovieService.getRated(user_id);
     } catch (err) {
       throw err;
     }
   }
 
-  static async removeRated(filmId) {
+  static async addRated(film_id, rating, title, user_id) {
     try {
-      return await MovieService.removeRated(filmId);
+      return await MovieService.addRated(film_id, rating, title, user_id);
     } catch (err) {
       throw err;
     }
   }
 
-  static async getUserFilmInfo(filmId) {
+  static async removeRated(film_id, user_id) {
     try {
-      return await MovieService.getUserFilmInfo(filmId);
+      return await MovieService.removeRated(film_id, user_id);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getUserFilmInfo(film_id, user_id) {
+    try {
+      return await MovieService.getUserFilmInfo(film_id, user_id);
     } catch (err) {
       throw err;
     }

@@ -33,12 +33,12 @@ const FilmPage = () => {
   }, [params.id])
 
   useEffect(() => {
-    if(authReducer.isAuth) {
-      MovieController.getUserFilmInfo(params.id).then(data => {
+    if(authReducer.user.id) {
+      MovieController.getUserFilmInfo(params.id, authReducer.user.id).then(data => {
         setUserFilmInfo(data)
       })
     }
-  }, [params.id, authReducer.isAuth])
+  }, [params.id, authReducer.user.id])
 
   const router = useNavigate()
 
@@ -46,7 +46,7 @@ const FilmPage = () => {
 
   const addFavourite = async () => {
     try {
-      await MovieController.addFavourite(params.id, film.title);
+      await MovieController.addFavourite(params.id, film.title, authReducer.user.id);
       setUserFilmInfo(prev => ({...prev, isFavourite: true}));
     } catch (err) {
       console.log(err);
@@ -55,7 +55,7 @@ const FilmPage = () => {
 
   const removeFavourite = async () => {
     try {
-      await MovieController.removeFavourite(params.id);
+      await MovieController.removeFavourite(params.id, authReducer.user.id);
       setUserFilmInfo(prev => ({...prev, isFavourite: false}));
     } catch (err) {
       console.log(err);
@@ -64,7 +64,7 @@ const FilmPage = () => {
 
   const addLater = async () => {
     try {
-      await MovieController.addLater(params.id, film.title);
+      await MovieController.addLater(params.id, film.title, authReducer.user.id);
       setUserFilmInfo(prev => ({...prev, isLater: true}));
     } catch (err) {
       console.log(err);
@@ -73,7 +73,7 @@ const FilmPage = () => {
 
   const removeLater = async () => {
     try {
-      await MovieController.removeLater(params.id);
+      await MovieController.removeLater(params.id, authReducer.user.id);
       setUserFilmInfo(prev => ({...prev, isLater: false}));
     } catch (err) {
       console.log(err);
@@ -82,7 +82,7 @@ const FilmPage = () => {
 
   const rateFilm = async (rating) => {
     try {
-      await MovieController.addRated(params.id, rating, film.title);
+      await MovieController.addRated(params.id, rating, film.title, authReducer.user.id);
       setUserFilmInfo(prev => ({...prev, isRated: true, rating}));
     } catch (err) {
       console.log(err);
@@ -91,7 +91,7 @@ const FilmPage = () => {
 
   const unRateFilm = async (rating) => {
     try {
-      await MovieController.removeRated(params.id, rating);
+      await MovieController.removeRated(params.id, rating, authReducer.user.id);
       setUserFilmInfo(prev => ({...prev, isRated: false, rating: null}));
     } catch (err) {
       console.log(err);

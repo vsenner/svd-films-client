@@ -14,7 +14,7 @@ export default class AuthService {
     return (await $api.post('/logout')).data;
   }
 
-  static async checkAuth() {
+  static async refresh() {
     const API_URL = 'https://svd-films-server.herokuapp.com/api'
     return (await axios.get(`${API_URL}/refresh`, {withCredentials: true})).data;
   }
