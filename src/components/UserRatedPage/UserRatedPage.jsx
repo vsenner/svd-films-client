@@ -11,11 +11,13 @@ const UserRatedPage = () => {
   const params = useParams();
 
   useEffect(() => {
-    (async () => {
-        setFilmList(await MovieController.getRated(params.id))
-        setUsername((await UserController.getUserInfo(params.id)).username);
-      }
-    )();
+    MovieController.getRated(params.id).then(list => {
+      setFilmList(list)
+    })
+
+    UserController.getUserInfo(params.id).then(user => {
+      setUsername(user.username)
+    })
   }, [params.id])
 
   return (

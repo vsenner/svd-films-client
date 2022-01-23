@@ -19,7 +19,7 @@ const FilmPage = () => {
   const [director, setDirector] = useState(null)
   const [userFilmInfo, setUserFilmInfo] = useState(null);
 
-  const authReducer = useSelector(state => state.authReducer)
+  const user = useSelector(state => state?.user)
 
   useEffect(() => {
     TMDBMovieController.getById(params.id).then((film) => {
@@ -34,12 +34,12 @@ const FilmPage = () => {
   }, [params.id])
 
   useEffect(() => {
-    if(authReducer.user.id) {
-      MovieController.getUserFilmInfo(params.id, authReducer.user.id).then(data => {
+    if(user.id) {
+      MovieController.getUserFilmInfo(params.id, user.id).then(data => {
         setUserFilmInfo(data)
       })
     }
-  }, [params.id, authReducer.user.id])
+  }, [params.id, user.id])
 
   const router = useNavigate()
 
@@ -47,7 +47,7 @@ const FilmPage = () => {
 
   const addFavourite = async () => {
     try {
-      await MovieController.addFavourite(params.id, film.title, authReducer.user.id);
+      await MovieController.addFavourite(params.id, film.title, user.id);
       setUserFilmInfo(prev => ({...prev, isFavourite: true}));
     } catch (err) {
       console.log(err);
@@ -56,7 +56,7 @@ const FilmPage = () => {
 
   const removeFavourite = async () => {
     try {
-      await MovieController.removeFavourite(params.id, authReducer.user.id);
+      await MovieController.removeFavourite(params.id, user.id);
       setUserFilmInfo(prev => ({...prev, isFavourite: false}));
     } catch (err) {
       console.log(err);
@@ -65,7 +65,7 @@ const FilmPage = () => {
 
   const addLater = async () => {
     try {
-      await MovieController.addLater(params.id, film.title, authReducer.user.id);
+      await MovieController.addLater(params.id, film.title, user.id);
       setUserFilmInfo(prev => ({...prev, isLater: true}));
     } catch (err) {
       console.log(err);
@@ -74,7 +74,7 @@ const FilmPage = () => {
 
   const removeLater = async () => {
     try {
-      await MovieController.removeLater(params.id, authReducer.user.id);
+      await MovieController.removeLater(params.id, user.id);
       setUserFilmInfo(prev => ({...prev, isLater: false}));
     } catch (err) {
       console.log(err);
@@ -83,7 +83,7 @@ const FilmPage = () => {
 
   const rateFilm = async (rating) => {
     try {
-      await MovieController.addRated(params.id, rating, film.title, authReducer.user.id);
+      await MovieController.addRated(params.id, rating, film.title, user.id);
       setUserFilmInfo(prev => ({...prev, isRated: true, rating}));
     } catch (err) {
       console.log(err);
@@ -92,7 +92,7 @@ const FilmPage = () => {
 
   const unRateFilm = async () => {
     try {
-      await MovieController.removeRated(params.id, authReducer.user.id);
+      await MovieController.removeRated(params.id, user.id);
       setUserFilmInfo(prev => ({...prev, isRated: false, rating: null}));
     } catch (err) {
       console.log(err);
@@ -145,13 +145,13 @@ const FilmPage = () => {
                     {userFilmInfo?.isFavourite ?
                       <i onClick={removeFavourite} className="fas fa-heart"/>
                       :
-                      <i onClick={authReducer.isAuth ? addFavourite : redirectToLogin} className="far fa-heart"/>}
+                      <i onClick={user.isAuth ? addFavourite : redirectToLogin} className="far fa-heart"/>}
                   </button>
                   <button className='info__btn'>
                     {userFilmInfo?.isLater ?
                       <i onClick={removeLater} className="fas fa-bookmark"/>
                       :
-                      <i onClick={authReducer.isAuth ? addLater : redirectToLogin} className="far fa-bookmark"/>}
+                      <i onClick={user.isAuth ? addLater : redirectToLogin} className="far fa-bookmark"/>}
                   </button>
                 </div>
 
@@ -200,7 +200,7 @@ const FilmPage = () => {
               <div className="film__rating">
                 <h2>Film Rating</h2>
                 <div className="rating__row">
-                  <Rate avgRating={film.vote_average} action={authReducer.isAuth ? rateFilm : redirectToLogin}/>
+                  <Rate avgRating={film.vote_average} action={user.isAuth ? rateFilm : redirectToLogin}/>
                   <div className="rating__value">{film.vote_average}</div>
                 </div>
                 {userFilmInfo?.isRated ?

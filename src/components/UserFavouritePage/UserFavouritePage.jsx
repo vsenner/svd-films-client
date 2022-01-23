@@ -11,11 +11,13 @@ const UserFavouritePage = () => {
   const params = useParams();
 
   useEffect(() => {
-    (async () => {
-        setFilmList(await MovieController.getFavourite(params.id));
-        setUsername((await UserController.getUserInfo(params.id)).username);
-      }
-    )();
+    MovieController.getFavourite(params.id).then(list => {
+      setFilmList(list)
+    })
+
+    UserController.getUserInfo(params.id).then(user => {
+      setUsername(user.username)
+    })
   }, [params.id])
 
 

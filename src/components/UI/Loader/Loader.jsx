@@ -7,7 +7,6 @@ const Loader = () => {
       <div className="lds-hourglass">
       </div>
     </div>
-
   );
 };
 

@@ -42,7 +42,7 @@ const Navbar = () => {
 
   const router = useNavigate()
 
-  const authReducer = useSelector(state => state.authReducer);
+  const user = useSelector(state => state?.user);
 
   return (
     <div className='navbar'>
@@ -92,9 +92,9 @@ const Navbar = () => {
             </form>
           </div>
           <div className="navbar__profile">
-            <Link to={authReducer.isAuth ? `/user/${authReducer.user.id}` : '/login'} className='navbar__profile-link'>
-              {authReducer.isAuth ?
-                <img src={authReducer.user.photo} alt="user" className='navbar__profile-photo'/>
+            <Link to={user.isAuth ? `/user/${user.id}` : '/login'} className='navbar__profile-link'>
+              {user.isAuth ?
+                <img src={user.photo} alt="user" className='navbar__profile-photo'/>
                 :
                 <span className='navbar__profile-photo'>SIGN UP</span>}
             </Link>

@@ -19,9 +19,6 @@ const GenreList = () => {
     )
   }, [])
 
-  useEffect(() => {
-    console.log(selectedGenres)
-  }, [selectedGenres])
 
   function getGenreColumns() {
     let genreColumns = []

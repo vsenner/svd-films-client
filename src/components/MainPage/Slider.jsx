@@ -8,7 +8,6 @@ import ratingStar from "../../images/star.png"
 import {Link} from "react-router-dom";
 import TruncatedText from "../UI/TruncatedText/TruncatedText";
 import {getImage} from "../../UI/getImage";
-import {useSelector} from "react-redux";
 import Loader from "../UI/Loader/Loader";
 import TMDBMovieController from "../../controllers/tmdb-movie-controller";
 
@@ -16,19 +15,16 @@ SwiperCore.use([Navigation]);
 
 const Slider = () => {
   const [slides, setSlides] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     TMDBMovieController.getPopular().then(resp => {
-      console.log(resp)
       setSlides(resp.results.slice(0, 10))
-    });
+    }).finally(() => setLoading(false));
     // eslint-disable-next-line
   }, [localStorage.lang])
 
-  const isLoading = useSelector(store => store.authReducer.isLoading);
-  console.log(isLoading)
-
-  return isLoading ?
+  return loading ?
     <Loader/>
     :
     <Swiper navigation={true} className="mySwiper">

@@ -1,10 +1,12 @@
 import React from 'react';
-import {Route, Routes} from "react-router-dom";
-import {privateRoutes, publicRoutes} from "../../Router/Router";
+import {Route, Routes, Navigate} from "react-router-dom";
+import {privateRoutes, publicRoutes} from "../../routes";
+import {useSelector} from "react-redux";
 
 const Router = () => {
-  const isAuth = false
+  const isAuth = useSelector(state => state?.user.isAuth)
   const routeList = isAuth ? privateRoutes : publicRoutes
+
   return (
     <Routes>
       {routeList.map(route =>
@@ -13,11 +15,7 @@ const Router = () => {
           element={route.component}
           key={route.path}/>)
       }
-    {/*  {isAuth
-        ?<Redirect to={'/'}/>
-
-      : <Redirect to={'/login'}/>
-      }*/}
+      <Route path={'*'} element={<Navigate to={isAuth ? '/' : '/login'}/>}/>
     </Routes>
   );
 };

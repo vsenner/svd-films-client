@@ -11,11 +11,13 @@ const UserLaterPage = () => {
   const params = useParams();
 
   useEffect(() => {
-    (async () => {
-        setFilmList(await MovieController.getLater(params.id));
-        setUsername((await UserController.getUserInfo(params.id)).username);
-      }
-    )();
+    MovieController.getLater(params.id).then(list => {
+      setFilmList(list)
+    })
+
+    UserController.getUserInfo(params.id).then(user => {
+      setUsername(user.username)
+    })
   }, [params.id])
 
   return (

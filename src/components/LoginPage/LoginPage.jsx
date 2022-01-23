@@ -5,7 +5,6 @@ import AuthController from "../../controllers/auth-controller";
 import './LoginPage.scss'
 import {Link} from "react-router-dom";
 import {useNavigate} from "react-router";
-import {useSelector} from "react-redux";
 import Loader from "../UI/Loader/Loader";
 
 
@@ -13,23 +12,23 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null)
-
+  const [loading, setLoading] = useState(false)
 
   const router = useNavigate();
 
-  const login = async (e) => {
+  const login = (e) => {
     e.preventDefault();
-    try {
-      const user = await AuthController.login(email, password);
+    setLoading(true)
+    AuthController.login(email, password).then(user => {
       router(`/user/${user.id}`);
-    } catch (err) {
+    }).catch(err => {
       setError(err);
-    }
+    }).finally(() => {
+      setLoading(false)
+    })
   }
 
-  const authReducer = useSelector(store => store.authReducer);
-
-  if (authReducer.isLoading) {
+  if (loading) {
     return (
       <Loader/>
     )
@@ -37,16 +36,6 @@ const LoginPage = () => {
 
   return (
     <div className='login-page'>
-      {authReducer.isAuth ?
-        <div className="login">
-          <div className="login__title">
-            You are already authorized!
-          </div>
-          <div className="login__link">
-            <Link to={`/user/${authReducer.user.id}`}>Click here to return to the user page</Link>
-          </div>
-        </div>
-        :
         <form className="login">
           <h1 className='login__title'>Login</h1>
           <span className='login__label'>Email</span>
@@ -80,8 +69,7 @@ const LoginPage = () => {
               <Link to={'/signup'}>Sign up</Link>
             </div>
           </div>
-        </form>}
-
+        </form>
     </div>
   );
 };

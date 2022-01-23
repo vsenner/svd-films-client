@@ -9,19 +9,21 @@ import UserFavouritePage from "../components/UserFavouritePage/UserFavouritePage
 import UserRatedPage from "../components/UserRatedPage/UserRatedPage";
 import UserLaterPage from "../components/UserLaterPage/UserLaterPage";
 
-export const privateRoutes = [
-
-]
-
-export const publicRoutes = [
+const allAccessRoutes = [
   {path: '/' , component: <MainPage/>},
   {path: '/genres/:type' , component: <GenrePage/>},
   {path: '/genres/search/:query' , component: <GenrePage/>},
   {path: '/film/:id' , component: <FilmPage/>},
+]
+
+export const privateRoutes = [
   {path: '/user/:id' , component: <UserPage/>},
   {path: '/user/:id/favourites' , component: <UserFavouritePage/>},
   {path: '/user/:id/rated' , component: <UserRatedPage/>},
   {path: '/user/:id/later' , component: <UserLaterPage/>},
+].concat(allAccessRoutes)
+
+export const publicRoutes = [
   {path: '/login' , component:  <LoginPage/>},
   {path: '/signup' , component: <SignUpPage/>},
-]
+].concat(allAccessRoutes)

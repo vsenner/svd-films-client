@@ -19,15 +19,10 @@ const UserPage = () => {
   const params = useParams()
 
   useEffect(() => {
-    (async () => {
-      UserController.getUserInfo(params.id).then(userData => {
-        console.log(userData);
-        setUser(userData);
-        setUsernameInput(userData.username);
-      }).catch(err => console.log(err));
-
-    })();
-
+    UserController.getUserInfo(params.id).then(userData => {
+      setUser(userData);
+      setUsernameInput(userData.username);
+    }).catch(err => console.log('UserPage 25 - ', err));
   }, [params.id])
 
   const logout = async () => {
@@ -37,7 +32,7 @@ const UserPage = () => {
 
   const changeUsername = async (e) => {
     e.preventDefault();
-    if (photo.current.files.length) {
+    if (photo.current?.files.length) {
       if (photo.current.files[0].size > 2000000) {
         setError('Photo must be smaller than 2MB.')
         return;
@@ -50,7 +45,7 @@ const UserPage = () => {
         await UserController.changeUsername(usernameInput, params.id);
       } catch (err) {
         setError(err);
-        username.current.focus();
+        username.current?.focus();
         return;
       }
       setUser(prev => ({...prev, username: usernameInput}));
