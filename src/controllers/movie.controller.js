@@ -58,5 +58,83 @@ export default class MovieController {
     }
   }
 
+  static async getFavourite(id) {
+    try {
+      return await MovieService.getFavourite(id);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async addFavourite(filmId, title) {
+    try {
+      return await MovieService.addFavourite(filmId, title);
+    } catch (err) {
+      throw err;
+    }
+  }
+  static async removeFavourite(filmId) {
+    try {
+      return await MovieService.removeFavourite(filmId);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getLater(id) {
+    try {
+      return await MovieService.getLater(id);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async addLater(filmId, title) {
+    try {
+      return await MovieService.addLater(filmId, title);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async removeLater(filmId) {
+    try {
+      return await MovieService.removeLater(filmId);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getRated(userId) {
+    try {
+      return await MovieService.getRated(userId);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async addRated(filmId, rating, title) {
+    try {
+      return await MovieService.addRated(filmId, rating, title);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async removeRated(filmId) {
+    try {
+      return await MovieService.removeRated(filmId);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getUserFilmInfo(filmId) {
+    try {
+      return await MovieService.getUserFilmInfo(filmId);
+    } catch (err) {
+      throw err;
+    }
+  }
 
 }

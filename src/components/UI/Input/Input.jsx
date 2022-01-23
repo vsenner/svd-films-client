@@ -1,14 +1,16 @@
 import React from 'react';
 import './Input.scss'
 
-const Input = (props) => {
-
-    return (
-        <input
-            {...props}
-            onChange={e => props.setValue(e.target.value)}
-        />
-    );
+const Input = ({setValue, className, ...props}) => {
+  const classNames = [className] || [];
+  classNames.push('Input');
+  return (
+    <input
+      className={classNames.join(' ')}
+      {...props}
+      onChange={e => setValue(e.target.value)}
+    />
+  );
 };
 
 export default Input;

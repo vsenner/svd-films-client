@@ -11,6 +11,7 @@ const LanguageDropDown = () => {
   const selectedLang = useMemo(() => {
       const clientLanguage = localStorage.getItem('lang');
       return languages.find(lang => lang.shortname === clientLanguage) ? clientLanguage : 'EN'
+    // eslint-disable-next-line
     }, [localStorage.lang])
   const [showDropDown, setShowDropDown] = useState(false)
 
@@ -27,7 +28,7 @@ const LanguageDropDown = () => {
          onClick={() => setShowDropDown(!showDropDown)}
          style={{background: showDropDown ? '#fff' : 'transparent'}}
     >
-      <span className="lang__selected" style={{color: showDropDown ? 'orange' : 'gray'}}>
+      <span className="lang__selected" style={{color: showDropDown ? 'orange' : 'white'}}>
         {selectedLang.toUpperCase()}
       </span>
       {showDropDown ?

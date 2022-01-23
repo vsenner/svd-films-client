@@ -11,7 +11,6 @@ const Router = () => {
         <Route
           path={route.path}
           element={route.component}
-          exact={route.exact}
           key={route.path}/>)
       }
     {/*  {isAuth

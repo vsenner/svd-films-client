@@ -6,6 +6,8 @@ import TruncatedText from "../UI/TruncatedText/TruncatedText";
 import ActorList from "./ActorList/ActorList";
 import Rate from "../UI/Rate/Rate";
 import {getImage} from "../../UI/getImage";
+import {useSelector} from "react-redux";
+import {useNavigate} from "react-router";
 
 const minsToHours = (mins) => `${Math.floor(mins / 60)}h ${mins % 60}m`;
 
@@ -14,20 +16,87 @@ const FilmPage = () => {
   const [film, setFilm] = useState(null);
   const [actors, setActors] = useState(null)
   const [director, setDirector] = useState(null)
+  const [userFilmInfo, setUserFilmInfo] = useState(null);
+
+  const authReducer = useSelector(state => state.authReducer)
 
   useEffect(() => {
     MovieController.getById(params.id).then((film) => {
       setFilm(film);
-      console.log(film)
     })
     MovieController.getActorsById(params.id).then((actors) => {
       setActors(actors)
     })
-
     MovieController.getMovieDirectorById(params.id).then((director) => {
       setDirector(director)
     })
   }, [params.id])
+
+  useEffect(() => {
+    if(authReducer.isAuth) {
+      MovieController.getUserFilmInfo(params.id).then(data => {
+        setUserFilmInfo(data)
+      })
+    }
+  }, [params.id, authReducer.isAuth])
+
+  const router = useNavigate()
+
+  const redirectToLogin = () => router('/login');
+
+  const addFavourite = async () => {
+    try {
+      await MovieController.addFavourite(params.id, film.title);
+      setUserFilmInfo(prev => ({...prev, isFavourite: true}));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const removeFavourite = async () => {
+    try {
+      await MovieController.removeFavourite(params.id);
+      setUserFilmInfo(prev => ({...prev, isFavourite: false}));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const addLater = async () => {
+    try {
+      await MovieController.addLater(params.id, film.title);
+      setUserFilmInfo(prev => ({...prev, isLater: true}));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const removeLater = async () => {
+    try {
+      await MovieController.removeLater(params.id);
+      setUserFilmInfo(prev => ({...prev, isLater: false}));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const rateFilm = async (rating) => {
+    try {
+      await MovieController.addRated(params.id, rating, film.title);
+      setUserFilmInfo(prev => ({...prev, isRated: true, rating}));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const unRateFilm = async (rating) => {
+    try {
+      await MovieController.removeRated(params.id, rating);
+      setUserFilmInfo(prev => ({...prev, isRated: false, rating: null}));
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <div className='film-page'>
@@ -69,6 +138,22 @@ const FilmPage = () => {
                     </div>
                   </div>
                 </div>
+
+                <div className="info__row">
+                  <button className='info__btn'>
+                    {userFilmInfo?.isFavourite ?
+                      <i onClick={removeFavourite} className="fas fa-heart"/>
+                      :
+                      <i onClick={authReducer.isAuth ? addFavourite : redirectToLogin} className="far fa-heart"/>}
+                  </button>
+                  <button className='info__btn'>
+                    {userFilmInfo?.isLater ?
+                      <i onClick={removeLater} className="fas fa-bookmark"/>
+                      :
+                      <i onClick={authReducer.isAuth ? addLater : redirectToLogin} className="far fa-bookmark"/>}
+                  </button>
+                </div>
+
                 <div className="info__main">
                   <div className="info__row">
                     <span>Production year</span> {film.release_date.split('-')[0]}
@@ -102,23 +187,35 @@ const FilmPage = () => {
                 </div>
               </div>
             </div>
+
             <div className="film__bottom">
+              {actors ? <ActorList actors={actors.slice(0, 5)} className='film__actors'/> : ''}
               {film.overview ?
                 <div className="film__description">
                   <h2>Overview</h2>
                   <TruncatedText str={film.overview} n={300}/>
                 </div>
                 : ''}
-              {actors ? <ActorList actors={actors.slice(0, 5)} className='film__actors'/> : ''}
               <div className="film__rating">
                 <h2>Film Rating</h2>
                 <div className="rating__row">
-                  <Rate avgRating={film.vote_average}/>
+                  <Rate avgRating={film.vote_average} action={authReducer.isAuth ? rateFilm : redirectToLogin}/>
                   <div className="rating__value">{film.vote_average}</div>
                 </div>
+                {userFilmInfo?.isRated ?
+                  <div className="rating__mine">
+                    My rating
+                    <span style={{background: userFilmInfo.rating < 5 ? 'red' : 'green'}}>{userFilmInfo.rating}</span>
+                    <button
+                      onClick={unRateFilm}
+                      className="rating__remove"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                  : null}
               </div>
             </div>
-
           </div>
           :
           ''}
