@@ -1,22 +1,23 @@
 import $api from "../API/api";
 import axios from "axios";
 
+const BASE_PATH = '/unauthorized/user';
+
 export default class AuthService {
   static async login(email, password) {
-    return (await $api.post('/login', {email, password})).data;
+    return (await $api.post(`${BASE_PATH}/login`, {email, password})).data;
   }
 
   static async registration(email, password) {
-    return (await $api.post('/registration', {email, password})).data;
+    return (await $api.post(`${BASE_PATH}/registration`, {email, password})).data;
   }
 
   static async logout() {
-    return (await $api.post('/logout')).data;
+    return (await $api.post(`${BASE_PATH}/logout`)).data;
   }
 
-  static async checkAuth() {
-    const API_URL = 'https://svd-films-server.herokuapp.com/api'
-    return (await axios.get(`${API_URL}/refresh`, {withCredentials: true})).data;
+  static async refresh() {
+    return (await axios.get(`${process.env.REACT_APP_SERVER_URL}/${BASE_PATH}/refresh`, {withCredentials: true})).data;
   }
 
 }

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import MovieController from "../../controllers/movie.controller";
+import MovieController from "../../controllers/movie-controller";
 import UserFilmList from "../UserPage/UserFilmList/UserFilmList";
 import UserController from "../../controllers/user-controller";
 

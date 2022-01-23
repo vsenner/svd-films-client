@@ -5,14 +5,11 @@ import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import authStore from "./store/index";
 
-
 ReactDOM.render(
-  <React.StrictMode>
     <BrowserRouter>
       <Provider store={authStore}>
         <App />
       </Provider>
-    </BrowserRouter>
-  </React.StrictMode>,
+    </BrowserRouter>,
   document.getElementById('root')
 );

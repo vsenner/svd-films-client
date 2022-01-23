@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {Swiper} from "swiper/react/swiper";
-import MovieController from "../../controllers/movie.controller";
 import "swiper/swiper-bundle.css";
 import {Navigation} from "swiper";
 import SwiperCore from "swiper";
@@ -11,6 +10,7 @@ import TruncatedText from "../UI/TruncatedText/TruncatedText";
 import {getImage} from "../../UI/getImage";
 import {useSelector} from "react-redux";
 import Loader from "../UI/Loader/Loader";
+import TMDBMovieController from "../../controllers/tmdb-movie-controller";
 
 SwiperCore.use([Navigation]);
 
@@ -18,7 +18,7 @@ const Slider = () => {
   const [slides, setSlides] = useState([])
 
   useEffect(() => {
-    MovieController.getPopular().then(resp => {
+    TMDBMovieController.getPopular().then(resp => {
       console.log(resp)
       setSlides(resp.results.slice(0, 10))
     });

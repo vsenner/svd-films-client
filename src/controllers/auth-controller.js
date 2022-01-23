@@ -46,10 +46,10 @@ export default class AuthController {
     }
   }
 
-  static async checkAuth() {
+  static async refresh() {
     store.dispatch({type: 'CHANGE_LOADING', payload: true});
     try {
-      const data = await AuthService.checkAuth();
+      const data = await AuthService.refresh();
       localStorage.setItem('token', data.accessToken);
       store.dispatch({type: 'CHANGE_AUTH', payload: true})
       store.dispatch({type: 'CHANGE_USER', payload: data.user})

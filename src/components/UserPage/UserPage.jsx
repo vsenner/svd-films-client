@@ -42,11 +42,12 @@ const UserPage = () => {
         setError('Photo must be smaller than 2MB.')
         return;
       }
-      await UserController.changeUserImage(photo.current.files[0]);
+      await UserController.changeUserImage(photo.current.files[0], params.id);
     }
+
     if (usernameInput !== user.username) {
       try {
-        await UserController.changeUsername(usernameInput);
+        await UserController.changeUsername(usernameInput, params.id);
       } catch (err) {
         setError(err);
         username.current.focus();
@@ -54,6 +55,7 @@ const UserPage = () => {
       }
       setUser(prev => ({...prev, username: usernameInput}));
     }
+
     if (error) {
       setError(null);
     }

@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import './GenreList.scss'
 import GenreColumn from "./GenreColumn/GenreColumn";
-import MovieController from "../../../controllers/movie.controller";
 import useWindowDimensions from "../../../hooks/useWindowDimensions";
 import Button from "../../UI/Button/Button";
+import TMDBMovieController from "../../../controllers/tmdb-movie-controller";
 
 const GenreList = () => {
   const [genres, setGenres] = useState([]);
@@ -12,7 +12,7 @@ const GenreList = () => {
   const {width} = useWindowDimensions();
 
   useEffect(() => {
-    MovieController.getAllGenres().then(data => {
+    TMDBMovieController.getAllGenres().then(data => {
         setGenres(data.genres)
         setGenresInColumn(Math.ceil(data.genres.length / 3));
       }

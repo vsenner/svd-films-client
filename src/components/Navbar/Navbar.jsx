@@ -3,12 +3,12 @@ import './Navbar.scss'
 import {Link} from "react-router-dom";
 import logo from "../../images/icons8-film-64.png"
 import debounce from "debounce";
-import MovieController from "../../controllers/movie.controller";
 import NavbarFilmList from "./NavbarFilmList";
 import {useNavigate} from "react-router";
 import LanguageDropDown from "./LanguageDropDown/LanguageDropDown";
 import searchIcon from '../../images/search.svg'
 import {useSelector} from "react-redux";
+import TMDBMovieController from "../../controllers/tmdb-movie-controller";
 
 
 const Navbar = () => {
@@ -23,7 +23,7 @@ const Navbar = () => {
 
   useEffect(() => {
     if (searchQuery.length > 1) {
-      MovieController.search(searchQuery).then(data => {
+      TMDBMovieController.search(searchQuery).then(data => {
         setFilms(data)
       })
     } else {
