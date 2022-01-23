@@ -10,10 +10,9 @@ export default class UserController {
     }
   }
 
-  static async changeUsername(username, userId) {
+  static async changeUsername(username, user_id) {
     try {
-      const data = await UserService.changeUsername(username, userId);
-      return data.username;
+      return (await UserService.changeUsername(username, user_id)).username;
     } catch (err) {
       throw err;
     }

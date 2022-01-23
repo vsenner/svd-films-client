@@ -4,8 +4,8 @@ import Navbar from "./Navbar/Navbar";
 import {useEffect} from "react";
 import AuthController from "../controllers/auth-controller";
 
-
 function App() {
+
   useEffect(() => {
     if(!localStorage.getItem('lang')) {
       localStorage.setItem('lang', navigator.language.split('-')[0].toLowerCase());

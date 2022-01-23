@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './FilmPage.scss'
-import MovieController from "../../controllers/movie.controller";
+import MovieController from "../../controllers/movie-controller";
 import {useParams} from "react-router-dom";
 import TruncatedText from "../UI/TruncatedText/TruncatedText";
 import ActorList from "./ActorList/ActorList";
@@ -8,6 +8,7 @@ import Rate from "../UI/Rate/Rate";
 import {getImage} from "../../UI/getImage";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router";
+import TMDBMovieController from "../../controllers/tmdb-movie-controller";
 
 const minsToHours = (mins) => `${Math.floor(mins / 60)}h ${mins % 60}m`;
 
@@ -21,13 +22,13 @@ const FilmPage = () => {
   const authReducer = useSelector(state => state.authReducer)
 
   useEffect(() => {
-    MovieController.getById(params.id).then((film) => {
+    TMDBMovieController.getById(params.id).then((film) => {
       setFilm(film);
     })
-    MovieController.getActorsById(params.id).then((actors) => {
+    TMDBMovieController.getActorsById(params.id).then((actors) => {
       setActors(actors)
     })
-    MovieController.getMovieDirectorById(params.id).then((director) => {
+    TMDBMovieController.getMovieDirectorById(params.id).then((director) => {
       setDirector(director)
     })
   }, [params.id])
@@ -89,9 +90,9 @@ const FilmPage = () => {
     }
   }
 
-  const unRateFilm = async (rating) => {
+  const unRateFilm = async () => {
     try {
-      await MovieController.removeRated(params.id, rating, authReducer.user.id);
+      await MovieController.removeRated(params.id, authReducer.user.id);
       setUserFilmInfo(prev => ({...prev, isRated: false, rating: null}));
     } catch (err) {
       console.log(err);
