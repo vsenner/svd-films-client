@@ -5,7 +5,7 @@ const BASE_PATH = 'authorized/user'
 export default class UserService {
   static async getUserInfo(userId) {
     try {
-      return (await $api.get(`${BASE_PATH}/info/user/${userId}`)).data
+      return (await $api.get(`${BASE_PATH}/info/${userId}`)).data
     } catch (err) {
       throw err;
     }
