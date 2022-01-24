@@ -22,9 +22,8 @@ const LoginPage = () => {
     AuthController.login(email, password).then(user => {
       router(`/user/${user.id}`);
     }).catch(err => {
-      setError(err);
-    }).finally(() => {
       setLoading(false)
+      setError(err);
     })
   }
 
