@@ -10,6 +10,7 @@ import searchIcon from '../../images/search.svg'
 import {useSelector} from "react-redux";
 import TMDBMovieController from "../../controllers/tmdb-movie-controller";
 
+const placeholderURL = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=';
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -32,12 +33,17 @@ const Navbar = () => {
   }, [searchQuery])
 
   useEffect(() => {
-    document.addEventListener('click', (e) => {
-      if (!e.target.className.includes('navbar__film-list') && !e.target.className.includes('navbar__input')) {
+    const closeSearch = e => {
+      if (!e.target?.className?.includes('navbar__film-list') && !e.target?.className?.includes('navbar__input')) {
         setActiveSearch(false);
       }
+    }
 
-    })
+    document.addEventListener('click', e => closeSearch(e));
+
+    return () => {
+      document.removeEventListener('click', e => closeSearch(e))
+    }
   }, [])
 
   const router = useNavigate()
@@ -94,9 +100,12 @@ const Navbar = () => {
           <div className="navbar__profile">
             <Link to={user.isAuth ? `/user/${user.id}` : '/login'} className='navbar__profile-link'>
               {user.isAuth ?
-                <img src={user.photo} alt="user" className='navbar__profile-photo'/>
+                <img src={user.compressedImage ?
+                  `data:image/png;base64,${user.compressedImage}` : placeholderURL}
+                     alt="user"
+                     className='navbar__profile-photo'/>
                 :
-                <span className='navbar__profile-photo'>SIGN UP</span>}
+                <span className='navbar__profile-placeholder'>SIGN UP</span>}
             </Link>
           </div>
         </div>

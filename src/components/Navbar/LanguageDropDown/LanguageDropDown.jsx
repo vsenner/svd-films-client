@@ -16,11 +16,17 @@ const LanguageDropDown = () => {
   const [showDropDown, setShowDropDown] = useState(false)
 
   useEffect(() => {
-    document.addEventListener('click', (e) => {
-      if (!e.target.className.includes('lang')) {
+    const closeDropDown = e => {
+      if (!e.target?.className?.includes('lang')) {
         setShowDropDown(false);
       }
-    })
+    }
+
+    document.addEventListener('click', e => closeDropDown(e));
+
+    return () => {
+      document.removeEventListener('click', e => closeDropDown(e));
+    }
   }, [])
 
   return (

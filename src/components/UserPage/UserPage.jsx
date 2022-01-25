@@ -5,6 +5,7 @@ import AuthController from "../../controllers/auth-controller";
 import {useNavigate} from "react-router";
 import {Link, useParams} from "react-router-dom";
 import UserController from "../../controllers/user-controller";
+import {useDispatch} from "react-redux";
 
 
 const placeholderURL = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=';
@@ -28,7 +29,9 @@ const UserPage = () => {
     }).catch(err => console.log('UserPage 25 - ', err));
 
     UserController.getUserImage(params.id).then(img => {
-      setImage(`${BASE64}, ${img}`);
+      if(img) {
+        setImage(`${BASE64}, ${img}`);
+      }
     })
   }, [params.id])
 
@@ -36,6 +39,8 @@ const UserPage = () => {
     await AuthController.logout();
     router('/');
   }
+
+  const dispatch = useDispatch();
 
   const changeUsername = async (e) => {
     e.preventDefault();
@@ -46,7 +51,10 @@ const UserPage = () => {
       }
       await UserController.changeUserImage(photo.current.files[0], params.id);
       UserController.getUserImage(params.id).then(img => {
-        setImage(`${BASE64}, ${img}`);
+        if(img) {
+          setImage(`${BASE64}, ${img}`);
+          dispatch({type: 'CHANGE_USER', payload: {compressedImage: img}})
+        }
       })
     }
 

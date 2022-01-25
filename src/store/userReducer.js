@@ -2,7 +2,8 @@ const defaultState = {
   id: null,
   email: '',
   username: '',
-  isActivate: '',
+  compressedImage: '',
+  isActivated: '',
   isAuth: false,
 };
 
