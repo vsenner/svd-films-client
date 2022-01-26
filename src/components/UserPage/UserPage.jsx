@@ -29,9 +29,7 @@ const UserPage = () => {
     }).catch(err => console.log('UserPage 25 - ', err));
 
     UserController.getUserImage(params.id).then(img => {
-      if(img) {
-        setImage(`${BASE64}, ${img}`);
-      }
+      setImage(img ? `${BASE64}, ${img}` : null);
     })
   }, [params.id])
 
@@ -51,10 +49,8 @@ const UserPage = () => {
       }
       await UserController.changeUserImage(photo.current.files[0], params.id);
       UserController.getUserImage(params.id).then(img => {
-        if(img) {
-          setImage(`${BASE64}, ${img}`);
-          dispatch({type: 'CHANGE_USER', payload: {compressedImage: img}})
-        }
+        setImage(img ? `${BASE64}, ${img}` : placeholderURL);
+        dispatch({type: 'CHANGE_USER', payload: {compressedImage: img}})
       })
     }
 
@@ -79,7 +75,6 @@ const UserPage = () => {
   const photo = useRef();
 
 
-
   return (
     <div className='user-page'>
       <div className="container">
@@ -96,11 +91,11 @@ const UserPage = () => {
               />
               {editing ?
                 <label htmlFor='user__file' className={`user__img ${editing ? 'editing' : ''}`}>
-                  <img src={image || placeholderURL} alt=""/>
+                  <img src={image} alt=""/>
                 </label>
                 :
                 <div className={`user__img ${editing ? 'editing' : ''}`}>
-                  <img src={image || placeholderURL} alt=""/>
+                  <img src={image} alt=""/>
                 </div>
               }
               <div className="user__info">
