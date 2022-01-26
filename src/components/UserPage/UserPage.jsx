@@ -5,15 +5,19 @@ import AuthController from "../../controllers/auth-controller";
 import {useNavigate} from "react-router";
 import {Link, useParams} from "react-router-dom";
 import UserController from "../../controllers/user-controller";
+import {useDispatch} from "react-redux";
 
 
-const placeholderURL = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0='
+const placeholderURL = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=';
+
+const BASE64 = 'data:image/jpg;base64'
 
 const UserPage = () => {
   const [user, setUser] = useState({})
   const [editing, setEditing] = useState(false)
   const [usernameInput, setUsernameInput] = useState(null);
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
+  const [image, setImage] = useState('')
 
   const router = useNavigate()
   const params = useParams()
@@ -23,12 +27,20 @@ const UserPage = () => {
       setUser(userData);
       setUsernameInput(userData.username);
     }).catch(err => console.log('UserPage 25 - ', err));
+
+    UserController.getUserImage(params.id).then(img => {
+      if(img) {
+        setImage(`${BASE64}, ${img}`);
+      }
+    })
   }, [params.id])
 
   const logout = async () => {
     await AuthController.logout();
     router('/');
   }
+
+  const dispatch = useDispatch();
 
   const changeUsername = async (e) => {
     e.preventDefault();
@@ -38,6 +50,12 @@ const UserPage = () => {
         return;
       }
       await UserController.changeUserImage(photo.current.files[0], params.id);
+      UserController.getUserImage(params.id).then(img => {
+        if(img) {
+          setImage(`${BASE64}, ${img}`);
+          dispatch({type: 'CHANGE_USER', payload: {compressedImage: img}})
+        }
+      })
     }
 
     if (usernameInput !== user.username) {
@@ -78,11 +96,11 @@ const UserPage = () => {
               />
               {editing ?
                 <label htmlFor='user__file' className={`user__img ${editing ? 'editing' : ''}`}>
-                  <img src={user?.image || placeholderURL} alt=""/>
+                  <img src={image || placeholderURL} alt=""/>
                 </label>
                 :
                 <div className={`user__img ${editing ? 'editing' : ''}`}>
-                  <img src={user?.image || placeholderURL} alt=""/>
+                  <img src={image || placeholderURL} alt=""/>
                 </div>
               }
               <div className="user__info">
