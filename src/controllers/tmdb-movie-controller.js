@@ -57,4 +57,33 @@ export default class TMDBMovieController {
       throw err;
     }
   }
+
+  static async getTVSeries() {
+    try {
+      const TVs = (await TMDBMovieService.getTVs()).results;
+      return TVs.filter(TV => TV.genre_ids.findIndex(id => id === (10764 || 10763 || 10767)) === -1)
+    } catch (err) {
+      throw err
+    }
+  }
+
+  static async getTVShows(){
+    try{
+      const TVs = (await TMDBMovieService.getTVs()).results;
+      return TVs.filter(TV => TV.genre_ids.findIndex(id => id === (10764 || 10763 || 10767)) !== -1)
+    } catch(err){
+      throw err
+    }
+  }
+
+  static async getCartoons(){
+    try{
+      const cartoons = (await TMDBMovieService.getPopular()).results;
+      return cartoons.filter(cartoon => (cartoon.genre_ids.findIndex(id => id === 16)) !== -1)
+
+    } catch (err) {
+      throw err
+    }
+  }
+
 }

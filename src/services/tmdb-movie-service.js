@@ -20,4 +20,12 @@ export default class TMDBMovieService {
   static async getCreditsById(id) {
     return (await instance.get(`/movie/${id}/credits`)).data
   }
+
+  static async getTVs() {
+    try {
+      return (await instance.get(`/tv/popular`)).data
+    } catch (err) {
+      throw new Error('Server Error!')
+    }
+  }
 }

@@ -1,15 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import './GenreList.scss'
+import './GenreList.scss';
 import GenreColumn from "./GenreColumn/GenreColumn";
 import useWindowDimensions from "../../../hooks/useWindowDimensions";
 import Button from "../../UI/Button/Button";
 import TMDBMovieController from "../../../controllers/tmdb-movie-controller";
+import {useParams} from "react-router";
+import {useDispatch} from "react-redux";
 
 const GenreList = () => {
   const [genres, setGenres] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([])
   const [genresInColumn, setGenresInColumn] = useState(0)
   const {width} = useWindowDimensions();
+
+  const page = useParams()
+
+  useEffect(()=>{
+    clearSelectedGenres();
+    }, [page])
 
   useEffect(() => {
     TMDBMovieController.getAllGenres().then(data => {
@@ -28,6 +36,13 @@ const GenreList = () => {
     return genreColumns
   }
 
+  const clearSelectedGenres = () => {
+    setClear(!clear)
+    setSelectedGenres([])
+  }
+
+  const dispatch = useDispatch()
+
   return genres && genresInColumn ? (
     <div className="genre-list">
       <div className="container">
@@ -45,9 +60,14 @@ const GenreList = () => {
               />
             </div>
           }
-          <Button>
-            Submit
-          </Button>
+          <div className='genre-list__bottom'>
+            <Button onClick={() => dispatch({type: 'CHANGE_GENRES', payload: selectedGenres})}>
+              Submit
+            </Button>
+            <Button onClick={clearSelectedGenres}>
+              Clear
+            </Button>
+          </div>
         </div>
       </div>
     </div>
