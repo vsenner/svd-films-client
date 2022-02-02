@@ -1,9 +1,18 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './GenreItem.scss'
 
-const GenreItem = ({genre, selectedGenres, setSelectedGenres}) => {
+const GenreItem = ({genre, selectedGenres, setSelectedGenres, clear}) => {
   const [yes, setYes] = useState(false)
   const [no, setNo] = useState(false)
+
+  useEffect(() => {
+    setYes(false)
+    setNo(false)
+  },[clear])
+
+  const unselectToggle = (id) => {
+    setSelectedGenres(...[selectedGenres.filter((el) => el.id !== id)])
+  }
 
   const checkGenre = () => {
     return selectedGenres.findIndex(obj => obj.id === genre.id)
@@ -15,12 +24,12 @@ const GenreItem = ({genre, selectedGenres, setSelectedGenres}) => {
     setSelectedGenres(arr)
   }
 
-  const enableGenre = () => {
+  const changeGenres = (value) => {
     const index = checkGenre();
     if(index > -1) {
-      changeGenres(index, true)
+      addGenre(index, value)
     }else {
-      setSelectedGenres([...selectedGenres, {...genre, select: true}])
+      setSelectedGenres([...selectedGenres, {name: genre.name, id: genre.id, select: value}])
     }
   }
 

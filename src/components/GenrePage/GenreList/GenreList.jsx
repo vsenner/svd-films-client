@@ -11,6 +11,7 @@ const GenreList = () => {
   const [genres, setGenres] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([])
   const [genresInColumn, setGenresInColumn] = useState(0)
+  const [clear, setClear] = useState(false)
   const {width} = useWindowDimensions();
 
   const page = useParams()
@@ -27,13 +28,16 @@ const GenreList = () => {
     )
   }, [])
 
-
-  function getGenreColumns() {
-    let genreColumns = []
-    for(let i = 0; i < 3; i++) {
-      genreColumns.push(<GenreColumn genres={genres.slice(genresInColumn*i, genresInColumn*(i+1))} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} key={i}/>)
-    }
-    return genreColumns
+  function getGenreColumns(count) {
+    return [...new Array(count)]
+        .map((_, i) =>
+            <GenreColumn
+            genres={genres.slice(genresInColumn*i, genresInColumn*(i+1))}
+            selectedGenres={selectedGenres}
+            clear={clear}
+            setSelectedGenres={setSelectedGenres}
+            key={i}
+        />)
   }
 
   const clearSelectedGenres = () => {
@@ -49,7 +53,7 @@ const GenreList = () => {
         <div className="genre-list__flex">
           {width > 700 ?
             <div className="genre-list__row">
-              {genresInColumn ? getGenreColumns() : null}
+              {genresInColumn ? getGenreColumns(3) : null}
             </div>
             :
             <div className="genre-list__row">
@@ -57,6 +61,7 @@ const GenreList = () => {
                 genres={genres}
                 selectedGenres={selectedGenres}
                 setSelectedGenres={setSelectedGenres}
+                clear={clear}
               />
             </div>
           }
