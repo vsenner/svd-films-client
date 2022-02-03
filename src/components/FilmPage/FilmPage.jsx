@@ -47,7 +47,7 @@ const FilmPage = () => {
 
   const addFavourite = async () => {
     try {
-      await MovieController.addFavourite(params.id, film.title, user.id);
+      await MovieController.addFavourite(params.id, user.id);
       setUserFilmInfo(prev => ({...prev, isFavourite: true}));
     } catch (err) {
       console.log(err);
@@ -65,7 +65,7 @@ const FilmPage = () => {
 
   const addLater = async () => {
     try {
-      await MovieController.addLater(params.id, film.title, user.id);
+      await MovieController.addLater(params.id, user.id);
       setUserFilmInfo(prev => ({...prev, isLater: true}));
     } catch (err) {
       console.log(err);
@@ -83,7 +83,7 @@ const FilmPage = () => {
 
   const rateFilm = async (rating) => {
     try {
-      await MovieController.addRated(params.id, rating, film.title, user.id);
+      await MovieController.addRated(params.id, rating, user.id);
       setUserFilmInfo(prev => ({...prev, isRated: true, rating}));
     } catch (err) {
       console.log(err);
