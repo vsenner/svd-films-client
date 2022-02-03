@@ -4,7 +4,7 @@ const defaultState = {
   username: '',
   compressedImage: '',
   isActivated: '',
-  isAuth: false,
+  isAuth: null,
 };
 
 const userReducer = (state = defaultState, {type, payload}) => {
