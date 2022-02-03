@@ -1,17 +1,28 @@
 import MovieService from "../services/movie-service";
+import TMDBMovieService from "../services/tmdb-movie-service";
 
 export default class MovieController {
   static async getFavourite(user_id) {
     try {
-      return await MovieService.getFavourite(user_id);
+      const addedFilms = await MovieService.getFavourite(user_id);
+      const detailedAddedFilms = addedFilms.map(film => TMDBMovieService.getById(film.id));
+      const films = await Promise.all(detailedAddedFilms);
+      return films.map((film, index) => {
+        return {
+          ...addedFilms[index],
+          title: film.title,
+          year: film.release_date,
+          rating: film.vote_average
+        }
+      })
     } catch (err) {
       throw err;
     }
   }
 
-  static async addFavourite(film_id, title, user_id) {
+  static async addFavourite(film_id, user_id) {
     try {
-      return await MovieService.addFavourite(film_id, title, user_id);
+      return await MovieService.addFavourite(film_id, user_id);
     } catch (err) {
       throw err;
     }
@@ -26,15 +37,25 @@ export default class MovieController {
 
   static async getLater(user_id) {
     try {
-      return await MovieService.getLater(user_id);
+      const addedFilms = await MovieService.getLater(user_id);
+      const detailedAddedFilms = addedFilms.map(film => TMDBMovieService.getById(film.id));
+      const films = await Promise.all(detailedAddedFilms);
+      return films.map((film, index) => {
+        return {
+          ...addedFilms[index],
+          title: film.title,
+          year: film.release_date,
+          rating: film.vote_average
+        }
+      })
     } catch (err) {
       throw err;
     }
   }
 
-  static async addLater(film_id, title, user_id) {
+  static async addLater(film_id, user_id) {
     try {
-      return await MovieService.addLater(film_id, title, user_id);
+      return await MovieService.addLater(film_id, user_id);
     } catch (err) {
       throw err;
     }
@@ -50,15 +71,25 @@ export default class MovieController {
 
   static async getRated(user_id) {
     try {
-      return await MovieService.getRated(user_id);
+      const addedFilms = await MovieService.getRated(user_id);
+      const detailedAddedFilms = addedFilms.map(film => TMDBMovieService.getById(film.id));
+      const films = await Promise.all(detailedAddedFilms);
+      return films.map((film, index) => {
+        return {
+          ...addedFilms[index],
+          title: film.title,
+          year: film.release_date,
+          rating: film.vote_average
+        }
+      })
     } catch (err) {
       throw err;
     }
   }
 
-  static async addRated(film_id, rating, title, user_id) {
+  static async addRated(film_id, rating, user_id) {
     try {
-      return await MovieService.addRated(film_id, rating, title, user_id);
+      return await MovieService.addRated(film_id, rating, user_id);
     } catch (err) {
       throw err;
     }

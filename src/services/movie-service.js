@@ -8,8 +8,8 @@ export default class MovieService {
     return (await $api.get(`${BASE_PATH}/${user_id}/favourite`, {params: {limit, page}})).data;
   }
 
-  static async addFavourite(film_id, title, user_id) {
-    return (await $api.post(`${BASE_PATH}/favourite/add`, {film_id, title, user_id})).data;
+  static async addFavourite(film_id, user_id) {
+    return (await $api.post(`${BASE_PATH}/favourite/add`, {film_id, user_id})).data;
   }
 
   static async removeFavourite(film_id, user_id) {
@@ -20,8 +20,8 @@ export default class MovieService {
     return (await $api.get(`${BASE_PATH}/${user_id}/later`, {params: {limit, page}})).data;
   }
 
-  static async addLater(film_id, title, user_id) {
-    return (await $api.post(`${BASE_PATH}/later/add`, {film_id, title, user_id})).data;
+  static async addLater(film_id, user_id) {
+    return (await $api.post(`${BASE_PATH}/later/add`, {film_id, user_id})).data;
   }
 
   static async removeLater(film_id, user_id) {
@@ -32,8 +32,8 @@ export default class MovieService {
     return (await $api.get(`${BASE_PATH}/${user_id}/rated`, {params: {limit, page}})).data;
   }
 
-  static async addRated(film_id, rating, title, user_id) {
-    return (await $api.post(`${BASE_PATH}/rated/add`, {film_id, rating, title, user_id})).data;
+  static async addRated(film_id, rating, user_id) {
+    return (await $api.post(`${BASE_PATH}/rated/add`, {film_id, rating, user_id})).data;
   }
 
   static async removeRated(film_id, user_id) {
