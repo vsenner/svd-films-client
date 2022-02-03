@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 
 const UserFilm = ({film, num, id}) => {
   const filmTime = new Date(film.time);
-  const year = film.year?.split('-')[0];
+  const year = (new Date(film.year)).getFullYear();
   return (
       <Link to={`/film/${id}`} className='film-list__item'>
         <div className='film-list__number'>{num}</div>
