@@ -37,7 +37,6 @@ const FilmList = () => {
   useEffect(()=>{
     if (selectedGenres.length){
       TMDBMovieController.getWithGenres(selectedGenres).then((data)=>{
-            console.log(data)
             setFilmList(data.results)
           }
       )
