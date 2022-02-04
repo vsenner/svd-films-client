@@ -35,45 +35,14 @@ const FilmList = () => {
   const selectedGenres = useSelector((state) => state.movies.genres)
 
   useEffect(()=>{
-    if(filmList.length){
-      const sorted = sortByGenres(filmList)
+    if (selectedGenres.length){
+      TMDBMovieController.getWithGenres(selectedGenres).then((data)=>{
+            console.log(data)
+            setFilmList(data.results)
+          }
+      )
     }
-  },[selectedGenres, filmList])
-
-  const sortByGenres = (filmList) =>{
-    return filmList.reduce((pre, film)=>{
-      const selectedArray = selectedGenres.reduce((pre, selGen) => {
-        if (film?.genre_ids.includes(selGen.id)) {
-          if (selGen.select === true) {
-            return [...pre, {select: true}]
-          }
-          if (!selGen.select) {
-            return [...pre, {select: false}]
-          }
-        }
-        return pre
-      }, [])
-      if(selectedArray.length){
-        return selectedArray.find((el) => el.select === false)?
-            pre : [...pre, film]
-      }
-      return pre
-    },[])
-  }
-
-  /*const sortByGenres = (filmList) =>{
-    return filmList.filter((film)=>{
-      const a = selectedGenres.every((selGen)=>  !(film.genre_ids.includes(selGen.id) && !selGen.select));
-
-      const selectedYesCount = selectedGenres.filter((genre)=>genre.select).length;
-
-      if(selectedYesCount) {
-        const isAnyGenre = selectedGenres.some(genre => film.genre_ids.includes(genre.id));
-        return a && isAnyGenre
-      }
-      return a
-    })
-  }*/
+  },[selectedGenres])
 
   return (
       <div>

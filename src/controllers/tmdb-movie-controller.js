@@ -86,4 +86,27 @@ export default class TMDBMovieController {
     }
   }
 
+  static async getWithGenres(genres, sortParam){
+    try{
+      const genresYes = genres.reduce((prev, genre)=> {
+        if(genre.select){
+          return [...prev, genre.id]
+        }
+        return prev
+      }, [])
+
+      const genresNo = genres.reduce((prev, genre)=> {
+        if(!genre.select){
+          return [...prev, genre.id]
+        }
+        return prev
+      }, [])
+
+      return await TMDBMovieService.getMoviesByGenres(genresYes, genresNo, sortParam)
+
+    } catch (err) {
+      throw err
+    }
+  }
+
 }

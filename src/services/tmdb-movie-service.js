@@ -28,4 +28,17 @@ export default class TMDBMovieService {
       throw new Error('Server Error!')
     }
   }
+
+  static async getMoviesByGenres(genresYes, genresNo, sortParam='popularity.desc'){
+    try {
+      console.log('---------------???????')
+      console.log(genresYes)
+      console.log(genresNo)
+      console.log(sortParam)
+      console.log('---------------???????')
+      return (await instance.get(`/discover/movie?language=en-US&with_genres=${genresYes}&without_genres=${genresNo}&sort_by=${sortParam}`)).data
+    } catch (err) {
+      throw new Error('Server Error!')
+    }
+  }
 }
