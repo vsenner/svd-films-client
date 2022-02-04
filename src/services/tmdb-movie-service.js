@@ -36,4 +36,12 @@ export default class TMDBMovieService {
       throw new Error('Server Error!')
     }
   }
+
+  static async getSeriesByGenres(genresYes, genresNo, sortParam='popularity.desc'){
+    try {
+      return (await instance.get(`/discover/tv?language=en-US&with_genres=${genresYes}&without_genres=${genresNo}&sort_by=${sortParam}`)).data
+    } catch (err) {
+      throw new Error('Server Error!')
+    }
+  }
 }

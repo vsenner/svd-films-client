@@ -7,6 +7,7 @@ import {useSelector} from "react-redux";
 const FilmList = () => {
   const [filmList, setFilmList] = useState([])
   const params = useParams()
+  const selectedGenres = useSelector((state) => state.movies.genres)
 
   useEffect(() => {
     switch(params.type){
@@ -32,16 +33,22 @@ const FilmList = () => {
 
   }, [params.type])
 
-  const selectedGenres = useSelector((state) => state.movies.genres)
-
   useEffect(()=>{
     if (selectedGenres.length){
-      TMDBMovieController.getWithGenres(selectedGenres).then((data)=>{
-            setFilmList(data.results)
-          }
-      )
+      if (params.type==='movies'){
+        TMDBMovieController.getMoviesWithGenres(selectedGenres).then((data)=>{
+              setFilmList(data.results)
+            }
+        )
+      }
+      if(params.type==='series'){
+        TMDBMovieController.getSeriesWithGenres(selectedGenres).then((data)=>{
+              setFilmList(data.results)
+            }
+        )
+      }
     }
-  },[selectedGenres])
+  },[selectedGenres, params.type])
 
   return (
       <div>

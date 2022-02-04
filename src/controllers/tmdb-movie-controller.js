@@ -86,24 +86,33 @@ export default class TMDBMovieController {
     }
   }
 
-  static async getWithGenres(genres, sortParam){
+  static async getMoviesWithGenres(genres, sortParam){
     try{
-      const genresYes = genres.reduce((prev, genre)=> {
+      const genresObj = genres.reduce((prev, genre)=> {
         if(genre.select){
-          return [...prev, genre.id]
+          return {...prev, yes: [...prev?.yes, genre.id]}
+        }else{
+          return {...prev, no: [...prev?.no, genre.id]}
         }
-        return prev
-      }, [])
+      }, {yes:[], no:[]})
 
-      const genresNo = genres.reduce((prev, genre)=> {
-        if(!genre.select){
-          return [...prev, genre.id]
+      return await TMDBMovieService.getMoviesByGenres(genresObj.yes, genresObj.no, sortParam)
+    } catch (err) {
+      throw err
+    }
+  }
+
+  static async getSeriesWithGenres(genres, sortParam){
+    try{
+      const genresObj = genres.reduce((prev, genre)=> {
+        if(genre.select){
+          return {...prev, yes: [...prev?.yes, genre.id]}
+        }else{
+          return {...prev, no: [...prev?.no, genre.id]}
         }
-        return prev
-      }, [])
+      }, {yes:[], no:[]})
 
-      return await TMDBMovieService.getMoviesByGenres(genresYes, genresNo, sortParam)
-
+      return await TMDBMovieService.getSeriesByGenres(genresObj.yes, genresObj.no, sortParam)
     } catch (err) {
       throw err
     }
