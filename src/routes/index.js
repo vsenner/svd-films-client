@@ -11,7 +11,7 @@ import UserLaterPage from "../components/UserLaterPage/UserLaterPage";
 
 const allAccessRoutes = [
   {path: '/' , component: <MainPage/>},
-  {path: '/genres/:type' , component: <GenrePage/>},
+  {path: '/genres/:type/:sortMethod' , component: <GenrePage/>},
   {path: '/genres/search/:query' , component: <GenrePage/>},
   {path: '/film/:id' , component: <FilmPage/>},
 ]

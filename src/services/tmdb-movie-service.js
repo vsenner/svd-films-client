@@ -9,8 +9,12 @@ export default class TMDBMovieService {
     return (await instance.get(`/movie/${id}`)).data
   }
 
-  static async getAllGenres() {
+  static async getAllMovieGenres() {
     return (await instance.get('/genre/movie/list')).data
+  }
+
+  static async getAllSeriesGenres() {
+    return (await instance.get('/genre/tv/list')).data
   }
 
   static async search(query) {
@@ -31,7 +35,8 @@ export default class TMDBMovieService {
 
   static async getMoviesByGenres(genresYes, genresNo, sortParam='popularity.desc'){
     try {
-      return (await instance.get(`/discover/movie?language=en-US&with_genres=${genresYes}&without_genres=${genresNo}&sort_by=${sortParam}`)).data
+      const vote_counts = sortParam==='vote_average.desc'?5000:500
+      return (await instance.get(`/discover/movie?language=en-US&with_genres=${genresYes}&without_genres=${genresNo}&sort_by=${sortParam}&primary_release_date.lte=${Date.now()}&vote_count.gte=${vote_counts}`)).data
     } catch (err) {
       throw new Error('Server Error!')
     }
@@ -39,7 +44,8 @@ export default class TMDBMovieService {
 
   static async getSeriesByGenres(genresYes, genresNo, sortParam='popularity.desc'){
     try {
-      return (await instance.get(`/discover/tv?language=en-US&with_genres=${genresYes}&without_genres=${genresNo}&sort_by=${sortParam}`)).data
+      const vote_counts = sortParam==='vote_average.desc'?5000:500
+      return (await instance.get(`/discover/tv?language=en-US&with_genres=${genresYes}&without_genres=${genresNo}&sort_by=${sortParam}&primary_release_date.lte=${Date.now()}&vote_count.gte=${vote_counts}`)).data
     } catch (err) {
       throw new Error('Server Error!')
     }

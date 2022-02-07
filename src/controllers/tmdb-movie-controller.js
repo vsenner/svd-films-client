@@ -17,10 +17,35 @@ export default class TMDBMovieController {
     }
   }
 
-  static async getAllGenres() {
+  static async getAllMoviesGenres() {
     try {
-      return (await TMDBMovieService.getAllGenres())
+      const bannedGenreIds = [16]
+      return TMDBMovieService.getAllMovieGenres().then((data)=>{
+        return data.genres.filter(genreIt=>!bannedGenreIds.includes(genreIt.id))
+      })
     } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getAllSeriesGenres() {
+    try {
+      const bannedGenreIds = [16, 10767, 10763, 10764]
+      return TMDBMovieService.getAllSeriesGenres().then((data)=>{
+        return data.genres.filter(genreIt=>!bannedGenreIds.includes(genreIt.id))
+      })
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getAllCartoonGenres(){
+    try{
+      const bannedGenreIds = [16]
+      return TMDBMovieService.getAllMovieGenres().then((data)=>{
+        return data.genres.filter(genreIt=>!bannedGenreIds.includes(genreIt.id))
+      })
+    }catch(err){
       throw err;
     }
   }
@@ -110,7 +135,7 @@ export default class TMDBMovieController {
         }else{
           return {...prev, no: [...prev?.no, genre.id]}
         }
-      }, {yes:[], no:[]})
+      }, {yes:[], no:[16, 10767, 10763, 10764]})
 
       return await TMDBMovieService.getSeriesByGenres(genresObj.yes, genresObj.no, sortParam)
     } catch (err) {

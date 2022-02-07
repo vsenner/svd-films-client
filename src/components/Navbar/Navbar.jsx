@@ -54,17 +54,14 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="navbar__categories">
-            <Link to='/genres/movies' className="navbar__link">
+            <Link to='/genres/movies/popularity' className="navbar__link">
               Movies
             </Link>
-            <Link to='/genres/series' className="navbar__link">
+            <Link to='/genres/series/popularity' className="navbar__link">
               Series
             </Link>
-            <Link to='/genres/cartoons' className="navbar__link">
+            <Link to='/genres/cartoons/popularity' className="navbar__link">
               Cartoons
-            </Link>
-            <Link to='/genres/tv' className="navbar__link">
-              TV Shows
             </Link>
           </div>
           <div className="navbar__wide-area">

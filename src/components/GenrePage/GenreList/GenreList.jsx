@@ -14,19 +14,35 @@ const GenreList = () => {
   const [clear, setClear] = useState(false)
   const {width} = useWindowDimensions();
 
-  const page = useParams()
+  const params = useParams()
 
   useEffect(()=>{
     clearSelectedGenres();
-    }, [page])
+    }, [params])
 
   useEffect(() => {
-    TMDBMovieController.getAllGenres().then(data => {
-        setGenres(data.genres)
-        setGenresInColumn(Math.ceil(data.genres.length / 3));
-      }
-    )
-  }, [])
+    if (params.type==='movies'){
+      TMDBMovieController.getAllMoviesGenres().then(data => {
+            setGenres(data)
+            setGenresInColumn(Math.ceil(data.length / 3));
+          }
+      )
+    }
+    if(params.type==='series'){
+      TMDBMovieController.getAllSeriesGenres().then(data => {
+            setGenres(data)
+            setGenresInColumn(Math.ceil(data.length / 3));
+          }
+      )
+    }
+    if(params.type==='cartoons'){
+      TMDBMovieController.getAllCartoonGenres().then(data => {
+            setGenres(data)
+            setGenresInColumn(Math.ceil(data.length / 3));
+          }
+      )
+    }
+  }, [params.type])
 
   function getGenreColumns(count) {
     return [...new Array(count)]
@@ -40,12 +56,13 @@ const GenreList = () => {
         />)
   }
 
+  const dispatch = useDispatch()
+
   const clearSelectedGenres = () => {
+    dispatch({type: 'CHANGE_GENRES', payload: []})
     setClear(!clear)
     setSelectedGenres([])
   }
-
-  const dispatch = useDispatch()
 
   return genres && genresInColumn ? (
     <div className="genre-list">

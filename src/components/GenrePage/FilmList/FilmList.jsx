@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './FilmList.scss'
 import TMDBMovieController from "../../../controllers/tmdb-movie-controller";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 
 const FilmList = () => {
@@ -9,49 +9,38 @@ const FilmList = () => {
   const params = useParams()
   const selectedGenres = useSelector((state) => state.movies.genres)
 
-  useEffect(() => {
-    switch(params.type){
-      case 'movies': TMDBMovieController.getPopular().then(films=>{
-        setFilmList(films.results)
-      })
-        break;
-      case 'series': TMDBMovieController.getTVSeries().then(series=>{
-        setFilmList(series)
-      })
-        break;
-      case 'cartoons': TMDBMovieController.getCartoons().then(cartoons=> {
-        setFilmList(cartoons)
-      })
-        break;
-      case 'tv': TMDBMovieController.getTVShows().then(tvs=> {
-        setFilmList(tvs)
-      })
-        break;
-
-      default:
-    }
-
-  }, [params.type])
-
   useEffect(()=>{
-    if (selectedGenres.length){
-      if (params.type==='movies'){
-        TMDBMovieController.getMoviesWithGenres(selectedGenres).then((data)=>{
-              setFilmList(data.results)
-            }
-        )
+      const sortMethod = params.sortMethod + '.desc'
+      if (params.type === 'movies') {//switch
+          TMDBMovieController.getMoviesWithGenres([...selectedGenres, {id: 16, select: false}], sortMethod)
+              .then((data) => {
+                      setFilmList(data.results)
+                  }
+              )
       }
-      if(params.type==='series'){
-        TMDBMovieController.getSeriesWithGenres(selectedGenres).then((data)=>{
-              setFilmList(data.results)
-            }
-        )
+      if (params.type === 'series') {
+          TMDBMovieController.getSeriesWithGenres(selectedGenres, sortMethod)
+              .then((data) => {
+                      setFilmList(data.results)
+                  }
+              )
       }
-    }
-  },[selectedGenres, params.type])
+      if (params.type === 'cartoons') {
+          TMDBMovieController.getMoviesWithGenres([...selectedGenres, {id: 16, select: true}], sortMethod)
+              .then((data) => {
+                      setFilmList(data.results)
+                  }
+              )
+      }
+  },[selectedGenres, params.type, params.sortMethod])
 
   return (
       <div>
+        <div className='buttons'>
+          <Link to={`/genres/${params.type}/popularity`}>Most popular</Link>
+          <Link to={`/genres/${params.type}/vote_average`}>Best rated</Link>
+          <Link to={`/genres/${params.type}/primary_release_date`}>Release date</Link>
+        </div>
         {
           filmList ? filmList.map(film =>
               <div key={film.id}>
