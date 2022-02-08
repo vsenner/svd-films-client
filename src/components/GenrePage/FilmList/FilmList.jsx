@@ -58,7 +58,6 @@ const FilmList = () => {
                 }
             )
         }
-
     }, [selectedGenres, params.type, params.sortMethod])
 
     useEffect(() => {
