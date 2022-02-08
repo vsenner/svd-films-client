@@ -10,15 +10,15 @@ const FilmList = () => {
     const [filmList, setFilmList] = useState([])
     const params = useParams()
     const selectedGenres = useSelector((state) => state.movies.genres)
-    const [currentPage, setCurrentPage]=useState(3);
+    const [currentPage, setCurrentPage]=useState(1);
     const [requestStatus, setRequestStatus] = useState(true);
     const handleScroll = (e) => {
         if(e.target.documentElement.scrollHeight-(e.target.documentElement.scrollTop+window.innerHeight)<200) setRequestStatus(true)
     };
 
     useEffect(()=>{
-        const sortMethod = params.sortMethod + '.desc'
         setCurrentPage(1)
+        const sortMethod = params.sortMethod + '.desc'
             if (params.type === 'movies') {
                 TMDBMovieController.getMoviesWithGenres([...selectedGenres, {id: 16, select: false}], sortMethod,currentPage)
                     .then((data) => {
