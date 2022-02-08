@@ -15,7 +15,7 @@ const Router = () => {
           element={route.component}
           key={route.path}/>)
       }
-      <Route path={'*'} element={<Navigate to={isAuth ? '/' : '/login'}/>}/>
+      {isAuth === null ? null : <Route path={'*'} element={<Navigate to={isAuth ? '/' : '/login'}/>}/>}
     </Routes>
   );
 };

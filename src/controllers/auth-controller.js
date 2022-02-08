@@ -27,7 +27,7 @@ export default class AuthController {
     try {
       await AuthService.logout();
       localStorage.removeItem('token');
-      store.dispatch({type: 'LOGOUT'})
+      store.dispatch({type: 'LOGOUT'});
     } catch (err) {
       throw err;
     }
@@ -36,9 +36,11 @@ export default class AuthController {
   static async refresh() {
     try {
       const data = await AuthService.refresh();
+      console.log('USER-DATA - ', data);
       localStorage.setItem('token', data.accessToken);
-      store.dispatch({type: 'CHANGE_USER', payload: data.user})
+      store.dispatch({type: 'CHANGE_USER', payload: data.user});
     } catch (err) {
+      store.dispatch({type: 'CHANGE_USER', payload: {isAuth: false}});
     }
   }
 }

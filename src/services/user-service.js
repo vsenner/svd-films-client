@@ -5,7 +5,7 @@ const BASE_PATH = 'authorized/user'
 export default class UserService {
   static async getUserInfo(userId) {
     try {
-      return (await $api.get(`${BASE_PATH}/info/user/${userId}`)).data
+      return (await $api.get(`${BASE_PATH}/info/${userId}`)).data
     } catch (err) {
       throw err;
     }
@@ -17,5 +17,9 @@ export default class UserService {
 
   static async changeUserImage(formData) {
     return (await $api.post(`${BASE_PATH}/image/change`, formData)).data
+  }
+
+  static async getUserImage(user_id) {
+    return (await $api.get(`${BASE_PATH}/image/${user_id}`)).data;
   }
 }

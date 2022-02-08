@@ -57,18 +57,27 @@
   }
 
   &__profile-link{
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
-    border: 1px solid #848282;
+    overflow: hidden;
+    border: 1px solid #ffffff;
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.47);
     display: flex;
     align-items: center;
     text-align: center;
   }
 
   &__profile-photo {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    object-position: center;
+  }
+
+  &__profile-placeholder {
     margin: 0 auto;
-    font-size: 14px;
+    font-size: 15px;
     color: orange;
   }
 

@@ -2,8 +2,9 @@ const defaultState = {
   id: null,
   email: '',
   username: '',
-  isActivate: '',
-  isAuth: false,
+  compressedImage: '',
+  isActivated: '',
+  isAuth: null,
 };
 
 const userReducer = (state = defaultState, {type, payload}) => {
