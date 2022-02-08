@@ -45,63 +45,60 @@ const Navbar = () => {
   const user = useSelector(state => state?.user);
 
   return (
-    <div className='navbar'>
-      <div className="container">
-        <div className="navbar__flex">
-          <div className="navbar__logo">
-            <Link to='/'>
-              <img src={logo} alt="logo"/>
-            </Link>
-          </div>
-          <div className="navbar__categories">
-            <Link to='/genres/movies' className="navbar__link">
-              Movies
-            </Link>
-            <Link to='/genres/series' className="navbar__link">
-              Series
-            </Link>
-            <Link to='/genres/cartoons' className="navbar__link">
-              Cartoons
-            </Link>
-            <Link to='/genres/tv' className="navbar__link">
-              TV Shows
-            </Link>
-          </div>
-          <div className="navbar__wide-area">
-            <LanguageDropDown/>
+      <div className='navbar'>
+        <div className="container">
+          <div className="navbar__flex">
+            <div className="navbar__logo">
+              <Link to='/'>
+                <img src={logo} alt="logo"/>
+              </Link>
+            </div>
+            <div className="navbar__categories">
+              <Link to='/genres/movies/popularity' className="navbar__link">
+                Movies
+              </Link>
+              <Link to='/genres/series/popularity' className="navbar__link">
+                Series
+              </Link>
+              <Link to='/genres/cartoons/popularity' className="navbar__link">
+                Cartoons
+              </Link>
+            </div>
+            <div className="navbar__wide-area">
+              <LanguageDropDown/>
 
-            {/*TODO: Change to custom input*/}
-            <form
-              onSubmit={e => {
-                e.preventDefault();
-                router(`/genres/search/${searchInput.current.value}`)
-              }}>
-              <label className={'navbar__search'}>
-                <img src={searchIcon} alt="search"/>
-                <input
-                  className='navbar__input'
-                  type="text"
-                  ref={searchInput}
-                  onFocus={() => setActiveSearch(true)}
-                  onChange={debounceInput}
-                  placeholder={'Find movie'}
-                />
-              </label>
-              {films.length > 0 && activeSearch ?
-                <NavbarFilmList films={films} clearFilms={setSearchQuery}/> : null}
-            </form>
-          </div>
-          <div className="navbar__profile">
-            <Link to={user.isAuth ? `/user/${user.id}` : '/login'} className='navbar__profile-link'>
-              {user.isAuth ?
-                <img src={user.photo} alt="user" className='navbar__profile-photo'/>
-                :
-                <span className='navbar__profile-photo'>SIGN UP</span>}
-            </Link>
+              {/*TODO: Change to custom input*/}
+              <form
+                  onSubmit={e => {
+                    e.preventDefault();
+                    router(`/genres/search/${searchInput.current.value}`)
+                  }}>
+                <label className={'navbar__search'}>
+                  <img src={searchIcon} alt="search"/>
+                  <input
+                      className='navbar__input'
+                      type="text"
+                      ref={searchInput}
+                      onFocus={() => setActiveSearch(true)}
+                      onChange={debounceInput}
+                      placeholder={'Find movie'}
+                  />
+                </label>
+                {films.length > 0 && activeSearch ?
+                    <NavbarFilmList films={films} clearFilms={setSearchQuery}/> : null}
+              </form>
+            </div>
+            <div className="navbar__profile">
+              <Link to={user.isAuth ? `/user/${user.id}` : '/login'} className='navbar__profile-link'>
+                {user.isAuth ?
+                    <img src={user.photo} alt="user" className='navbar__profile-photo'/>
+                    :
+                    <span className='navbar__profile-photo'>SIGN UP</span>}
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

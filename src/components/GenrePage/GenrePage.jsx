@@ -11,13 +11,12 @@ const GenrePage = () => {
         setSelectedGenres(selectedGenres)
     }
 
-  return (
-    <div>
-      <GenreList onChange={transf}/>
-      <FilmList selectedGenres={selectedGenres}/>
-    </div>
-  );
+    return (
+        <div>
+            <GenreList onChange={transf}/>
+            <FilmList selectedGenres={selectedGenres}/>
+        </div>
+    );
 };
 
 export default GenrePage;
-

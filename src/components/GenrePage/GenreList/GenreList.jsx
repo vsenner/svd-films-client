@@ -8,75 +8,92 @@ import {useParams} from "react-router";
 import {useDispatch} from "react-redux";
 
 const GenreList = () => {
-  const [genres, setGenres] = useState([]);
-  const [selectedGenres, setSelectedGenres] = useState([])
-  const [genresInColumn, setGenresInColumn] = useState(0)
-  const [clear, setClear] = useState(false)
-  const {width} = useWindowDimensions();
+    const [genres, setGenres] = useState([]);
+    const [selectedGenres, setSelectedGenres] = useState([])
+    const [genresInColumn, setGenresInColumn] = useState(0)
+    const [clear, setClear] = useState(false)
+    const {width} = useWindowDimensions();
 
-  const page = useParams()
+    const params = useParams()
 
-  useEffect(()=>{
-    clearSelectedGenres();
-    }, [page])
+    useEffect(()=>{
+        clearSelectedGenres();
+    }, [params])
 
-  useEffect(() => {
-    TMDBMovieController.getAllGenres().then(data => {
-        setGenres(data.genres)
-        setGenresInColumn(Math.ceil(data.genres.length / 3));
-      }
-    )
-  }, [])
+    useEffect(() => {
+        if (params.type==='movies'){
+            TMDBMovieController.getAllMoviesGenres().then(data => {
+                    setGenres(data)
+                    setGenresInColumn(Math.ceil(data.length / 3));
+                }
+            )
+        }
+        if(params.type==='series'){
+            TMDBMovieController.getAllSeriesGenres().then(data => {
+                    setGenres(data)
+                    setGenresInColumn(Math.ceil(data.length / 3));
+                }
+            )
+        }
+        if(params.type==='cartoons'){
+            TMDBMovieController.getAllCartoonGenres().then(data => {
+                    setGenres(data)
+                    setGenresInColumn(Math.ceil(data.length / 3));
+                }
+            )
+        }
+    }, [params.type])
 
-  function getGenreColumns(count) {
-    return [...new Array(count)]
-        .map((_, i) =>
-            <GenreColumn
-            genres={genres.slice(genresInColumn*i, genresInColumn*(i+1))}
-            selectedGenres={selectedGenres}
-            clear={clear}
-            setSelectedGenres={setSelectedGenres}
-            key={i}
-        />)
-  }
+    function getGenreColumns(count) {
+        return [...new Array(count)]
+            .map((_, i) =>
+                <GenreColumn
+                    genres={genres.slice(genresInColumn*i, genresInColumn*(i+1))}
+                    selectedGenres={selectedGenres}
+                    clear={clear}
+                    setSelectedGenres={setSelectedGenres}
+                    key={i}
+                />)
+    }
 
-  const clearSelectedGenres = () => {
-    setClear(!clear)
-    setSelectedGenres([])
-  }
+    const dispatch = useDispatch()
 
-  const dispatch = useDispatch()
+    const clearSelectedGenres = () => {
+        dispatch({type: 'CHANGE_GENRES', payload: []})
+        setClear(!clear)
+        setSelectedGenres([])
+    }
 
-  return genres && genresInColumn ? (
-    <div className="genre-list">
-      <div className="container">
-        <div className="genre-list__flex">
-          {width > 700 ?
-            <div className="genre-list__row">
-              {genresInColumn ? getGenreColumns(3) : null}
+    return genres && genresInColumn ? (
+        <div className="genre-list">
+            <div className="container">
+                <div className="genre-list__flex">
+                    {width > 700 ?
+                        <div className="genre-list__row">
+                            {genresInColumn ? getGenreColumns(3) : null}
+                        </div>
+                        :
+                        <div className="genre-list__row">
+                            <GenreColumn
+                                genres={genres}
+                                selectedGenres={selectedGenres}
+                                setSelectedGenres={setSelectedGenres}
+                                clear={clear}
+                            />
+                        </div>
+                    }
+                    <div className='genre-list__bottom'>
+                        <Button onClick={() => dispatch({type: 'CHANGE_GENRES', payload: selectedGenres})}>
+                            Submit
+                        </Button>
+                        <Button onClick={clearSelectedGenres}>
+                            Clear
+                        </Button>
+                    </div>
+                </div>
             </div>
-            :
-            <div className="genre-list__row">
-              <GenreColumn
-                genres={genres}
-                selectedGenres={selectedGenres}
-                setSelectedGenres={setSelectedGenres}
-                clear={clear}
-              />
-            </div>
-          }
-          <div className='genre-list__bottom'>
-            <Button onClick={() => dispatch({type: 'CHANGE_GENRES', payload: selectedGenres})}>
-              Submit
-            </Button>
-            <Button onClick={clearSelectedGenres}>
-              Clear
-            </Button>
-          </div>
         </div>
-      </div>
-    </div>
-  ) : null;
+    ) : null;
 };
 
 export default GenreList;
