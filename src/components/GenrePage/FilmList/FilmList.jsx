@@ -16,54 +16,15 @@ const FilmList = () => {
         if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 200) setRequestStatus(true)
     };
 
-    useEffect(() => {
-        setCurrentPage(1)
-        const sortMethod = params.sortMethod + '.desc'
-        if (params.type === 'movies') {
-            TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
-                id: 16,
-                select: false
-            }], sortMethod, currentPage)
-                .then((data) => {
-                        setFilmList(data.results)
-                    }
-                ).finally(() => {
-                    setCurrentPage(currentPage + 1)
-                    setRequestStatus(false)
-                }
-            )
-        }
-        if (params.type === 'series') {
-            TMDBMovieController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
-                .then((data) => {
-                        setFilmList(data.results)
-                    }
-                ).finally(() => {
-                    setCurrentPage(currentPage + 1)
-                    setRequestStatus(false)
-                }
-            )
-        }
-        if (params.type === 'cartoons') {
-            TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
-                id: 16,
-                select: true
-            }], sortMethod, currentPage)
-                .then((data) => {
-                        setFilmList(data.results)
-                    }
-                ).finally(() => {
-                    setCurrentPage(currentPage + 1)
-                    setRequestStatus(false)
-                }
-            )
-        }
-    }, [selectedGenres, params.type, params.sortMethod])
+    useEffect(()=>{
+         setCurrentPage(1)
+         setRequestStatus(true)
+         setFilmList([])
+    },[selectedGenres, params.type, params.sortMethod])
 
     useEffect(() => {
-        if (requestStatus) {
-            const sortMethod = params.sortMethod + '.desc'
-            setCurrentPage(1)
+        const sortMethod = params.sortMethod + '.desc'
+        if(requestStatus){
             if (params.type === 'movies') {
                 TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
                     id: 16,
@@ -71,23 +32,19 @@ const FilmList = () => {
                 }], sortMethod, currentPage)
                     .then((data) => {
                             setFilmList([...filmList, ...data.results])
+                            setCurrentPage(currentPage + 1)
+                            setRequestStatus(false)
                         }
-                    ).finally(() => {
-                        setCurrentPage(currentPage + 1)
-                        setRequestStatus(false)
-                    }
-                )
+                    )
             }
             if (params.type === 'series') {
                 TMDBMovieController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
                     .then((data) => {
                             setFilmList([...filmList, ...data.results])
+                            setCurrentPage(currentPage + 1)
+                            setRequestStatus(false)
                         }
-                    ).finally(() => {
-                        setCurrentPage(currentPage + 1)
-                        setRequestStatus(false)
-                    }
-                )
+                    )
             }
             if (params.type === 'cartoons') {
                 TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
@@ -96,17 +53,14 @@ const FilmList = () => {
                 }], sortMethod, currentPage)
                     .then((data) => {
                             setFilmList([...filmList, ...data.results])
+                            setCurrentPage(currentPage + 1)
+                            setRequestStatus(false)
                         }
-                    ).finally(() => {
-                        setCurrentPage(currentPage + 1)
-                        setRequestStatus(false)
-                    }
-                )
+                    )
             }
-
         }
+    }, [selectedGenres, params.type, params.sortMethod,requestStatus])
 
-    }, [selectedGenres, params.type, params.sortMethod, requestStatus])
 
     useEffect(() => {
         document.addEventListener("scroll", handleScroll);
