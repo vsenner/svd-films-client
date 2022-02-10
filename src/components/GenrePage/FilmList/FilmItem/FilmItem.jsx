@@ -1,11 +1,11 @@
 import React from 'react';
 import './FilmItem.scss'
 
-const FilmItem = (props) => {
+const FilmItem = ({poster_path,original_title,film_name}) => {
   return (
     <div className='film'>
-      <img src = {'https://image.tmdb.org/t/p/w185/'+props.poster_path} alt={props.original_title}/>
-      <p>{props.film_name}</p>
+      <img src = {'https://image.tmdb.org/t/p/w185/'+poster_path} alt={original_title}/>
+      <p>{film_name}</p>
     </div>
   );
 };

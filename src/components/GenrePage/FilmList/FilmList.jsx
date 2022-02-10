@@ -32,7 +32,7 @@ const FilmList = () => {
                 }], sortMethod, currentPage)
                     .then((data) => {
                             setFilmList([...filmList, ...data.results])
-                            setCurrentPage(currentPage + 1)
+                            setCurrentPage(prev => prev + 1)
                             setRequestStatus(false)
                         }
                     )
@@ -41,7 +41,7 @@ const FilmList = () => {
                 TMDBMovieController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
                     .then((data) => {
                             setFilmList([...filmList, ...data.results])
-                            setCurrentPage(currentPage + 1)
+                            setCurrentPage(prev => prev + 1)
                             setRequestStatus(false)
                         }
                     )
@@ -53,7 +53,7 @@ const FilmList = () => {
                 }], sortMethod, currentPage)
                     .then((data) => {
                             setFilmList([...filmList, ...data.results])
-                            setCurrentPage(currentPage + 1)
+                            setCurrentPage(prev => prev + 1)
                             setRequestStatus(false)
                         }
                     )
