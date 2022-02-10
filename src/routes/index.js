@@ -1,6 +1,6 @@
 import MainPage from "../components/MainPage/MainPage";
 import GenrePage from "../components/GenrePage/GenrePage";
-import FilmPage from "../components/FilmPage/FilmPage";
+import MoviePage from "../components/MoviePage/MoviePage";
 import UserPage from "../components/UserPage/UserPage";
 import LoginPage from "../components/LoginPage/LoginPage";
 import SignUpPage from "../components/SignUpPage/SignUpPage";
@@ -8,12 +8,14 @@ import React from "react";
 import UserFavouritePage from "../components/UserFavouritePage/UserFavouritePage";
 import UserRatedPage from "../components/UserRatedPage/UserRatedPage";
 import UserLaterPage from "../components/UserLaterPage/UserLaterPage";
+import TVPage from "../components/TVPage/TVPage";
 
 const allAccessRoutes = [
   {path: '/' , component: <MainPage/>},
   {path: '/genres/:type' , component: <GenrePage/>},
   {path: '/genres/search/:query' , component: <GenrePage/>},
-  {path: '/film/:id' , component: <FilmPage/>},
+  {path: '/movie/:id' , component: <MoviePage/>},
+  {path: '/tv/:id' , component: <TVPage/>},
 ]
 
 export const privateRoutes = [

@@ -5,8 +5,12 @@ export default class TMDBMovieService {
     return (await instance.get('/movie/popular')).data
   }
 
-  static async getById(id) {
+  static async getMovieById(id) {
     return (await instance.get(`/movie/${id}`)).data
+  }
+
+  static async getTVById(id) {
+    return (await instance.get(`/tv/${id}`)).data
   }
 
   static async getAllGenres() {
@@ -17,7 +21,11 @@ export default class TMDBMovieService {
     return (await instance.get(`search/multi?language=en-US&query=${query}&page=1&include_adult=true`)).data
   }
 
-  static async getCreditsById(id) {
+  static async getMovieCreditsById(id) {
     return (await instance.get(`/movie/${id}/credits`)).data
+  }
+
+  static async getTVCreditsById(id) {
+    return (await instance.get(`/tv/${id}/aggregate_credits`)).data
   }
 }

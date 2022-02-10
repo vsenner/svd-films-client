@@ -33,13 +33,13 @@ const Slider = () => {
           <img src={getImage(slide.backdrop_path)} alt=""/>
         </div>
         <div className="info-block">
-          <Link to={`/film/${slide.id}`} className="info-block__film-poster">
+          <Link to={`/movie/${slide.id}`} className="info-block__film-poster">
             <img src={getImage(slide.poster_path)}
                  alt=""/>
           </Link>
           <div className="text-block">
             <div className="text-block__film-title">
-              <Link to={`/film/${slide.id}`} className="text-block__link">
+              <Link to={`/movie/${slide.id}`} className="text-block__link">
                 {slide.title}
               </Link>
               {slide.vote_average === 0 ? '' : <div className="text-block__rating">
@@ -48,7 +48,7 @@ const Slider = () => {
               </div>}
 
               <div className="text-block__description">
-                <TruncatedText str={slide.overview} n={200} path={`/film/${slide.id}`}/>
+                <TruncatedText str={slide.overview} n={200} path={`/movie/${slide.id}`}/>
               </div>
             </div>
           </div>

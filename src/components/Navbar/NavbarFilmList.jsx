@@ -3,12 +3,13 @@ import {Link} from "react-router-dom";
 import {getImage} from "../../UI/getImage";
 
 const NavbarFilmList = ({films, clearFilms}) => {
+
   return (
     <div className={'navbar__film-list'}>
       {films.map(film =>
       <Link key={film.id}
             className={'navbar__film-list__item'}
-            to={`/film/${film.id}`}
+            to={`/${film.media_type}/${film.id}`}
             onClick={() => clearFilms('')}
       >
 

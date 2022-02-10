@@ -3,7 +3,7 @@ import MovieController from "../../controllers/movie-controller";
 import {useParams} from "react-router-dom";
 import UserFilmList from "../UserPage/UserFilmList/UserFilmList";
 import {useSort} from "../../hooks/useSort";
-import {useSelector} from "react-redux";
+import UserController from "../../controllers/user-controller";
 
 const ASCENDING = false;
 const DESCENDING = true;
@@ -11,21 +11,25 @@ const DESCENDING = true;
 const UserLaterPage = () => {
   const [filmList, setFilmList] = useState(null)
   const [sortMethod, setSortMethod] = useState({field: null, method: DESCENDING});
+  const [username, setUsername] = useState(null)
+
 
   const params = useParams();
 
   const sortedFilmList = useSort(filmList, sortMethod);
 
-  const username = useSelector(state => state.user.username);
 
   useEffect(() => {
     MovieController.getLater(params.id).then(list => {
       setFilmList(list)
     })
+    UserController.getUserInfo(params.id).then(user => {
+      setUsername(user.username);
+    })
   }, [params.id])
 
   const sortBy = (field) => {
-    if(sortMethod.field === field) {
+    if (sortMethod.field === field) {
       return setSortMethod({...sortMethod, method: !sortMethod.method});
     }
     return setSortMethod({field, method: DESCENDING});
