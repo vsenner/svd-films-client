@@ -2,7 +2,7 @@ import React from 'react';
 import './GenreColumn.scss'
 import GenreItem from "./GenreItem/GenreItem";
 
-const GenreColumn = ({genres, selectedGenres, setSelectedGenres}) => {
+const GenreColumn = ({genres, selectedGenres, setSelectedGenres, clear}) => {
   return (
     <div className='genre-list__column'>
       <div className="genre-list__header">
@@ -13,6 +13,7 @@ const GenreColumn = ({genres, selectedGenres, setSelectedGenres}) => {
       {genres.map(genre =>
         <GenreItem
           genre={genre}
+          clear={clear}
           selectedGenres={selectedGenres}
           setSelectedGenres={setSelectedGenres}
           key={genre.id}

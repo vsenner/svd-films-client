@@ -17,6 +17,12 @@ $mainColor3: #a3a0a0;
     align-items: flex-end;
   }
 
+  &__bottom{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
   &__row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

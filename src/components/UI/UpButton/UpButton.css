@@ -1,0 +1,23 @@
+
+.hiddenButton {
+ visibility: hidden;
+    z-index: 100;
+    position : fixed;
+    top:90%;
+    right: 5%;
+    height: 80px;
+    width:80px;
+    background-color: cadetblue;
+}
+
+
+.visibleButton {
+    visibility:visible;
+    z-index: 100;
+    position : fixed;
+    top:90%;
+    right: 5%;
+    height: 80px;
+    width:80px;
+    background-color: cadetblue;
+}

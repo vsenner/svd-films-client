@@ -10,6 +10,7 @@ import {useSelector} from "react-redux";
 import {useNavigate} from "react-router";
 import TMDBMovieController from "../../controllers/tmdb-movie-controller";
 
+
 const minsToHours = (mins) => `${Math.floor(mins / 60)}h ${mins % 60}m`;
 
 const FilmPage = () => {

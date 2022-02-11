@@ -1,69 +1,60 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './GenreItem.scss'
 
-const GenreItem = ({genre, selectedGenres, setSelectedGenres}) => {
+const GenreItem = ({genre, selectedGenres, setSelectedGenres, clear}) => {
   const [yes, setYes] = useState(false)
   const [no, setNo] = useState(false)
+
+  useEffect(() => {
+    setYes(false)
+    setNo(false)
+  },[clear])
+
+  const unselectToggle = (id) => {
+    setSelectedGenres(...[selectedGenres.filter((el) => el.id !== id)])
+  }
 
   const checkGenre = () => {
     return selectedGenres.findIndex(obj => obj.id === genre.id)
   }
 
-  const changeGenres = (index, value) => {
+  const addGenre = (index, value) => {
     const arr = [...selectedGenres]
     arr[index] = {...selectedGenres[index], select: value}
-    setSelectedGenres([...arr])
+    setSelectedGenres(arr)
   }
 
-  const enableGenre = () => {
+  const changeGenres = (value) => {
     const index = checkGenre();
     if(index > -1) {
-      changeGenres(index, true)
+      addGenre(index, value)
     }else {
-      setSelectedGenres([...selectedGenres, {...genre, select: true}])
+      setSelectedGenres([...selectedGenres, {name: genre.name, id: genre.id, select: value}])
     }
-  }
-
-  const disableGenre = () => {
-    const index = checkGenre();
-    if(index > -1) {
-      changeGenres(index, false)
-    }else {
-      setSelectedGenres([...selectedGenres, {...genre, select: false}])
-    }
-  }
-
-  const removeGenre = () => {
-    setSelectedGenres(selectedGenres.filter(sGenre => sGenre.id !== genre.id))
   }
 
   return (
     <div className="genre-list__item">
       <div>
-        <input id={genre.id} type="radio" name={genre.id} checked={yes} onChange={() => {}} onClick={() => {
-          if(no){
-            setYes(!yes)
-            setNo(!no)
-            enableGenre()
+        <input id={genre.id} type="radio" className={'yes'} name={genre.id} checked={yes} onClick={() => {
+          if(yes){
+            unselectToggle(genre.id)
           }else{
-            if(!yes){
-              enableGenre()
-            }else removeGenre()
-            setYes(!yes)
-        }}}/>
+            changeGenres(!yes)
+            setNo(false)
+          }
+          setYes(!yes)
+        }}/>
       </div>
       <div>
-        <input type="radio" name={genre.id} checked={no} onChange={() => {
-          if(yes){
-            setYes(!yes)
-            setNo(!no)
-            disableGenre()
+        <input type="radio" id={genre.id + 1} className={'no'} name={genre.id} checked={no} onClick={() => {
+          if(no){
+            unselectToggle(genre.id)
           }else{
-            if(!no) {
-              disableGenre()
-            }else removeGenre()
-            setNo(!no)
+            changeGenres(no)
+            setYes(false)
           }
+          setNo(!no)
         }}/>
       </div>
       <label htmlFor={genre.id} className="genre-list__name">
