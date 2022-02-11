@@ -5,6 +5,12 @@
 /.pnp
 .pnp.js
 
+
+.idea/.gitignore
+.idea/inspectionProfiles/Project_Default.xml
+.idea/modules.xml
+.idea/svd-films-client.iml
+.idea/vcs.xml
 # testing
 /coverage
 
