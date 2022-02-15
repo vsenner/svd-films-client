@@ -12,7 +12,7 @@ import TVPage from "../components/TVPage/TVPage";
 
 const allAccessRoutes = [
   {path: '/' , component: <MainPage/>},
-  {path: '/genres/:type' , component: <GenrePage/>},
+  {path: '/genres/:type/:sortMethod' , component: <GenrePage/>},
   {path: '/genres/search/:query' , component: <GenrePage/>},
   {path: '/movie/:id' , component: <MoviePage/>},
   {path: '/tv/:id' , component: <TVPage/>},
