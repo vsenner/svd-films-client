@@ -5,7 +5,7 @@ const UserFilm = ({film, num, id}) => {
   const filmTime = new Date(film.time);
   const year = (new Date(film.year)).getFullYear();
   return (
-      <Link to={`/film/${id}`} className='film-list__item'>
+      <Link to={`/movie/${id}`} className='film-list__item'>
         <div className='film-list__number'>{num}</div>
         <div
           className='film-list__title'>{film.title} ({year})</div>
