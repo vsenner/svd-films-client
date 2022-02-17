@@ -9,9 +9,9 @@ export default class TMDBMovieController {
     }
   }
 
-  static async getById(id) {
+  static async getMovieById(id) {
     try {
-      return await TMDBMovieService.getById(id)
+      return await TMDBMovieService.getMovieById(id)
     } catch (err) {
       throw err;
     }
@@ -23,6 +23,22 @@ export default class TMDBMovieController {
       return TMDBMovieService.getAllMovieGenres().then((data)=>{
         return data.genres.filter(genreIt=>!bannedGenreIds.includes(genreIt.id))
       })
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getTVById(id) {
+    try {
+      return await TMDBMovieService.getTVById(id)
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getAllGenres() {
+    try {
+      return (await TMDBMovieService.getAllGenres())
     } catch (err) {
       throw err;
     }
@@ -65,6 +81,14 @@ export default class TMDBMovieController {
     }
   }
 
+  static async getMovieActorsById(id) {
+    try {
+      return (await TMDBMovieService.getMovieCreditsById(id)).cast
+    } catch (err) {
+      throw err;
+    }
+  }
+
   static async getActorsById(id) {
     try {
       return (await TMDBMovieService.getCreditsById(id)).cast
@@ -75,13 +99,31 @@ export default class TMDBMovieController {
 
   static async getMovieDirectorById(id) {
     try {
-      return TMDBMovieService.getCreditsById(id).then(resp => {
+      return TMDBMovieService.getMovieCreditsById(id).then(resp => {
         return resp.crew.find(obj => obj.job === 'Director');
       })
     } catch (err) {
       throw err;
     }
   }
+
+  static async getTVActorsById(id) {
+    try {
+      return (await TMDBMovieService.getTVCreditsById(id)).cast
+    } catch (err) {
+      throw err;
+    }
+  }
+  static async getTVDirectorById(id) {
+    try {
+      return TMDBMovieService.getTVCreditsById(id).then(resp => {
+        return resp.crew.filter(obj => obj.jobs.find(job => job.job === 'Director'));
+      })
+    } catch (err) {
+      throw err;
+    }
+  }
+
 
   static async getTVSeries() {
     try {
