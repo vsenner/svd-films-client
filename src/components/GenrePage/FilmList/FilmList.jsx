@@ -22,7 +22,7 @@ const FilmList = () => {
          setCurrentPage(1)
          setRequestStatus(true)
          setFilmList([])
-    },[selectedGenres, params.type, params.sortMethod])
+    },[selectedGenres, params])
 
     useEffect(() => {
         const sortMethod = params.sortMethod + '.desc'

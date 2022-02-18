@@ -16,12 +16,9 @@ const GenreList = () => {
 
     const params = useParams()
 
-    useEffect(()=>{
+    useEffect(() => {
         clearSelectedGenres();
         setGenres([])
-    }, [params])
-
-    useEffect(() => {
         if (params.type==='movies'){
             TMDBMovieController.getAllMoviesGenres().then(data => {
                     setGenres(data)
