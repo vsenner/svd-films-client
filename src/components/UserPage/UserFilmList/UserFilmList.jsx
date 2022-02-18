@@ -13,7 +13,7 @@ const UserFilmList = ({films}) => {
           <div>date</div>
           {films[0].user_rating ? <div>my rating</div> : null}
         </div>
-        <ul className='film-list'>
+        <ul className='genres__film-list'>
           {films?.map((film, index) =>
             <UserFilm
               film={film}

@@ -18,6 +18,7 @@ const GenreList = () => {
 
     useEffect(()=>{
         clearSelectedGenres();
+        setGenres([])
     }, [params])
 
     useEffect(() => {
@@ -28,8 +29,8 @@ const GenreList = () => {
                 }
             )
         }
-        if(params.type==='series'){
-            TMDBMovieController.getAllSeriesGenres().then(data => {
+        if(params.type==='tvs'){
+            TMDBMovieController.getAllTVGenres().then(data => {
                     setGenres(data)
                     setGenresInColumn(Math.ceil(data.length / 3));
                 }
@@ -64,7 +65,7 @@ const GenreList = () => {
         setSelectedGenres([])
     }
 
-    return genres && genresInColumn ? (
+    return genres.length && genresInColumn ? (
         <div className="genre-list">
             <div className="container">
                 <div className="genre-list__flex">

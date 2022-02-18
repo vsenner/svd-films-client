@@ -1,12 +1,13 @@
 import React from 'react';
 import './FilmItem.scss'
+import {Link} from "react-router-dom";
 
-const FilmItem = ({poster_path,original_title,film_name}) => {
+const FilmItem = ({poster, film_name, film_id, film_type}) => {
   return (
-    <div className='film'>
-      <img src = {'https://image.tmdb.org/t/p/w185/'+poster_path} alt={original_title}/>
+    <Link className='genres__film' to={`/${film_type}/${film_id}`}>
+      <img src = {poster} alt={film_name}/>
       <p>{film_name}</p>
-    </div>
+    </Link>
   );
 };
 
