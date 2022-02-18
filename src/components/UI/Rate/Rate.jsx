@@ -1,17 +1,25 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import './Rate.scss'
 import Star from "./Star/Star";
+import {logDOM} from "@testing-library/react";
 
-const Rate = ({avgRating, action}) => {
+const Rate = ({avgRating, action, film_id, user_id, setUserFilmInfo}) => {
   const [ratingActive, setRatingActive] = useState({
     width: avgRating * 10,
     color: '#ffd300',
   })
 
+  useEffect(() => {
+    setRatingActive(prev => {
+      return {...prev, width: avgRating * 10}
+    })
+  }, [avgRating])
+
+
   const stars = useMemo(() => {
     return [...new Array(10)].map((_, i) =>
       <Star
-        onClick={() => action(i+1)}
+        onClick={() => action(i+1, setUserFilmInfo, film_id, user_id)}
         key={i}
         type="radio"
         className="rating__item"
@@ -20,7 +28,7 @@ const Rate = ({avgRating, action}) => {
           setRatingActive({color: 'cyan', width: (i + 1) * 10});
         }}
       />)
-  }, [action])
+  }, [action, film_id, setUserFilmInfo, user_id])
 
   const mouseLeaveHandler = () => {
     setRatingActive({color: '#ffd300', width: avgRating * 10})

@@ -5,7 +5,7 @@ export default class MovieController {
   static async getFavourite(user_id) {
     try {
       const addedFilms = await MovieService.getFavourite(user_id);
-      const detailedAddedFilms = addedFilms.map(film => TMDBMovieService.getById(film.id));
+      const detailedAddedFilms = addedFilms.map(film => TMDBMovieService.getMovieById(film.id));
       const films = await Promise.all(detailedAddedFilms);
       return films.map((film, index) => {
         return {
@@ -38,7 +38,7 @@ export default class MovieController {
   static async getLater(user_id) {
     try {
       const addedFilms = await MovieService.getLater(user_id);
-      const detailedAddedFilms = addedFilms.map(film => TMDBMovieService.getById(film.id));
+      const detailedAddedFilms = addedFilms.map(film => TMDBMovieService.getMovieById(film.id));
       const films = await Promise.all(detailedAddedFilms);
       return films.map((film, index) => {
         return {
@@ -72,7 +72,7 @@ export default class MovieController {
   static async getRated(user_id) {
     try {
       const addedFilms = await MovieService.getRated(user_id);
-      const detailedAddedFilms = addedFilms.map(film => TMDBMovieService.getById(film.id));
+      const detailedAddedFilms = addedFilms.map(film => TMDBMovieService.getMovieById(film.id));
       const films = await Promise.all(detailedAddedFilms);
       return films.map((film, index) => {
         return {

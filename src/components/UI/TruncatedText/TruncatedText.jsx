@@ -19,7 +19,7 @@ const TruncatedText = ({str, n = 150, path}) => {
 
   if (str.length <= n) return (<span>{str}</span>);
   return (
-    <span>
+    <div>
       {string}
       {string !== str ?
         path ?
@@ -40,7 +40,7 @@ const TruncatedText = ({str, n = 150, path}) => {
           className='show_more'>
           LESS
         </button>}
-    </span>
+    </div>
   );
 };
 

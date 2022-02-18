@@ -1,4 +1,12 @@
-.film{
+.genres__film{
   text-align: center;
-  margin-top: 40px;
+  img {
+    width: 100%;
+  }
+
+  &:hover {
+    p {
+      text-decoration: underline;
+    }
+  }
 }

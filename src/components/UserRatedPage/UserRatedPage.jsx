@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import MovieController from "../../controllers/movie-controller";
 import UserFilmList from "../UserPage/UserFilmList/UserFilmList";
 import {useSortAndFilter} from "../../hooks/useSort";
-import {useSelector} from "react-redux";
+import UserController from "../../controllers/user-controller";
 
 const ASCENDING = false;
 const DESCENDING = true;
@@ -12,16 +12,18 @@ const UserRatedPage = () => {
   const [filmList, setFilmList] = useState(null)
   const [sortMethod, setSortMethod] = useState({field: null, method: DESCENDING});
   const [filterMethod, setFilterMethod] = useState(null)
+  const [username, setUsername] = useState(null)
 
   const params = useParams();
 
   const sortedAndFilteredFilmList = useSortAndFilter(filmList, sortMethod, filterMethod);
 
-  const username = useSelector(state => state.user.username);
-
   useEffect(() => {
     MovieController.getRated(params.id).then(list => {
       setFilmList(list)
+    })
+    UserController.getUserInfo(params.id).then(user => {
+      setUsername(user.username);
     })
   }, [params.id])
 

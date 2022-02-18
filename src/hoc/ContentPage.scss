@@ -21,6 +21,10 @@ $fontColor2: #8c8c8c;
       margin: 60px 0;
     }
 
+    &__poster {
+      min-width: 30%;
+    }
+
     &__main {
       position: relative;
       z-index: 1;
