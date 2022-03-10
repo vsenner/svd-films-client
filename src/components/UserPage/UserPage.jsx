@@ -155,21 +155,21 @@ const UserPage = () => {
               to={`/user/${user_id}/movie/rated`}
               className="films-header__item"
             >
-              <div>{parseInt(user?.listsLength?.tv.rated + user?.listsLength?.movie.rated)}</div>
+              <div>{+user?.listsLength?.tv.rated + +user?.listsLength?.movie.rated}</div>
               rated
             </Link>
             <Link
               className="films-header__item"
               to={`/user/${user_id}/movie/favorite`}
             >
-              <div>{parseInt(user?.listsLength?.tv.favourite + user?.listsLength?.movie.favourite)}</div>
+              <div>{+user?.listsLength?.tv.favourite + +user?.listsLength?.movie.favourite}</div>
               favourite
             </Link>
             <Link
               to={`/user/${user_id}/movie/later`}
               className="films-header__item"
             >
-              <div>{parseInt(user?.listsLength?.tv.later + user?.listsLength?.movie.later)}</div>
+              <div>{+user?.listsLength?.tv.later + +user?.listsLength?.movie.later}</div>
               watch later
             </Link>
           </div>
