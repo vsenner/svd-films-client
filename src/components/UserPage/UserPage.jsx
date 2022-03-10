@@ -20,18 +20,19 @@ const UserPage = () => {
   const [image, setImage] = useState('')
 
   const router = useNavigate()
-  const params = useParams()
+  const {user_id} = useParams()
 
   useEffect(() => {
-    UserController.getUserInfo(params.id).then(userData => {
+    UserController.getUserInfo(user_id).then(userData => {
+      console.log('USER - ', userData);
       setUser(userData);
       setUsernameInput(userData.username);
     }).catch(err => console.log('UserPage 25 - ', err));
 
-    UserController.getUserImage(params.id).then(img => {
+    UserController.getUserImage(user_id).then(img => {
       setImage(img ? `${BASE64}, ${img}` : null);
     })
-  }, [params.id])
+  }, [user_id])
 
   const logout = async () => {
     await AuthController.logout();
@@ -47,8 +48,8 @@ const UserPage = () => {
         setError('Photo must be smaller than 2MB.')
         return;
       }
-      await UserController.changeUserImage(photo.current.files[0], params.id);
-      UserController.getUserImage(params.id).then(img => {
+      await UserController.changeUserImage(photo.current.files[0], user_id);
+      UserController.getUserImage(user_id).then(img => {
         setImage(img ? `${BASE64}, ${img}` : placeholderURL);
         dispatch({type: 'CHANGE_USER', payload: {compressedImage: img}})
       })
@@ -56,7 +57,7 @@ const UserPage = () => {
 
     if (usernameInput !== user.username) {
       try {
-        await UserController.changeUsername(usernameInput, params.id);
+        await UserController.changeUsername(usernameInput, user_id);
       } catch (err) {
         setError(err);
         username.current?.focus();
@@ -144,24 +145,24 @@ const UserPage = () => {
           </form>
           <div className="films-header">
             <Link
-              to={`/user/${params.id}/rated`}
+              to={`/user/${user_id}/movie/rated`}
               className="films-header__item"
             >
-              <div>{user?.listsLength?.rated}</div>
-              films
+              <div>{parseInt(user?.listsLength?.tv.rated + user?.listsLength?.movie.rated)}</div>
+              rated
             </Link>
             <Link
               className="films-header__item"
-              to={`/user/${params.id}/favourites`}
+              to={`/user/${user_id}/movie/favorite`}
             >
-              <div>{user?.listsLength?.favourite}</div>
-              favourite films
+              <div>{parseInt(user?.listsLength?.tv.favourite + user?.listsLength?.movie.favourite)}</div>
+              favourite
             </Link>
             <Link
-              to={`/user/${params.id}/later`}
+              to={`/user/${user_id}/movie/later`}
               className="films-header__item"
             >
-              <div>{user?.listsLength?.later}</div>
+              <div>{parseInt(user?.listsLength?.tv.later + user?.listsLength?.movie.later)}</div>
               watch later
             </Link>
           </div>

@@ -25,7 +25,7 @@ const FilmList = () => {
     useEffect(() => {
         const sortMethod = params.sortMethod + '.desc'
         if(requestStatus){
-            if (params.type === 'movies') {
+            if (params.type === 'movie') {
                 TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
                     id: 16,
                     select: false
@@ -37,7 +37,7 @@ const FilmList = () => {
                         }
                     )
             }
-            if (params.type === 'series') {
+            if (params.type === 'tv') {
                 TMDBMovieController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
                     .then((data) => {
                             setFilmList([...filmList, ...data.results])
@@ -80,9 +80,15 @@ const FilmList = () => {
                 {
                     filmList ? filmList.map(film =>
                         <div key={film.id}>
-                            <FilmItem poster_path={film.poster_path}
-                                      original_title={film.original_title}
-                                      film_name={params.type === 'series' || params.type === 'tv' ? film.name : film.title}/>
+                            <FilmItem
+                              poster_path={film.poster_path}
+                              original_title={film.original_title}
+                              name={
+                                params.type === 'series' || params.type === 'tv' ? film.name : film.title
+                              }
+                              id={film.id}
+                              type={params.type}
+                            />
 
                         </div>
                     ) : null

@@ -1,4 +1,5 @@
 import MovieController from "../controllers/movie-controller";
+import TVController from "../controllers/tv-controller";
 
 export const addFavourite = async (setUserFilmInfo, film_id, user_id) => {
   try {
@@ -36,12 +37,25 @@ export const removeLater = async (setUserFilmInfo, film_id, user_id) => {
   }
 }
 
-export const rateFilm = async (rating, setUserFilmInfo, film_id, user_id) => {
+export const rateFilm = async (rating, setUserMediaInfo, media_id, user_id, content_type, title) => {
+
   try {
-    await MovieController.addRated(film_id, rating, user_id);
-    setUserFilmInfo(prev => ({...prev, isRated: true, rating}));
+    switch (content_type) {
+      case 'movie': {
+        await MovieController.addRated(media_id, rating, user_id);
+        break;
+      }
+      case 'tv': {
+        console.log('THEREEEE')
+        await TVController.addRated(media_id, rating, user_id, title)
+        break;
+      }
+      default: return Error('Error Rating Media TYPE');
+    }
+
+    setUserMediaInfo(prev => ({...prev, isRated: true, rating}));
   } catch (err) {
-    console.log(err);
+    throw Error('Error Rating Media FETCH/SET');
   }
 }
 

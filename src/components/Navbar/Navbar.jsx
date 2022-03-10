@@ -54,10 +54,10 @@ const Navbar = () => {
               </Link>
             </div>
             <div className="navbar__categories">
-              <Link to='/genres/movies/popularity' className="navbar__link">
+              <Link to='/genres/movie/popularity' className="navbar__link">
                 Movies
               </Link>
-              <Link to='/genres/series/popularity' className="navbar__link">
+              <Link to='/genres/tv/popularity' className="navbar__link">
                 Series
               </Link>
               <Link to='/genres/cartoons/popularity' className="navbar__link">

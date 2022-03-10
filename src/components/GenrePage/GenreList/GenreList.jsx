@@ -21,14 +21,14 @@ const GenreList = () => {
     }, [params])
 
     useEffect(() => {
-        if (params.type==='movies'){
+        if (params.type==='movie'){
             TMDBMovieController.getAllMoviesGenres().then(data => {
                     setGenres(data)
                     setGenresInColumn(Math.ceil(data.length / 3));
                 }
             )
         }
-        if(params.type==='series'){
+        if(params.type==='tv'){
             TMDBMovieController.getAllSeriesGenres().then(data => {
                     setGenres(data)
                     setGenresInColumn(Math.ceil(data.length / 3));

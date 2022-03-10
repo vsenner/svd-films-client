@@ -1,9 +1,8 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import './Rate.scss'
 import Star from "./Star/Star";
-import {logDOM} from "@testing-library/react";
 
-const Rate = ({avgRating, action, film_id, user_id, setUserFilmInfo}) => {
+const Rate = ({avgRating, action, film_id, user_id, setUserFilmInfo,content_type, title}) => {
   const [ratingActive, setRatingActive] = useState({
     width: avgRating * 10,
     color: '#ffd300',
@@ -19,7 +18,7 @@ const Rate = ({avgRating, action, film_id, user_id, setUserFilmInfo}) => {
   const stars = useMemo(() => {
     return [...new Array(10)].map((_, i) =>
       <Star
-        onClick={() => action(i+1, setUserFilmInfo, film_id, user_id)}
+        onClick={() => action(i+1, setUserFilmInfo, film_id, user_id, content_type, title)}
         key={i}
         type="radio"
         className="rating__item"
