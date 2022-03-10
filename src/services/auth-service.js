@@ -1,7 +1,7 @@
 import $api from "../API/api";
 import axios from "axios";
 
-const BASE_PATH = '/unauthorized/user';
+const BASE_PATH = 'unauthorized/user';
 
 export default class AuthService {
   static async login(email, password) {

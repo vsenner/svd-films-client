@@ -25,9 +25,6 @@ const MoviePage = () => {
     })
   }, [params.id])
 
-
-
-
   return (
     <ContentPage content={film} director={director} actors={actors} content_type={'movie'}/>
   );

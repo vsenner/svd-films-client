@@ -44,6 +44,8 @@ const Navbar = () => {
 
   const user = useSelector(state => state?.user);
 
+  console.log(user)
+
   return (
       <div className='navbar'>
         <div className="container">
@@ -67,7 +69,6 @@ const Navbar = () => {
             <div className="navbar__wide-area">
               <LanguageDropDown/>
 
-              {/*TODO: Change to custom input*/}
               <form
                   onSubmit={e => {
                     e.preventDefault();
@@ -91,7 +92,7 @@ const Navbar = () => {
             <div className="navbar__profile">
               <Link to={user.isAuth ? `/user/${user.id}` : '/login'} className='navbar__profile-link'>
                 {user.isAuth ?
-                    <img src={user.photo} alt="user" className='navbar__profile-photo'/>
+                    <img src={`data:image/png;base64, ${user.compressedImage}`} alt="user" className='navbar__profile-photo'/>
                     :
                     <span className='navbar__profile-photo'>SIGN UP</span>}
               </Link>
