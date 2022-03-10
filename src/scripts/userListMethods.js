@@ -1,36 +1,64 @@
 import MovieController from "../controllers/movie-controller";
 import TVController from "../controllers/tv-controller";
 
-export const addFavourite = async (setUserFilmInfo, film_id, user_id) => {
+export const addFavourite = async (setUserFilmInfo, film_id, user_id, content_type) => {
   try {
-    await MovieController.addFavourite(film_id, user_id);
+    switch (content_type) {
+      case 'tv':
+        await TVController.addFavourite(film_id, user_id);
+        break;
+      default:
+        await MovieController.addFavourite(film_id, user_id);
+    }
+
     setUserFilmInfo(prev => ({...prev, isFavourite: true}));
   } catch (err) {
     console.log(err);
   }
 }
 
-export const removeFavourite = async (setUserFilmInfo, film_id, user_id) => {
+export const removeFavourite = async (setUserFilmInfo, film_id, user_id, content_type) => {
   try {
-    await MovieController.removeFavourite(film_id, user_id);
+    switch (content_type) {
+      case 'tv':
+        await TVController.removeFavourite(film_id, user_id);
+        break;
+      default:
+        await MovieController.removeFavourite(film_id, user_id);
+    }
+
     setUserFilmInfo(prev => ({...prev, isFavourite: false}));
   } catch (err) {
     console.log(err);
   }
 }
 
-export const addLater = async (setUserFilmInfo, film_id, user_id) => {
+export const addLater = async (setUserFilmInfo, film_id, user_id, content_type) => {
   try {
-    await MovieController.addLater(film_id, user_id);
+    switch (content_type) {
+      case 'tv':
+        await TVController.addLater(film_id, user_id);
+        break;
+      default:
+        await MovieController.addLater(film_id, user_id);
+    }
+
     setUserFilmInfo(prev => ({...prev, isLater: true}));
   } catch (err) {
     console.log(err);
   }
 }
 
-export const removeLater = async (setUserFilmInfo, film_id, user_id) => {
+export const removeLater = async (setUserFilmInfo, film_id, user_id, content_type) => {
   try {
-    await MovieController.removeLater(film_id, user_id);
+    switch (content_type) {
+      case 'tv':
+        await TVController.removeLater(film_id, user_id);
+        break;
+      default:
+        await MovieController.removeLater(film_id, user_id);
+    }
+
     setUserFilmInfo(prev => ({...prev, isLater: false}));
   } catch (err) {
     console.log(err);
@@ -38,19 +66,13 @@ export const removeLater = async (setUserFilmInfo, film_id, user_id) => {
 }
 
 export const rateFilm = async (rating, setUserMediaInfo, media_id, user_id, content_type, title) => {
-
   try {
     switch (content_type) {
-      case 'movie': {
-        await MovieController.addRated(media_id, rating, user_id);
-        break;
-      }
-      case 'tv': {
-        console.log('THEREEEE')
+      case 'tv':
         await TVController.addRated(media_id, rating, user_id, title)
         break;
-      }
-      default: return Error('Error Rating Media TYPE');
+      default:
+        await MovieController.addRated(media_id, rating, user_id);
     }
 
     setUserMediaInfo(prev => ({...prev, isRated: true, rating}));
@@ -59,9 +81,16 @@ export const rateFilm = async (rating, setUserMediaInfo, media_id, user_id, cont
   }
 }
 
-export const unRateFilm = async (setUserFilmInfo, film_id, user_id) => {
+export const unRateFilm = async (setUserFilmInfo, film_id, user_id, content_type) => {
   try {
-    await MovieController.removeRated(film_id, user_id);
+    switch (content_type) {
+      case 'tv':
+        await TVController.removeRated(film_id, user_id);
+        break;
+      default:
+        await MovieController.removeRated(film_id, user_id);
+    }
+
     setUserFilmInfo(prev => ({...prev, isRated: false, rating: null}));
   } catch (err) {
     console.log(err);

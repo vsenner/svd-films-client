@@ -23,7 +23,7 @@ const Navbar = () => {
 
   useEffect(() => {
     if (searchQuery.length > 1) {
-      TMDBMovieController.search(searchQuery).then(data => {
+      TMDBMovieController.navbarSearch(searchQuery).then(data => {
         setFilms(data)
       })
     } else {
@@ -43,6 +43,8 @@ const Navbar = () => {
   const router = useNavigate()
 
   const user = useSelector(state => state?.user);
+
+  console.log(user)
 
   return (
       <div className='navbar'>
@@ -67,11 +69,10 @@ const Navbar = () => {
             <div className="navbar__wide-area">
               <LanguageDropDown/>
 
-              {/*TODO: Change to custom input*/}
               <form
                   onSubmit={e => {
                     e.preventDefault();
-                    router(`/genres/search/${searchInput.current.value}`)
+                    router(`/genres/search/${searchInput.current.value}/popularity`)
                   }}>
                 <label className={'navbar__search'}>
                   <img src={searchIcon} alt="search"/>
@@ -91,7 +92,7 @@ const Navbar = () => {
             <div className="navbar__profile">
               <Link to={user.isAuth ? `/user/${user.id}` : '/login'} className='navbar__profile-link'>
                 {user.isAuth ?
-                    <img src={user.photo} alt="user" className='navbar__profile-photo'/>
+                    <img src={`data:image/png;base64, ${user.compressedImage}`} alt="user" className='navbar__profile-photo'/>
                     :
                     <span className='navbar__profile-photo'>SIGN UP</span>}
               </Link>

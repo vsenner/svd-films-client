@@ -118,7 +118,7 @@ const UserPage = () => {
                     </h1>
                   }
                   {
-                    +params.id === loggedUser.id ?
+                    +user_id === loggedUser.id ?
                       <Button
                         type='button'
                         onClick={(e) => {
@@ -174,7 +174,7 @@ const UserPage = () => {
             </Link>
           </div>
           {
-            +params.id === loggedUser.id ?
+            +user_id === loggedUser.id ?
               <Button onClick={logout} className='logout__btn'>
                 Logout
               </Button>

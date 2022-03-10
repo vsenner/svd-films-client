@@ -5,10 +5,8 @@ export default class TVController {
 
   static async getTVList(id_list) {
     const tvs = await Promise.allSettled(id_list.map(tv => TMDBTVService.getTVById(tv.id)));
-    console.log('TVS')
     return tvs.reduce((prev, tv, index) => {
       if (tv.status === 'fulfilled') {
-        console.log('TV - ', tv.value);
         return [...prev, {
           ...id_list[index],
           title: tv.value.name,
@@ -85,9 +83,9 @@ export default class TVController {
     }
   }
 
-  static async getUserTVInfo(film_id, user_id) {
+  static async getUserTVInfo(tv_id, user_id) {
     try {
-      return await TVService.getUserTVInfo(film_id, user_id);
+      return await TVService.getUserTVInfo(tv_id, user_id);
     } catch (err) {
       throw err;
     }

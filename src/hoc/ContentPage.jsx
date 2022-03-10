@@ -9,6 +9,7 @@ import TruncatedText from "../components/UI/TruncatedText/TruncatedText";
 import Rate from "../components/UI/Rate/Rate";
 import './ContentPage.scss'
 import {useNavigate} from "react-router";
+import TVController from "../controllers/tv-controller";
 
 const minsToHours = (mins) => `${Math.floor(mins / 60)}h ${mins % 60}m`;
 
@@ -27,11 +28,19 @@ const ContentPage = ({content, director, actors, content_type}) => {
 
   useEffect(() => {
     if (user.id) {
-      MovieController.getUserFilmInfo(params.id, user.id).then(data => {
-        setUserFilmInfo(data)
-      })
+      if(content_type === 'movie') {
+        MovieController.getUserFilmInfo(params.id, user.id).then(data => {
+          setUserFilmInfo(data)
+        })
+      }
+      if(content_type === 'tv') {
+        TVController.getUserTVInfo(params.id, user.id).then(data => {
+          setUserFilmInfo(data)
+        })
+      }
+
     }
-  }, [params.id, user.id])
+  }, [params.id, user.id, content_type])
 
   const router = useNavigate()
 
@@ -78,18 +87,19 @@ const ContentPage = ({content, director, actors, content_type}) => {
                 <div className="info__row">
                   <button className='info__btn'>
                     {userFilmInfo?.isFavourite ?
-                      <i onClick={() => removeFavourite(setUserFilmInfo, content.id, user.id)}
+                      <i onClick={() => removeFavourite(setUserFilmInfo, content.id, user.id, content_type)}
                          className="fas fa-heart"/>
                       :
                       <i
-                        onClick={user.isAuth ? () => addFavourite(setUserFilmInfo, content.id, user.id) : redirectToLogin}
-                        className="far fa-heart"/>}
+                        onClick={user.isAuth ? () => addFavourite(setUserFilmInfo, content.id, user.id, content_type) : redirectToLogin}
+                        className="far fa-heart"/>
+                    }
                   </button>
                   <button className='info__btn'>
                     {userFilmInfo?.isLater ?
-                      <i onClick={() => removeLater(setUserFilmInfo, content.id, user.id)} className="fas fa-bookmark"/>
+                      <i onClick={() => removeLater(setUserFilmInfo, content.id, user.id, content_type)} className="fas fa-bookmark"/>
                       :
-                      <i onClick={user.isAuth ? () => addLater(setUserFilmInfo, content.id, user.id) : redirectToLogin}
+                      <i onClick={user.isAuth ? () => addLater(setUserFilmInfo, content.id, user.id, content_type) : redirectToLogin}
                          className="far fa-bookmark"/>}
                   </button>
                 </div>

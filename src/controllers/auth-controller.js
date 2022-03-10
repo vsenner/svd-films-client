@@ -40,7 +40,7 @@ export default class AuthController {
       localStorage.setItem('token', data.accessToken);
       store.dispatch({type: 'CHANGE_USER', payload: data.user});
     } catch (err) {
-      store.dispatch({type: 'CHANGE_USER', payload: {isAuth: false}});
+      store.dispatch({type: 'LOGOUT'});
     }
   }
 }

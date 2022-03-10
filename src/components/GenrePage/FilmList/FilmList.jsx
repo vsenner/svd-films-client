@@ -58,8 +58,18 @@ const FilmList = () => {
                         }
                     )
             }
+          if (params.query) {
+            TMDBMovieController.search(params.query, params.sortMethod, currentPage).then(data => {
+              console.log(data)
+              if(data.total_pages >= currentPage) {
+                setFilmList([...filmList, ...data.results]);
+                setCurrentPage(prev => prev + 1)
+              }
+              setRequestStatus(false)
+            })
+          }
         }
-    }, [selectedGenres, params.type, params.sortMethod,requestStatus])
+    }, [selectedGenres, params.type, params.sortMethod,requestStatus, params.query])
 
 
     useEffect(() => {
@@ -87,7 +97,7 @@ const FilmList = () => {
                                 params.type === 'series' || params.type === 'tv' ? film.name : film.title
                               }
                               id={film.id}
-                              type={params.type}
+                              type={film.title ? 'movie' : 'tv'}
                             />
 
                         </div>

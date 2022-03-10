@@ -4,6 +4,8 @@ import UserMediaItem from "./UserMediaItem";
 
 const UserMediaList = ({list, media_type}) => {
 
+  console.log(list)
+
   return (
     list?.length ?
       <div className="user__film-list">

@@ -12,8 +12,12 @@ const UserMediaItem = ({media_item, num, id, type}) => {
       <div className='film-list__date'>
         {mediaTime.toLocaleDateString().replace(/(\/)/g, '.')}
       </div>
-      {media_item.user_rating ? <div className='film-list__rating'>{media_item.user_rating}</div> : null}
       <div className='film-list__rating'>{media_item.rating}</div>
+      {media_item.user_rating ?
+        <div className='film-list__rating'>{media_item.user_rating}</div>
+        :
+        null
+      }
     </Link>
   );
 };

@@ -29,7 +29,7 @@ const GenreList = () => {
             )
         }
         if(params.type==='tv'){
-            TMDBMovieController.getAllSeriesGenres().then(data => {
+            TMDBMovieController.getAllTVGenres().then(data => {
                     setGenres(data)
                     setGenresInColumn(Math.ceil(data.length / 3));
                 }
