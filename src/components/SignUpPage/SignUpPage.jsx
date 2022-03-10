@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import './SignUpPage.scss'
 import {Link} from "react-router-dom";
 import Input from "../UI/Input/Input";
 import Button from "../UI/Button/Button";
@@ -34,14 +33,14 @@ const SignUpPage = () => {
         :
         <form className="login">
           <h1 className='login__title'>Sign up</h1>
-          <span className='login__label'>Username</span>
+          <span className='login__label'>Email</span>
           <label>
             <i className="far fa-user"/>
             <Input
               setValue={setEmail}
               value={email}
               type="text"
-              placeholder='Type your username'
+              placeholder='Type your email'
             />
           </label>
 

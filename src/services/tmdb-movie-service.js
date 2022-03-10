@@ -27,8 +27,8 @@ export default class TMDBMovieService {
     return (await instance.get('/genre/tv/list')).data
   }
 
-  static async search(query) {
-    return (await instance.get(`search/multi?language=en-US&query=${query}&page=1&include_adult=true`)).data
+  static async search(query, page = 1) {
+    return (await instance.get(`search/multi?language=en-US&query=${query}&page=${page}&include_adult=true`)).data
   }
 
   static async getMovieCreditsById(id) {
