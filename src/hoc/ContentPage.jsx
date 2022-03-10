@@ -173,7 +173,9 @@ const ContentPage = ({content, director, actors, content_type}) => {
                 <h2>Film Rating</h2>
                 <div className="rating__row">
                   <Rate avgRating={content.vote_average}
+                        content_type={content_type}
                         action={user.isAuth ? rateFilm : redirectToLogin}
+                        title={content[title]}
                         setUserFilmInfo={setUserFilmInfo}
                         film_id={content.id}
                         user_id={user.id}

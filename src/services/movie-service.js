@@ -32,8 +32,8 @@ export default class MovieService {
     return (await $api.get(`${BASE_PATH}/${user_id}/rated`, {params: {limit, page}})).data;
   }
 
-  static async addRated(film_id, rating, user_id) {
-    return (await $api.post(`${BASE_PATH}/rated/add`, {film_id, rating, user_id})).data;
+  static async addRated(film_id, rating, user_id, title) {
+    return (await $api.post(`${BASE_PATH}/rated/add`, {film_id, rating, user_id, title})).data;
   }
 
   static async removeRated(film_id, user_id) {

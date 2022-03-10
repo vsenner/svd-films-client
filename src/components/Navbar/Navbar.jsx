@@ -10,7 +10,6 @@ import searchIcon from '../../images/search.svg'
 import {useSelector} from "react-redux";
 import TMDBMovieController from "../../controllers/tmdb-movie-controller";
 
-const placeholderURL = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=';
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -24,7 +23,7 @@ const Navbar = () => {
 
   useEffect(() => {
     if (searchQuery.length > 1) {
-      TMDBMovieController.navbarSearch(searchQuery).then(data => {
+      TMDBMovieController.search(searchQuery).then(data => {
         setFilms(data)
       })
     } else {
@@ -45,8 +44,6 @@ const Navbar = () => {
 
   const user = useSelector(state => state?.user);
 
-  console.log(user)
-
   return (
       <div className='navbar'>
         <div className="container">
@@ -57,10 +54,10 @@ const Navbar = () => {
               </Link>
             </div>
             <div className="navbar__categories">
-              <Link to='/genres/movies/popularity' className="navbar__link">
+              <Link to='/genres/movie/popularity' className="navbar__link">
                 Movies
               </Link>
-              <Link to='/genres/tvs/popularity' className="navbar__link">
+              <Link to='/genres/tv/popularity' className="navbar__link">
                 Series
               </Link>
               <Link to='/genres/cartoons/popularity' className="navbar__link">
@@ -74,7 +71,7 @@ const Navbar = () => {
               <form
                   onSubmit={e => {
                     e.preventDefault();
-                    router(`/genres/search/${searchInput.current.value}/popularity`)
+                    router(`/genres/search/${searchInput.current.value}`)
                   }}>
                 <label className={'navbar__search'}>
                   <img src={searchIcon} alt="search"/>
@@ -94,12 +91,9 @@ const Navbar = () => {
             <div className="navbar__profile">
               <Link to={user.isAuth ? `/user/${user.id}` : '/login'} className='navbar__profile-link'>
                 {user.isAuth ?
-                    <img src={user.compressedImage ?
-                        `data:image/png;base64,${user.compressedImage}` : placeholderURL}
-                         alt="user"
-                         className='navbar__profile-photo'/>
+                    <img src={user.photo} alt="user" className='navbar__profile-photo'/>
                     :
-                    <span className='navbar__profile-placeholder'>SIGN UP</span>}
+                    <span className='navbar__profile-photo'>SIGN UP</span>}
               </Link>
             </div>
           </div>
