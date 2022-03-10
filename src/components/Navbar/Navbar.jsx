@@ -23,7 +23,7 @@ const Navbar = () => {
 
   useEffect(() => {
     if (searchQuery.length > 1) {
-      TMDBMovieController.search(searchQuery).then(data => {
+      TMDBMovieController.navbarSearch(searchQuery).then(data => {
         setFilms(data)
       })
     } else {
@@ -72,7 +72,7 @@ const Navbar = () => {
               <form
                   onSubmit={e => {
                     e.preventDefault();
-                    router(`/genres/search/${searchInput.current.value}`)
+                    router(`/genres/search/${searchInput.current.value}/popularity`)
                   }}>
                 <label className={'navbar__search'}>
                   <img src={searchIcon} alt="search"/>
