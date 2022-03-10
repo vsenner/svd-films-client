@@ -3,7 +3,7 @@ import MovieController from "../controllers/movie-controller";
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import {getImage} from "../UI/getImage";
-import {addFavourite, addLater, rateFilm, removeFavourite, removeLater, unRateFilm} from "../hooks/userListMethods";
+import {addFavourite, addLater, rateFilm, removeFavourite, removeLater, unRateFilm} from "../scripts/userListMethods";
 import ActorList from "../components/MoviePage/ActorList/ActorList";
 import TruncatedText from "../components/UI/TruncatedText/TruncatedText";
 import Rate from "../components/UI/Rate/Rate";

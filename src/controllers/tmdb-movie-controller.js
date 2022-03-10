@@ -36,15 +36,7 @@ export default class TMDBMovieController {
     }
   }
 
-  static async getAllGenres() {
-    try {
-      return (await TMDBMovieService.getAllGenres())
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  static async getAllSeriesGenres() {
+  static async getAllTVGenres() {
     try {
       const bannedGenreIds = [16, 10767, 10763, 10764]
       return TMDBMovieService.getAllSeriesGenres().then((data)=>{
@@ -66,15 +58,29 @@ export default class TMDBMovieController {
     }
   }
 
-  static async search(query) {
+  static async navbarSearch(query) {
     try {
       return TMDBMovieService.search(query).then(response => {
         return response.results.filter(elem => elem.media_type === 'movie' || elem.media_type === 'tv')
             .sort((a, b) => {
-              return a.popularity - b.popularity
+              return b.popularity - a.popularity
             })
-            .reverse()
             .slice(0, 4)
+      })
+    } catch (err) {
+      throw err
+    }
+  }
+
+  static async search(query, sortMethod, page) {
+    try {
+      console.log(sortMethod);
+      return TMDBMovieService.search(query, page).then(data => {
+        data.results = data.results.filter(elem => elem.media_type === 'movie' || elem.media_type === 'tv')
+          .sort((a, b) => {
+            return b[sortMethod] - a[sortMethod]
+          })
+        return data;
       })
     } catch (err) {
       throw err
@@ -84,14 +90,6 @@ export default class TMDBMovieController {
   static async getMovieActorsById(id) {
     try {
       return (await TMDBMovieService.getMovieCreditsById(id)).cast
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  static async getActorsById(id) {
-    try {
-      return (await TMDBMovieService.getCreditsById(id)).cast
     } catch (err) {
       throw err;
     }

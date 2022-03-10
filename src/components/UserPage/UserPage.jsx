@@ -5,7 +5,7 @@ import AuthController from "../../controllers/auth-controller";
 import {useNavigate} from "react-router";
 import {Link, useParams} from "react-router-dom";
 import UserController from "../../controllers/user-controller";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 
 const placeholderURL = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=';
@@ -75,6 +75,7 @@ const UserPage = () => {
   const username = useRef();
   const photo = useRef();
 
+  const loggedUser = useSelector(state => state.user)
 
   return (
     <div className='user-page'>
@@ -116,29 +117,35 @@ const UserPage = () => {
                       {user?.username}
                     </h1>
                   }
-                  <Button
-                    type='button'
-                    onClick={(e) => {
-                      if (editing) {
-                        changeUsername(e);
-                      } else {
-                        setEditing(!editing)
-                      }
-                    }}
-                    className='user__edit-btn'
-                  >
-                    {editing ?
-                      <div>
-                        <i className="fas fa-edit"/>
-                        Submit
-                      </div>
+                  {
+                    +params.id === loggedUser.id ?
+                      <Button
+                        type='button'
+                        onClick={(e) => {
+                          if (editing) {
+                            changeUsername(e);
+                          } else {
+                            setEditing(!editing)
+                          }
+                        }}
+                        className='user__edit-btn'
+                      >
+                        {
+                          editing ?
+                            <div>
+                              <i className="fas fa-edit"/>
+                              Submit
+                            </div>
+                            :
+                            <div>
+                              <i className="fas fa-edit"/>
+                              Edit
+                            </div>
+                        }
+                      </Button>
                       :
-                      <div>
-                        <i className="fas fa-edit"/>
-                        Edit
-                      </div>
-                    }
-                  </Button>
+                      null
+                  }
                 </div>
               </div>
             </div>
@@ -166,9 +173,14 @@ const UserPage = () => {
               watch later
             </Link>
           </div>
-          <Button onClick={logout} className='logout__btn'>
-            Logout
-          </Button>
+          {
+            +params.id === loggedUser.id ?
+              <Button onClick={logout} className='logout__btn'>
+                Logout
+              </Button>
+              :
+              null
+          }
         </div>
       </div>
     </div>
