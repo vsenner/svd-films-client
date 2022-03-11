@@ -1,13 +1,13 @@
 import './GenrePage.scss'
 import GenreList from "./GenreList/GenreList";
-import FilmList from "./FilmList/FilmList";
+import MediaList from "./MediaList/MediaList";
 
 const GenrePage = () => {
 
   return (
     <div>
       <GenreList />
-      <FilmList />
+      <MediaList />
     </div>
   );
 };

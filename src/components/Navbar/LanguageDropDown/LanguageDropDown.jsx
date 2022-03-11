@@ -9,10 +9,10 @@ const languages = [
 
 const LanguageDropDown = () => {
   const selectedLang = useMemo(() => {
-      const clientLanguage = localStorage.getItem('lang');
-      return languages.find(lang => lang.shortname === clientLanguage) ? clientLanguage : 'EN'
+    const clientLanguage = localStorage.getItem('lang');
+    return languages.find(lang => lang.shortname === clientLanguage) ? clientLanguage : 'EN'
     // eslint-disable-next-line
-    }, [localStorage.lang])
+  }, [localStorage.lang])
   const [showDropDown, setShowDropDown] = useState(false)
 
   useEffect(() => {
@@ -21,9 +21,7 @@ const LanguageDropDown = () => {
         setShowDropDown(false);
       }
     }
-
     document.addEventListener('click', e => closeDropDown(e));
-
     return () => {
       document.removeEventListener('click', e => closeDropDown(e));
     }

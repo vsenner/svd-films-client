@@ -6,9 +6,7 @@ import {useNavigate} from "react-router";
 import {Link, useParams} from "react-router-dom";
 import UserController from "../../controllers/user-controller";
 import {useDispatch, useSelector} from "react-redux";
-
-
-const placeholderURL = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=';
+import {imageHandler, nicknameHandler} from "./utils";
 
 const BASE64 = 'data:image/jpg;base64'
 
@@ -24,10 +22,9 @@ const UserPage = () => {
 
   useEffect(() => {
     UserController.getUserInfo(user_id).then(userData => {
-      console.log('USER - ', userData);
       setUser(userData);
       setUsernameInput(userData.username);
-    }).catch(err => console.log('UserPage 25 - ', err));
+    }).catch(err => console.log(err));
 
     UserController.getUserImage(user_id).then(img => {
       setImage(img ? `${BASE64}, ${img}` : null);
@@ -41,29 +38,28 @@ const UserPage = () => {
 
   const dispatch = useDispatch();
 
-  const changeUsername = async (e) => {
+  const username = useRef();
+  const imageRef = useRef();
+
+  const loggedUser = useSelector(state => state.user)
+
+
+  const formSubmit = async (e) => {
     e.preventDefault();
-    if (photo.current?.files.length) {
-      if (photo.current.files[0].size > 2000000) {
-        setError('Photo must be smaller than 2MB.')
-        return;
-      }
-      await UserController.changeUserImage(photo.current.files[0], user_id);
-      UserController.getUserImage(user_id).then(img => {
-        setImage(img ? `${BASE64}, ${img}` : placeholderURL);
-        dispatch({type: 'CHANGE_USER', payload: {compressedImage: img}})
-      })
+
+    try {
+      await imageHandler(imageRef.current, setImage, user_id, dispatch);
+    } catch (err) {
+      setError(err)
+      return;
     }
 
-    if (usernameInput !== user.username) {
-      try {
-        await UserController.changeUsername(usernameInput, user_id);
-      } catch (err) {
-        setError(err);
-        username.current?.focus();
-        return;
-      }
-      setUser(prev => ({...prev, username: usernameInput}));
+    try {
+      await nicknameHandler(usernameInput, user, setUser, user_id);
+    } catch (err) {
+      setError(err);
+      username?.current?.focus();
+      return;
     }
 
     if (error) {
@@ -72,24 +68,19 @@ const UserPage = () => {
     setEditing(false);
   }
 
-  const username = useRef();
-  const photo = useRef();
-
-  const loggedUser = useSelector(state => state.user)
-
   return (
     <div className='user-page'>
       <div className="container">
         <div className="user">
           <form
-            onSubmit={changeUsername}
+            onSubmit={formSubmit}
           >
             <div className="user__row">
               <input
                 accept='image/*'
                 type="file"
                 id='user__file'
-                ref={photo}
+                ref={imageRef}
               />
               {editing ?
                 <label htmlFor='user__file' className={`user__img ${editing ? 'editing' : ''}`}>
@@ -123,7 +114,7 @@ const UserPage = () => {
                         type='button'
                         onClick={(e) => {
                           if (editing) {
-                            changeUsername(e);
+                            formSubmit(e);
                           } else {
                             setEditing(!editing)
                           }

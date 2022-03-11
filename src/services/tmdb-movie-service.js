@@ -31,10 +31,6 @@ export default class TMDBMovieService {
     return (await instance.get(`search/multi?language=en-US&query=${query}&page=${page}&include_adult=true`)).data
   }
 
-  static async getMovieCreditsById(id) {
-    return (await instance.get(`/movie/${id}/credits`)).data
-  }
-
   static async getTVCreditsById(id) {
     return (await instance.get(`/tv/${id}/aggregate_credits`)).data
   }

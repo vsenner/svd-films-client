@@ -1,27 +1,26 @@
-import '../../hoc/ContentPage.scss';
+import '../../hoc/ContentPage/ContentPage.scss';
 import React, {useEffect, useState} from 'react';
 import TMDBMovieController from "../../controllers/tmdb-movie-controller";
 import {useParams} from "react-router-dom";
-import ContentPage from "../../hoc/ContentPage";
+import ContentPage from "../../hoc/ContentPage/ContentPage";
 
 const TvPage = () => {
-  const params = useParams()
+  const {id} = useParams()
   const [TV, setTV] = useState(null);
   const [actors, setActors] = useState(null)
   const [director, setDirector] = useState(null)
 
   useEffect(() => {
-    TMDBMovieController.getTVById(params.id).then((data) => {
+    TMDBMovieController.getTVById(id).then((data) => {
       setTV(data);
     })
-    TMDBMovieController.getTVActorsById(params.id).then((actors) => {
+    TMDBMovieController.getTVActorsById(id).then((actors) => {
       setActors(actors)
     })
-    TMDBMovieController.getTVDirectorById(params.id).then((director) => {
-      console.log(director, 'director')
+    TMDBMovieController.getTVDirectorById(id).then((director) => {
       setDirector(director)
     })
-  }, [params.id])
+  }, [id])
 
 
   return (
