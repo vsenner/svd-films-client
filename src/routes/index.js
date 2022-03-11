@@ -2,16 +2,16 @@ import MainPage from "../components/MainPage/MainPage";
 import GenrePage from "../components/GenrePage/GenrePage";
 import MoviePage from "../components/MoviePage/MoviePage";
 import UserPage from "../components/UserPage/UserPage";
-import LoginPage from "../components/LoginPage/LoginPage";
 import SignUpPage from "../components/SignUpPage/SignUpPage";
 import React from "react";
 import TVPage from "../components/TVPage/TVPage";
 import IndividualMediaPage from "../components/IndividualMediaPage/IndividualMediaPage";
+import SignInPage from "../components/SignInPage/SignInPage";
 
 const allAccessRoutes = [
   {path: '/' , component: <MainPage/>},
-  {path: '/genres/:type/:sortMethod' , component: <GenrePage/>},
-  {path: '/genres/search/:query/:sortMethod' , component: <GenrePage/>},
+  {path: '/genres/:media_type/:sort_method' , component: <GenrePage/>},
+  {path: '/genres/search/:query/:sort_method' , component: <GenrePage/>},
   {path: '/movie/:id' , component: <MoviePage/>},
   {path: '/tv/:id' , component: <TVPage/>},
 ]
@@ -22,6 +22,6 @@ export const privateRoutes = [
 ].concat(allAccessRoutes)
 
 export const publicRoutes = [
-  {path: '/login' , component:  <LoginPage/>},
+  {path: '/login' , component:  <SignInPage/>},
   {path: '/signup' , component: <SignUpPage/>},
 ].concat(allAccessRoutes)

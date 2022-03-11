@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import './FilmList.scss'
+import './MediaList.scss'
 import TMDBMovieController from "../../../controllers/tmdb-movie-controller";
 import {Link, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
-import FilmItem from './FilmItem/FilmItem'
+import MediaItem from './MediaItem/MediaItem'
 import UpButton from "../../UI/UpButton/UpButton";
 
-const FilmList = () => {
+const MediaList = () => {
     const [filmList, setFilmList] = useState([])
-    const params = useParams()
     const selectedGenres = useSelector((state) => state.movies.genres)
     const [currentPage, setCurrentPage] = useState(1);
     const [requestStatus, setRequestStatus] = useState(true);
@@ -16,16 +15,18 @@ const FilmList = () => {
         if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 200) setRequestStatus(true)
     };
 
+  const {media_type, query, sort_method} = useParams()
+
     useEffect(()=>{
          setCurrentPage(1)
          setRequestStatus(true)
          setFilmList([])
-    },[selectedGenres, params.type, params.sortMethod])
+    },[selectedGenres, media_type, query, sort_method])
 
     useEffect(() => {
-        const sortMethod = params.sortMethod + '.desc'
+        const sortMethod = sort_method + '.desc'
         if(requestStatus){
-            if (params.type === 'movie') {
+            if (media_type === 'movie') {
                 TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
                     id: 16,
                     select: false
@@ -37,7 +38,7 @@ const FilmList = () => {
                         }
                     )
             }
-            if (params.type === 'tv') {
+            if (media_type === 'tv') {
                 TMDBMovieController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
                     .then((data) => {
                             setFilmList([...filmList, ...data.results])
@@ -46,7 +47,7 @@ const FilmList = () => {
                         }
                     )
             }
-            if (params.type === 'cartoons') {
+            if (media_type === 'cartoons') {
                 TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
                     id: 16,
                     select: true
@@ -58,8 +59,8 @@ const FilmList = () => {
                         }
                     )
             }
-          if (params.query) {
-            TMDBMovieController.search(params.query, params.sortMethod, currentPage).then(data => {
+          if (query) {
+            TMDBMovieController.search(query, sort_method, currentPage).then(data => {
               console.log(data)
               if(data.total_pages >= currentPage) {
                 setFilmList([...filmList, ...data.results]);
@@ -69,7 +70,7 @@ const FilmList = () => {
             })
           }
         }
-    }, [selectedGenres, params.type, params.sortMethod,requestStatus, params.query])
+    }, [selectedGenres, media_type, sort_method,requestStatus, query, currentPage, filmList])
 
 
     useEffect(() => {
@@ -80,29 +81,31 @@ const FilmList = () => {
     }, [])
 
     return (
-        <div>
-            <div className='buttons'>
-                <Link to={`/genres/${params.type}/popularity`}>Most popular</Link>
-                <Link to={`/genres/${params.type}/vote_average`}>Best rated</Link>
-                <Link to={`/genres/${params.type}/primary_release_date`}>Release date</Link>
-            </div>
-            <div className='filmGrid'>
+        <div className='media-list'>
+            <div className="container">
+              <div className='buttons'>
+                <Link to={`/genres/${media_type ?? `search/${query}`}/popularity`}>Most popular</Link>
+                <Link to={`/genres/${media_type ?? `search/${query}`}/vote_average`}>Best rated</Link>
+                <Link to={`/genres/${media_type ?? `search/${query}`}/primary_release_date`}>Release date</Link>
+              </div>
+              <div className='film-grid'>
                 {
-                    filmList ? filmList.map(film =>
-                        <div key={film.id}>
-                            <FilmItem
-                              poster_path={film.poster_path}
-                              original_title={film.original_title}
-                              name={
-                                params.type === 'series' || params.type === 'tv' ? film.name : film.title
-                              }
-                              id={film.id}
-                              type={film.title ? 'movie' : 'tv'}
-                            />
+                  filmList ? filmList.map(film =>
+                    <div key={film.id}>
+                      <MediaItem
+                        poster_path={film.poster_path}
+                        original_title={film.original_title}
+                        name={
+                          media_type === 'series' || media_type === 'tv' ? film.name : film.title
+                        }
+                        id={film.id}
+                        type={film.title ? 'movie' : 'tv'}
+                      />
 
-                        </div>
-                    ) : null
+                    </div>
+                  ) : null
                 }
+              </div>
             </div>
             <UpButton/>
         </div>
@@ -110,4 +113,4 @@ const FilmList = () => {
     );
 };
 
-export default FilmList;
+export default MediaList;

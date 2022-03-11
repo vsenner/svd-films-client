@@ -27,7 +27,7 @@ const Rate = ({avgRating, action, film_id, user_id, setUserFilmInfo,content_type
           setRatingActive({color: 'cyan', width: (i + 1) * 10});
         }}
       />)
-  }, [action, film_id, setUserFilmInfo, user_id])
+  }, [action, film_id, setUserFilmInfo, user_id, content_type, title])
 
   const mouseLeaveHandler = () => {
     setRatingActive({color: '#ffd300', width: avgRating * 10})

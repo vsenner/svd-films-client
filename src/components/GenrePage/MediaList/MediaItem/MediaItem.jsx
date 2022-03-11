@@ -1,11 +1,11 @@
 import React from 'react';
-import './FilmItem.scss'
+import './MediaItem.scss'
 import {Link} from "react-router-dom";
 
-const FilmItem = ({poster_path,original_title,name, type,id}) => {
+const MediaItem = ({poster_path,original_title,name, type,id}) => {
   return (
     <Link to={`/${type}/${id}`} >
-      <div className='film'>
+      <div className='media-list__item'>
         <img src = {'https://image.tmdb.org/t/p/w185/'+poster_path} alt={original_title}/>
         <p>{name}</p>
       </div>
@@ -13,4 +13,4 @@ const FilmItem = ({poster_path,original_title,name, type,id}) => {
   );
 };
 
-export default FilmItem;
+export default MediaItem;

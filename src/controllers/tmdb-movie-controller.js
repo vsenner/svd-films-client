@@ -74,7 +74,6 @@ export default class TMDBMovieController {
 
   static async search(query, sortMethod, page) {
     try {
-      console.log(sortMethod);
       return TMDBMovieService.search(query, page).then(data => {
         data.results = data.results.filter(elem => elem.media_type === 'movie' || elem.media_type === 'tv')
           .sort((a, b) => {

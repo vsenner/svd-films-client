@@ -1,0 +1,11 @@
+.media-list {
+  .container {
+    max-width: 1540px;
+  }
+}
+
+.film-grid {
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  gap: 40px 60px;
+}

@@ -1,46 +1,46 @@
 import React, {useEffect, useState} from 'react';
-import MovieController from "../controllers/movie-controller";
+import MovieController from "../../controllers/movie-controller";
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
-import {getImage} from "../UI/getImage";
-import {addFavourite, addLater, rateFilm, removeFavourite, removeLater, unRateFilm} from "../scripts/userListMethods";
-import ActorList from "../components/MoviePage/ActorList/ActorList";
-import TruncatedText from "../components/UI/TruncatedText/TruncatedText";
-import Rate from "../components/UI/Rate/Rate";
+import {getImage} from "../../UI/getImage";
+import {addFavourite, addLater, rateFilm, removeFavourite, removeLater, unRateFilm} from "../../scripts/userListMethods";
+import ActorList from "./ActorList/ActorList";
+import TruncatedText from "../../components/UI/TruncatedText/TruncatedText";
+import Rate from "../../components/UI/Rate/Rate";
 import './ContentPage.scss'
 import {useNavigate} from "react-router";
-import TVController from "../controllers/tv-controller";
+import TVController from "../../controllers/tv-controller";
 
 const minsToHours = (mins) => `${Math.floor(mins / 60)}h ${mins % 60}m`;
 
 const ContentPage = ({content, director, actors, content_type}) => {
   const user = useSelector(state => state?.user)
-  const params = useParams();
+  const {id} = useParams();
   const [userFilmInfo, setUserFilmInfo] = useState(null);
 
   const title = content_type === 'tv' ? 'name' : 'title';
   const duration = content_type === 'tv' ? minsToHours(content?.episode_run_time[0]) : minsToHours(content?.runtime)
-
   const production_year = content_type === 'tv' ? content?.first_air_date?.split('-')[0] : content?.release_date?.split('-')[0];
-
   const production_years = content_type === 'tv' ? `${production_year} - ${content?.in_production ? '...' : `${content?.last_air_date?.split('-')[0]}`}` : production_year;
 
 
   useEffect(() => {
     if (user.id) {
-      if(content_type === 'movie') {
-        MovieController.getUserFilmInfo(params.id, user.id).then(data => {
-          setUserFilmInfo(data)
-        })
+      switch (content_type) {
+        case 'movie':
+          MovieController.getUserFilmInfo(id, user.id).then(data => {
+            setUserFilmInfo(data)
+          })
+          break;
+        case 'tv':
+          TVController.getUserTVInfo(id, user.id).then(data => {
+            setUserFilmInfo(data)
+          });
+          break;
+        default:
       }
-      if(content_type === 'tv') {
-        TVController.getUserTVInfo(params.id, user.id).then(data => {
-          setUserFilmInfo(data)
-        })
-      }
-
     }
-  }, [params.id, user.id, content_type])
+  }, [id, user.id, content_type])
 
   const router = useNavigate()
 
@@ -68,12 +68,11 @@ const ContentPage = ({content, director, actors, content_type}) => {
                   </div>
                   <div className="info__row_start">
                     <div className="info__rating">{content.vote_average} &#9733;</div>
-                    <div className='info__adult'>
-                      {content.adult ?
-                        '18+'
-                        :
-                        '0+'}
-                    </div>
+                    {content.adult ?
+                      <div className='info__adult'>18+</div>
+                      :
+                      null
+                    }
                     <div className="info__countries">
                       {content.production_countries.map(country => country.iso_3166_1).join(', ')}
                     </div>
@@ -97,10 +96,12 @@ const ContentPage = ({content, director, actors, content_type}) => {
                   </button>
                   <button className='info__btn'>
                     {userFilmInfo?.isLater ?
-                      <i onClick={() => removeLater(setUserFilmInfo, content.id, user.id, content_type)} className="fas fa-bookmark"/>
+                      <i onClick={() => removeLater(setUserFilmInfo, content.id, user.id, content_type)}
+                         className="fas fa-bookmark"/>
                       :
-                      <i onClick={user.isAuth ? () => addLater(setUserFilmInfo, content.id, user.id, content_type) : redirectToLogin}
-                         className="far fa-bookmark"/>}
+                      <i
+                        onClick={user.isAuth ? () => addLater(setUserFilmInfo, content.id, user.id, content_type) : redirectToLogin}
+                        className="far fa-bookmark"/>}
                   </button>
                 </div>
 
