@@ -64,4 +64,20 @@ export default class TMDBMovieService {
       throw new Error('Server Error!')
     }
   }
+
+  static async getMovieVideos(id) {
+    try {
+      return (await instance.get(`/movie/${id}/videos`)).data
+    } catch (err) {
+      throw new Error('Server Error!')
+    }
+  }
+
+  static async getTVVideos(id) {
+    try {
+      return (await instance.get(`/tv/${id}/videos`)).data
+    } catch (err) {
+      throw new Error('Server Error!')
+    }
+  }
 }

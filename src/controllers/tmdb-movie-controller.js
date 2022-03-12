@@ -182,6 +182,24 @@ export default class TMDBMovieController {
     }
   }
 
+  static async getMovieTrailers(id) {
+    try {
+      const videos = (await TMDBMovieService.getMovieVideos(id)).results;
+      return videos.filter((video) => video.type === 'Trailer')
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getTVTrailers(id) {
+    try {
+      const videos = (await TMDBMovieService.getTVVideos(id)).results;
+      return videos.filter((video) => video.type === 'Trailer');
+    } catch (err) {
+      throw err;
+    }
+  }
+
 }
 
 

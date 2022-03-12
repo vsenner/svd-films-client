@@ -13,7 +13,7 @@ import TMDBMovieController from "../../controllers/tmdb-movie-controller";
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('')
-  const [films, setFilms] = useState([])
+  const [media, setMedia] = useState([])
   const [activeSearch, setActiveSearch] = useState(false)
   const changeHandler = (e) => {
     setSearchQuery(e.target.value)
@@ -24,10 +24,10 @@ const Navbar = () => {
   useEffect(() => {
     if (searchQuery.length > 1) {
       TMDBMovieController.navbarSearch(searchQuery).then(data => {
-        setFilms(data)
+        setMedia(data)
       })
     } else {
-      setFilms([])
+      setMedia([])
     }
   }, [searchQuery])
 
@@ -85,8 +85,8 @@ const Navbar = () => {
                   placeholder={'Find movie'}
                 />
               </label>
-              {films.length > 0 && activeSearch ?
-                <NavbarMediaList films={films} clearFilms={setSearchQuery}/> : null}
+              {media.length > 0 && activeSearch ?
+                <NavbarMediaList media={media} clearFilms={setSearchQuery}/> : null}
             </form>
           </div>
           <div className="navbar__profile">

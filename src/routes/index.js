@@ -12,8 +12,8 @@ const allAccessRoutes = [
   {path: '/' , component: <MainPage/>},
   {path: '/genres/:media_type/:sort_method' , component: <GenrePage/>},
   {path: '/genres/search/:query/:sort_method' , component: <GenrePage/>},
-  {path: '/movie/:id' , component: <MoviePage/>},
-  {path: '/tv/:id' , component: <TVPage/>},
+  {path: '/movie/:id/:page' , component: <MoviePage/>},
+  {path: '/tv/:id/:page' , component: <TVPage/>},
 ]
 
 export const privateRoutes = [

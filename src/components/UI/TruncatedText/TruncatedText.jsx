@@ -17,6 +17,7 @@ const TruncatedText = ({str, n = 150, path}) => {
 
   const buttonHandler = () => setString(str);
 
+  if(!str) return null;
   if (str.length <= n) return (<span>{str}</span>);
   return (
     <div>

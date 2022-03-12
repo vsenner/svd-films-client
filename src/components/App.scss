@@ -10,6 +10,7 @@
 a {
   text-decoration: none;
   font-family: inherit;
+  color: inherit;
   &:focus {
     text-decoration: none;
   }
@@ -26,6 +27,7 @@ ul, ol {
 button {
   background: transparent;
   cursor: pointer;
+  color: inherit;
   border: none;
   font-family: inherit;
 }
