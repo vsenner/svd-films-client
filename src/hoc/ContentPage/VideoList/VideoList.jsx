@@ -20,7 +20,7 @@ const VideoList = ({className, content_type}) => {
           setVideos(data)
         });
     }
-  }, [id])
+  }, [id, content_type])
 
 
   return (
