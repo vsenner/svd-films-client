@@ -32,7 +32,7 @@ const ContentPage = ({content, director, actors, content_type}) => {
 
   const title = content_type === 'tv' ? 'name' : 'title';
   const duration = content_type === 'tv' ? minsToHours(content?.episode_run_time[0]) : minsToHours(content?.runtime)
-  const production_year = content_type === 'tv' ? content?.first_air_date?.split('-')[0] : content?.release_date?.split('-')[0];
+  const production_year = new Date(content_type === 'tv' ? content?.first_air_date : content?.release_date).getFullYear();
   const production_years = content_type === 'tv' ? `${production_year} - ${content?.in_production ? '...' : `${content?.last_air_date?.split('-')[0]}`}` : production_year;
 
 
@@ -185,13 +185,13 @@ const ContentPage = ({content, director, actors, content_type}) => {
 
             <div className="film__bottom">
               <div className="film__links">
-                <h2 className={page === OVERVIEW && 'active'}>
+                <h2 className={page === OVERVIEW ? 'active' : null}>
                   <Link to={`/${content_type}/${content.id}/overview`}>Overview</Link>
                 </h2>
-                <h2 className={page === ACTOR && 'active'}>
+                <h2 className={page === ACTOR ? 'active' : null}>
                   <Link to={`/${content_type}/${content.id}/actor`}>Actors</Link>
                 </h2>
-                <h2 className={page === VIDEO && 'active'}>
+                <h2 className={page === VIDEO ? 'active' : null}>
                   <Link to={`/${content_type}/${content.id}/video`}>Trailers</Link>
                 </h2>
               </div>

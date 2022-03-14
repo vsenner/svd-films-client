@@ -24,7 +24,6 @@ const IndividualMediaPage = () => {
 
   useEffect(() => {
     getMediaList(user_id, media_type, type).then(list => {
-      console.log('LIST - ', list);
       setMediaList(list);
     });
   }, [user_id, media_type, type]);

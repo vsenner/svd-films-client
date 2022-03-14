@@ -1,11 +1,35 @@
+@import "../GenrePageColors.scss";
+
 .media-list {
-  .container {
-    max-width: 1540px;
+
+  &__buttons {
+    display: inline-block;
+    background: $bgColor1;
+    padding: 15px 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+
+    a {
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 1.1em;
+      &:not(:last-child) {
+        margin-right: 20px;
+      }
+
+      &.active {
+        box-shadow: 0 0 3px $color1;
+        color: $color1;
+        background: $bgColor2;
+      }
+    }
   }
 }
 
 .film-grid {
+  padding-top: 20px;
+  border-top: 2px solid $color1;
   display: grid;
-  grid-template-columns: repeat(5,1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 40px 60px;
 }

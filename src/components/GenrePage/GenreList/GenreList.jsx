@@ -25,7 +25,7 @@ const GenreList = () => {
   useEffect(() => {
     setGenres(null)
     if (media_type === 'movie') {
-      TMDBMovieController.getAllMoviesGenres().then(data => {
+      TMDBMovieController.getAllMovieGenres().then(data => {
           setGenres(data)
           setGenresInColumn(Math.ceil(data.length / 3));
         }
@@ -69,30 +69,28 @@ const GenreList = () => {
 
   return genres && genresInColumn ? (
     <div className="genre-list">
-      <div className="container">
-        <div className="genre-list__flex">
-          {width > 700 ?
-            <div className="genre-list__row">
-              {genresInColumn ? getGenreColumns(3) : null}
-            </div>
-            :
-            <div className="genre-list__row">
-              <GenreColumn
-                genres={genres}
-                selectedGenres={selectedGenres}
-                setSelectedGenres={setSelectedGenres}
-                clear={clear}
-              />
-            </div>
-          }
-          <div className='genre-list__bottom'>
-            <Button onClick={() => dispatch({type: 'CHANGE_GENRES', payload: selectedGenres})}>
-              Submit
-            </Button>
-            <Button onClick={clearSelectedGenres}>
-              Clear
-            </Button>
+      <div className="genre-list__flex">
+        {width > 700 ?
+          <div className="genre-list__row">
+            {genresInColumn ? getGenreColumns(3) : null}
           </div>
+          :
+          <div className="genre-list__row">
+            <GenreColumn
+              genres={genres}
+              selectedGenres={selectedGenres}
+              setSelectedGenres={setSelectedGenres}
+              clear={clear}
+            />
+          </div>
+        }
+        <div className='genre-list__bottom'>
+          <Button onClick={() => dispatch({type: 'CHANGE_GENRES', payload: selectedGenres})}>
+            Submit
+          </Button>
+          <Button onClick={clearSelectedGenres}>
+            Clear
+          </Button>
         </div>
       </div>
     </div>

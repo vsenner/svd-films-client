@@ -35,8 +35,8 @@ const GenreItem = ({genre, selectedGenres, setSelectedGenres, clear}) => {
 
   return (
     <div className="genre-list__item">
-      <div>
-        <input id={genre.id} type="radio" className={'yes'} name={genre.id} checked={yes} onClick={() => {
+      <label className='genre-list__label'>
+        <input id={genre.id} type="radio" className='genre-list__yes' name={genre.id} checked={yes} onClick={() => {
           if(yes){
             unselectToggle(genre.id)
           }else{
@@ -45,9 +45,9 @@ const GenreItem = ({genre, selectedGenres, setSelectedGenres, clear}) => {
           }
           setYes(!yes)
         }}/>
-      </div>
-      <div>
-        <input type="radio" id={genre.id + 1} className={'no'} name={genre.id} checked={no} onClick={() => {
+      </label>
+      <label className='genre-list__label'>
+        <input type="radio" id={genre.id + 1} className='genre-list__no' name={genre.id} checked={no} onClick={() => {
           if(no){
             unselectToggle(genre.id)
           }else{
@@ -56,7 +56,7 @@ const GenreItem = ({genre, selectedGenres, setSelectedGenres, clear}) => {
           }
           setNo(!no)
         }}/>
-      </div>
+      </label>
       <label htmlFor={genre.id} className="genre-list__name">
         {genre.name}
       </label>

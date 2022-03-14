@@ -44,8 +44,6 @@ const Navbar = () => {
 
   const user = useSelector(state => state?.user);
 
-  console.log(user)
-
   return (
     <div className='navbar'>
       <div className="container">
@@ -95,7 +93,7 @@ const Navbar = () => {
                 <img src={`data:image/png;base64, ${user.compressedImage}`} alt="user"
                      className='navbar__profile-photo'/>
                 :
-                <span className='navbar__profile-photo'>SIGN UP</span>}
+                <span className='navbar__profile-placeholder'>SIGN UP</span>}
             </Link>
           </div>
         </div>
