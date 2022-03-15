@@ -24,6 +24,7 @@ const GenreList = () => {
 
   useEffect(() => {
     setGenres(null)
+    console.log('THERE');
     if (media_type === 'movie') {
       TMDBMovieController.getAllMovieGenres().then(data => {
           setGenres(data)
