@@ -73,12 +73,14 @@ const MediaList = () => {
     }
     const observer = new IntersectionObserver(callback)
     observer.observe(loadingRef.current);
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
     if(currentPage > 0) {
       fetchMediaList();
     }
+    // eslint-disable-next-line
   }, [currentPage]);
 
   useEffect(() => {
