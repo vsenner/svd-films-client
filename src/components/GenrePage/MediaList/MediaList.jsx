@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './MediaList.scss'
 import TMDBMovieController from "../../../controllers/tmdb-movie-controller";
 import {Link, useParams} from "react-router-dom";
@@ -14,40 +14,45 @@ const MediaList = () => {
   const [mediaList, setMediaList] = useState([])
   const selectedGenres = useSelector((state) => state.movies.genres)
   const [currentPage, setCurrentPage] = useState(1);
-  const [requestStatus, setRequestStatus] = useState(true);
-  const handleScroll = (e) => {
-    if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 200) setRequestStatus(true)
-  };
+  const [isLoading, setIsLoading] = useState(false);
 
   const {media_type, query, sort_method} = useParams()
 
+  const loadingRef = useRef();
+
   useEffect(() => {
-    setCurrentPage(1)
-    setRequestStatus(true)
-    setMediaList([])
-  }, [selectedGenres, media_type, query, sort_method])
+    const callback = (entries) => {
+      if (!isLoading && entries[0].isIntersecting) {
+        setCurrentPage(prev => prev + 1)
+      }
+    }
+    if (loadingRef) {
+      const observer = new IntersectionObserver(callback)
+      observer.observe(loadingRef.current);
+    }
+  }, [loadingRef])
+
 
   useEffect(() => {
     const sortMethod = sort_method + '.desc'
-    if (requestStatus) {
+    if (!isLoading) {
+      setIsLoading(true)
       if (media_type === 'movie') {
         TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
           id: 16,
           select: false
         }], sortMethod, currentPage)
           .then((data) => {
-              setMediaList([...mediaList, ...data.results])
-              setCurrentPage(prev => prev + 1)
-              setRequestStatus(false)
+              setMediaList(prev => [...prev, ...data.results])
+              setIsLoading(false);
             }
           )
       }
       if (media_type === 'tv') {
         TMDBMovieController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
           .then((data) => {
-              setMediaList([...mediaList, ...data.results])
-              setCurrentPage(prev => prev + 1)
-              setRequestStatus(false)
+              setMediaList(prev => [...prev, ...data.results])
+              setIsLoading(false);
             }
           )
       }
@@ -57,32 +62,22 @@ const MediaList = () => {
           select: true
         }], sortMethod, currentPage)
           .then((data) => {
-              setMediaList([...mediaList, ...data.results])
-              setCurrentPage(prev => prev + 1)
-              setRequestStatus(false)
+              setMediaList(prev => [...prev, ...data.results])
+              setIsLoading(false);
             }
           )
       }
       if (query) {
         TMDBMovieController.search(query, sort_method, currentPage).then(data => {
           if (data.total_pages >= currentPage) {
-            setMediaList([...mediaList, ...data.results]);
-            setCurrentPage(prev => prev + 1)
+            setMediaList(prev => [...prev, ...data.results]);
+            setIsLoading(false);
           }
-          setRequestStatus(false)
         })
       }
     }
-  }, [selectedGenres, media_type, sort_method, requestStatus, query, currentPage, mediaList])
+  }, [selectedGenres, media_type, sort_method, query, currentPage])
 
-  console.log(mediaList)
-
-  useEffect(() => {
-    document.addEventListener("scroll", handleScroll);
-    return function () {
-      document.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
 
   return (
     <div className='media-list'>
@@ -108,19 +103,23 @@ const MediaList = () => {
       </div>
       <div className='film-grid'>
         {
-          mediaList?.map(media =>
-              <MediaItem
-                key={media.id}
-                poster_path={media.poster_path}
-                original_title={media.original_title}
-                name={media_type === 'series' || media_type === 'tv' ? media.name : media.title}
-                id={media.id}
-                type={media.title ? 'movie' : 'tv'}
-                year={new Date(media_type === 'tv' ? media.first_air_date : media.release_date).getFullYear()}
-              />
+          mediaList?.map(media => {
+              const type = media_type ? (media_type === 'tv' ? 'tv' : 'movie') : (media.media_type === 'tv' ? 'tv' : 'movie')
+              return (
+                <MediaItem
+                  key={media.id}
+                  poster_path={media.poster_path}
+                  original_title={media.original_title}
+                  name={type === 'tv' ? media.name : media.title}
+                  id={media.id}
+                  type={media.title ? 'movie' : 'tv'}
+                  year={new Date(type === 'tv' ? media.first_air_date : media.release_date).getFullYear()}
+                />)
+            }
           )
         }
       </div>
+      <div className="media-list__loading" ref={loadingRef}/>
       <UpButton/>
     </div>
 

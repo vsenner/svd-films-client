@@ -161,7 +161,7 @@ export default class TMDBMovieController {
         }
       }, {yes: [], no: []})
 
-      return await TMDBMovieService.getMoviesByGenres(genresObj.yes, genresObj.no, sortParam, page)
+      return await TMDBMovieService.getMoviesByGenres(genresObj.yes, genresObj.no, sortParam, page);
     } catch (err) {
       throw err
     }
