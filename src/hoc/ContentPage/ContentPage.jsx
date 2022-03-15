@@ -219,7 +219,7 @@ const ContentPage = ({content, director, actors, content_type}) => {
                           My rating
                           <span style={{background: userFilmInfo.rating < 5 ? 'red' : 'green'}}>{userFilmInfo.rating}</span>
                           <button
-                            onClick={() => unRateFilm(setUserFilmInfo, content.id, user.id)}
+                            onClick={() => unRateFilm(setUserFilmInfo, content.id, user.id, content_type)}
                             className="rating__remove"
                           >
                             Remove
