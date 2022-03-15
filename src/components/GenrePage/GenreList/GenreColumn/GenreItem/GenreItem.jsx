@@ -36,7 +36,7 @@ const GenreItem = ({genre, selectedGenres, setSelectedGenres, clear}) => {
   return (
     <div className="genre-list__item">
       <label className='genre-list__label'>
-        <input id={genre.id} type="radio" className='genre-list__yes' name={genre.id} checked={yes} onClick={() => {
+        <input id={genre.id} type="radio" className='genre-list__yes' name={genre.id} onChange={null} defaultChecked={yes} onClick={() => {
           if(yes){
             unselectToggle(genre.id)
           }else{
@@ -47,7 +47,7 @@ const GenreItem = ({genre, selectedGenres, setSelectedGenres, clear}) => {
         }}/>
       </label>
       <label className='genre-list__label'>
-        <input type="radio" id={genre.id + 1} className='genre-list__no' name={genre.id} checked={no} onClick={() => {
+        <input type="radio" id={genre.id + 1} className='genre-list__no' name={genre.id} onChange={null} defaultChecked={no} onClick={() => {
           if(no){
             unselectToggle(genre.id)
           }else{
