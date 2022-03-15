@@ -13,7 +13,7 @@ const RELEASE_DATE = 'primary_release_date';
 const MediaList = () => {
   const [mediaList, setMediaList] = useState([])
   const selectedGenres = useSelector((state) => state.movies.genres)
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const {media_type, query, sort_method} = useParams()
@@ -23,7 +23,7 @@ const MediaList = () => {
   const fetchMediaList = () => {
     const sortMethod = sort_method + '.desc'
     if (!isLoading) {
-      setIsLoading(true)
+      setIsLoading(true);
       if (media_type === 'movie') {
         TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
           id: 16,
@@ -71,21 +71,23 @@ const MediaList = () => {
         setCurrentPage(prev => prev + 1)
       }
     }
-    if (loadingRef) {
-      const observer = new IntersectionObserver(callback)
-      observer.observe(loadingRef.current);
-    }
-  }, [loadingRef])
+    const observer = new IntersectionObserver(callback)
+    observer.observe(loadingRef.current);
+  }, [])
 
   useEffect(() => {
-    fetchMediaList();
+    if(currentPage > 0) {
+      fetchMediaList();
+    }
   }, [currentPage]);
 
   useEffect(() => {
-    setCurrentPage(1);
+    setCurrentPage(0);
     setMediaList([]);
   }, [selectedGenres, media_type, sort_method, query])
 
+
+  console.log(currentPage)
 
   return (
     <div className='media-list'>
