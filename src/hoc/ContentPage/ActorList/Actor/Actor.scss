@@ -1,0 +1,29 @@
+$photoSize: 150px;
+
+.actor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  img{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
+  .actor__photo {
+    border-radius: 50%;
+    border: 2px solid #fff;
+    object-fit: cover;
+    height: $photoSize;
+    width: $photoSize;
+    box-shadow: 0 2px 10px 5px rgba(1, 216, 227, 0.43);
+  }
+
+  .actor__name {
+    margin-top: 10px;
+  }
+}

@@ -1,0 +1,42 @@
+$hoverBgColor: rgba(28, 28, 28, 0.64);
+$hoverColor: #f0ac1c;
+$descriptionColor: #666464;
+
+.media-item{
+  display: flex;
+  flex-direction: column;
+  &__img {
+    position: relative;
+  }
+
+  &__hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    transition: background-color ease-in .2s;
+  }
+
+  &__name {
+    margin-top: 5px;
+    font-size: 1.15em;
+    font-weight: 500;
+  }
+
+  &__description {
+    color: $descriptionColor;
+    font-size: 0.9em;
+  }
+
+  &:hover {
+    .media-item__name {
+      color: $hoverColor;
+    }
+
+    .media-item__hover {
+      background: $hoverBgColor;
+    }
+  }
+}

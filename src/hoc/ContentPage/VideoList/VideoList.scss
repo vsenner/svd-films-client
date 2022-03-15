@@ -1,0 +1,9 @@
+.video {
+  margin-top: 100px;
+  &:first-child {
+    margin-top: 20px;
+  }
+  h2 {
+    margin-bottom: 20px;
+  }
+}

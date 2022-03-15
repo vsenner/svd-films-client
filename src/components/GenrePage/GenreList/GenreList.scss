@@ -1,0 +1,39 @@
+@import "../GenrePageColors.scss";
+
+.genre-list{
+  display: flex;
+  font-size: 20px;
+
+  &__flex {
+    width: 80%;
+    margin: 10px auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  &__bottom{
+    display: flex;
+    width: 100%;
+    padding-top: 15px;
+    justify-content: space-between;
+  }
+
+  &__row {
+    box-shadow: 0 0 5px rgba(0,0,0,.5);
+    background: $bgColor1;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-between;
+  }
+
+
+  @media(max-width: 700px) {
+    &__row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+}
