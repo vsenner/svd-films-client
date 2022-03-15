@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 const UserMediaItem = ({media_item, num, id, type}) => {
   const mediaTime = new Date(media_item.time);
   return (
-    <Link to={`/${type === 'tv' ? 'tv' : 'movie'}/${id}`} className='film-list__item'>
+    <Link to={`/${type === 'tv' ? 'tv' : 'movie'}/${id}/overview`} className='film-list__item'>
       <div className='film-list__number'>{num}</div>
       <div className='film-list__title'>
         {media_item.title} ({media_item.year})
