@@ -18,6 +18,7 @@ import {useNavigate} from "react-router";
 import TVController from "../../controllers/tv-controller";
 import ActorList from "./ActorList/ActorList";
 import VideoList from "./VideoList/VideoList";
+import placeholder from '../../images/no-poster.png'
 
 const minsToHours = (mins) => `${Math.floor(mins / 60)}h ${mins % 60}m`;
 
@@ -66,7 +67,7 @@ const ContentPage = ({content, director, actors, content_type}) => {
           <div className="film-page__film film">
             <div className="film__main">
               <div className="film__poster">
-                <img src={getImage(content.poster_path)} alt="Poster" width='300px'/>
+                <img src={content.poster_path ? getImage(content.poster_path) : placeholder} alt="Poster" width='300px'/>
               </div>
               <div className="film__info info">
                 <div className="info__header">
