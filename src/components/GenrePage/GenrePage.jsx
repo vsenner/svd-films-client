@@ -5,9 +5,11 @@ import MediaList from "./MediaList/MediaList";
 const GenrePage = () => {
 
   return (
-    <div>
-      <GenreList />
-      <MediaList />
+    <div className='genre-page'>
+      <div className="container">
+        <GenreList />
+        <MediaList />
+      </div>
     </div>
   );
 };

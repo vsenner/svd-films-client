@@ -1,12 +1,11 @@
 .genre-list__column {
-  background: #154362;
-  min-width: 200px;
   white-space: nowrap;
-  border: 1px solid teal;
-  padding: 10px;
+  padding: 10px 15px;
+
   &:not(:last-child) {
-    margin-right: 10px;
+    border-right: 1px solid teal;
   }
+
 }
 
 .genre-list__header{

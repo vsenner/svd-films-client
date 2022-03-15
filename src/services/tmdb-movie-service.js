@@ -49,7 +49,7 @@ export default class TMDBMovieService {
 
   static async getMoviesByGenres(genresYes, genresNo, sortParam='popularity.desc',page){
     try {
-      const vote_counts = sortParam==='vote_average.desc'?5000:500
+      const vote_counts = sortParam==='vote_average.desc'? 5000:500
       return (await instance.get(`/discover/movie?page=${page}&language=en-US&with_genres=${genresYes}&without_genres=${genresNo}&sort_by=${sortParam}&primary_release_date.lte=${Date.now()}&vote_count.gte=${vote_counts}`)).data
     } catch (err) {
       throw new Error('Server Error!')
@@ -58,8 +58,24 @@ export default class TMDBMovieService {
 
   static async getSeriesByGenres(genresYes, genresNo, sortParam='popularity.desc',page){
     try {
-      const vote_counts = sortParam==='vote_average.desc'?5000:500
+      const vote_counts = sortParam==='vote_average.desc'? 5000:500
       return (await instance.get(`/discover/tv?page=${page}&language=en-US&with_genres=${genresYes}&without_genres=${genresNo}&sort_by=${sortParam}&primary_release_date.lte=${Date.now()}&vote_count.gte=${vote_counts}`)).data
+    } catch (err) {
+      throw new Error('Server Error!')
+    }
+  }
+
+  static async getMovieVideos(id) {
+    try {
+      return (await instance.get(`/movie/${id}/videos`)).data
+    } catch (err) {
+      throw new Error('Server Error!')
+    }
+  }
+
+  static async getTVVideos(id) {
+    try {
+      return (await instance.get(`/tv/${id}/videos`)).data
     } catch (err) {
       throw new Error('Server Error!')
     }

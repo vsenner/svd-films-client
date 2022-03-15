@@ -1,8 +1,12 @@
+$fontColor: rgb(41, 35, 35);
+$primary-color: #00005c;
+
 .genre-list__item {
-  padding-top: 5px;
+  margin: 10px 0;
   display: grid;
   grid-template-columns: 40px 40px auto;
-  color: #fff;
+  color: $fontColor;
+
   input {
     margin-right: 2px;
   }
@@ -10,4 +14,13 @@
 
 .genre-list__name {
   margin-left: 5px;
+}
+
+.genre-list__label {
+
+}
+
+.genre-list__yes, .genre-list__no {
+  width: 1.1em;
+  height: 1.1em;
 }

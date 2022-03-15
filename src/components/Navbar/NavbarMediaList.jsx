@@ -9,7 +9,7 @@ const NavbarMediaList = ({media, clearFilms}) => {
       {media.map(film =>
         <Link key={film.id}
               className={'navbar__film-list__item'}
-              to={`/${film.media_type}/${film.id}`}
+              to={`/${film.media_type}/${film.id}/overview`}
               onClick={() => clearFilms('')}
         >
 

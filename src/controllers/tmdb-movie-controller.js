@@ -17,11 +17,11 @@ export default class TMDBMovieController {
     }
   }
 
-  static async getAllMoviesGenres() {
+  static async getAllMovieGenres() {
     try {
       const bannedGenreIds = [16]
-      return TMDBMovieService.getAllMovieGenres().then((data)=>{
-        return data.genres.filter(genreIt=>!bannedGenreIds.includes(genreIt.id))
+      return TMDBMovieService.getAllMovieGenres().then((data) => {
+        return data.genres.filter(genreIt => !bannedGenreIds.includes(genreIt.id))
       })
     } catch (err) {
       throw err;
@@ -39,21 +39,21 @@ export default class TMDBMovieController {
   static async getAllTVGenres() {
     try {
       const bannedGenreIds = [16, 10767, 10763, 10764]
-      return TMDBMovieService.getAllSeriesGenres().then((data)=>{
-        return data.genres.filter(genreIt=>!bannedGenreIds.includes(genreIt.id))
+      return TMDBMovieService.getAllSeriesGenres().then((data) => {
+        return data.genres.filter(genreIt => !bannedGenreIds.includes(genreIt.id))
       })
     } catch (err) {
       throw err;
     }
   }
 
-  static async getAllCartoonGenres(){
-    try{
+  static async getAllCartoonGenres() {
+    try {
       const bannedGenreIds = [16]
-      return TMDBMovieService.getAllMovieGenres().then((data)=>{
-        return data.genres.filter(genreIt=>!bannedGenreIds.includes(genreIt.id))
+      return TMDBMovieService.getAllMovieGenres().then((data) => {
+        return data.genres.filter(genreIt => !bannedGenreIds.includes(genreIt.id))
       })
-    }catch(err){
+    } catch (err) {
       throw err;
     }
   }
@@ -62,10 +62,10 @@ export default class TMDBMovieController {
     try {
       return TMDBMovieService.search(query).then(response => {
         return response.results.filter(elem => elem.media_type === 'movie' || elem.media_type === 'tv')
-            .sort((a, b) => {
-              return b.popularity - a.popularity
-            })
-            .slice(0, 4)
+          .sort((a, b) => {
+            return b.popularity - a.popularity
+          })
+          .slice(0, 4)
       })
     } catch (err) {
       throw err
@@ -111,6 +111,7 @@ export default class TMDBMovieController {
       throw err;
     }
   }
+
   static async getTVDirectorById(id) {
     try {
       return TMDBMovieService.getTVCreditsById(id).then(resp => {
@@ -131,17 +132,17 @@ export default class TMDBMovieController {
     }
   }
 
-  static async getTVShows(){
-    try{
+  static async getTVShows() {
+    try {
       const TVs = (await TMDBMovieService.getTVs()).results;
       return TVs.filter(TV => TV.genre_ids.findIndex(id => id === (10764 || 10763 || 10767)) !== -1)
-    } catch(err){
+    } catch (err) {
       throw err
     }
   }
 
-  static async getCartoons(){
-    try{
+  static async getCartoons() {
+    try {
       const cartoons = (await TMDBMovieService.getPopular()).results;
       return cartoons.filter(cartoon => (cartoon.genre_ids.findIndex(id => id === 16)) !== -1)
 
@@ -150,35 +151,53 @@ export default class TMDBMovieController {
     }
   }
 
-  static async getMoviesWithGenres(genres, sortParam,page){
-    try{
-      const genresObj = genres.reduce((prev, genre)=> {
-        if(genre.select){
+  static async getMoviesWithGenres(genres, sortParam, page) {
+    try {
+      const genresObj = genres.reduce((prev, genre) => {
+        if (genre.select) {
           return {...prev, yes: [...prev?.yes, genre.id]}
-        }else{
+        } else {
           return {...prev, no: [...prev?.no, genre.id]}
         }
-      }, {yes:[], no:[]})
+      }, {yes: [], no: []})
 
-      return await TMDBMovieService.getMoviesByGenres(genresObj.yes, genresObj.no, sortParam,page)
+      return await TMDBMovieService.getMoviesByGenres(genresObj.yes, genresObj.no, sortParam, page)
     } catch (err) {
       throw err
     }
   }
 
-  static async getSeriesWithGenres(genres, sortParam,page){
-    try{
-      const genresObj = genres.reduce((prev, genre)=> {
-        if(genre.select){
+  static async getSeriesWithGenres(genres, sortParam, page) {
+    try {
+      const genresObj = genres.reduce((prev, genre) => {
+        if (genre.select) {
           return {...prev, yes: [...prev?.yes, genre.id]}
-        }else{
+        } else {
           return {...prev, no: [...prev?.no, genre.id]}
         }
-      }, {yes:[], no:[16, 10767, 10763, 10764]})
+      }, {yes: [], no: [16, 10767, 10763, 10764]})
 
-      return await TMDBMovieService.getSeriesByGenres(genresObj.yes, genresObj.no, sortParam,page)
+      return await TMDBMovieService.getSeriesByGenres(genresObj.yes, genresObj.no, sortParam, page)
     } catch (err) {
       throw err
+    }
+  }
+
+  static async getMovieTrailers(id) {
+    try {
+      const videos = (await TMDBMovieService.getMovieVideos(id)).results;
+      return videos.filter((video) => video.type === 'Trailer')
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getTVTrailers(id) {
+    try {
+      const videos = (await TMDBMovieService.getTVVideos(id)).results;
+      return videos.filter((video) => video.type === 'Trailer');
+    } catch (err) {
+      throw err;
     }
   }
 

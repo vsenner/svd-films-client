@@ -1,17 +1,29 @@
 import React, {useEffect, useState} from 'react';
 import MovieController from "../../controllers/movie-controller";
 import {useSelector} from "react-redux";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {getImage} from "../../UI/getImage";
-import {addFavourite, addLater, rateFilm, removeFavourite, removeLater, unRateFilm} from "../../scripts/userListMethods";
-import ActorList from "./ActorList/ActorList";
+import {
+  addFavourite,
+  addLater,
+  rateFilm,
+  removeFavourite,
+  removeLater,
+  unRateFilm
+} from "../../scripts/userListMethods";
 import TruncatedText from "../../components/UI/TruncatedText/TruncatedText";
 import Rate from "../../components/UI/Rate/Rate";
 import './ContentPage.scss'
 import {useNavigate} from "react-router";
 import TVController from "../../controllers/tv-controller";
+import ActorList from "./ActorList/ActorList";
+import VideoList from "./VideoList/VideoList";
 
 const minsToHours = (mins) => `${Math.floor(mins / 60)}h ${mins % 60}m`;
+
+const OVERVIEW = 'overview';
+const ACTOR = 'actor';
+const VIDEO = 'video';
 
 const ContentPage = ({content, director, actors, content_type}) => {
   const user = useSelector(state => state?.user)
@@ -20,7 +32,7 @@ const ContentPage = ({content, director, actors, content_type}) => {
 
   const title = content_type === 'tv' ? 'name' : 'title';
   const duration = content_type === 'tv' ? minsToHours(content?.episode_run_time[0]) : minsToHours(content?.runtime)
-  const production_year = content_type === 'tv' ? content?.first_air_date?.split('-')[0] : content?.release_date?.split('-')[0];
+  const production_year = new Date(content_type === 'tv' ? content?.first_air_date : content?.release_date).getFullYear();
   const production_years = content_type === 'tv' ? `${production_year} - ${content?.in_production ? '...' : `${content?.last_air_date?.split('-')[0]}`}` : production_year;
 
 
@@ -43,6 +55,7 @@ const ContentPage = ({content, director, actors, content_type}) => {
   }, [id, user.id, content_type])
 
   const router = useNavigate()
+  const {page} = useParams()
 
   const redirectToLogin = () => router('/login');
 
@@ -171,41 +184,63 @@ const ContentPage = ({content, director, actors, content_type}) => {
             </div>
 
             <div className="film__bottom">
-              {actors ? <ActorList actors={actors.slice(0, 5)} className='film__actors'/> : ''}
-              {content.overview ?
-                <div className="film__description">
-                  <h2>Overview</h2>
-                  <TruncatedText str={content.overview} n={300}/>
-                </div>
-                :
-                null
-              }
-              <div className="film__rating">
-                <h2>Film Rating</h2>
-                <div className="rating__row">
-                  <Rate avgRating={content.vote_average}
-                        content_type={content_type}
-                        action={user.isAuth ? rateFilm : redirectToLogin}
-                        title={content[title]}
-                        setUserFilmInfo={setUserFilmInfo}
-                        film_id={content.id}
-                        user_id={user.id}
-                  />
-                  <div className="rating__value">{content.vote_average}</div>
-                </div>
-                {userFilmInfo?.isRated ?
-                  <div className="rating__mine">
-                    My rating
-                    <span style={{background: userFilmInfo.rating < 5 ? 'red' : 'green'}}>{userFilmInfo.rating}</span>
-                    <button
-                      onClick={() => unRateFilm(setUserFilmInfo, content.id, user.id)}
-                      className="rating__remove"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                  : null}
+              <div className="film__links">
+                <h2 className={page === OVERVIEW ? 'active' : null}>
+                  <Link to={`/${content_type}/${content.id}/overview`}>Overview</Link>
+                </h2>
+                <h2 className={page === ACTOR ? 'active' : null}>
+                  <Link to={`/${content_type}/${content.id}/actor`}>Actors</Link>
+                </h2>
+                <h2 className={page === VIDEO ? 'active' : null}>
+                  <Link to={`/${content_type}/${content.id}/video`}>Trailers</Link>
+                </h2>
               </div>
+              {
+                page === OVERVIEW &&
+                  <div>
+                    <div className="film__description">
+                      <TruncatedText str={content.overview} n={300}/>
+                    </div>
+                    <div className="film__rating">
+                      <h2>Film Rating</h2>
+                      <div className="rating__row">
+                        <Rate avgRating={content.vote_average}
+                              content_type={content_type}
+                              action={user.isAuth ? rateFilm : redirectToLogin}
+                              title={content[title]}
+                              setUserFilmInfo={setUserFilmInfo}
+                              film_id={content.id}
+                              user_id={user.id}
+                        />
+                        <div className="rating__value">{content.vote_average}</div>
+                      </div>
+                      {userFilmInfo?.isRated ?
+                        <div className="rating__mine">
+                          My rating
+                          <span style={{background: userFilmInfo.rating < 5 ? 'red' : 'green'}}>{userFilmInfo.rating}</span>
+                          <button
+                            onClick={() => unRateFilm(setUserFilmInfo, content.id, user.id)}
+                            className="rating__remove"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        : null}
+                    </div>
+                  </div>
+              }
+              {
+                page === ACTOR &&
+                <div className="film__actors">
+                  <h2>Actors</h2>
+                  {actors ? <ActorList actors={actors.slice(0, 5)} className='film__actors-list'/> : ''}
+                </div>
+              }
+              {
+                page === VIDEO &&
+                  <VideoList className='film__video' content_type={content_type}/>
+              }
+
             </div>
           </div>
           :
