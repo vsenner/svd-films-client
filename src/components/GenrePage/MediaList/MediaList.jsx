@@ -20,20 +20,7 @@ const MediaList = () => {
 
   const loadingRef = useRef();
 
-  useEffect(() => {
-    const callback = (entries) => {
-      if (!isLoading && entries[0].isIntersecting) {
-        setCurrentPage(prev => prev + 1)
-      }
-    }
-    if (loadingRef) {
-      const observer = new IntersectionObserver(callback)
-      observer.observe(loadingRef.current);
-    }
-  }, [loadingRef])
-
-
-  useEffect(() => {
+  const fetchMediaList = () => {
     const sortMethod = sort_method + '.desc'
     if (!isLoading) {
       setIsLoading(true)
@@ -76,7 +63,28 @@ const MediaList = () => {
         })
       }
     }
-  }, [selectedGenres, media_type, sort_method, query, currentPage])
+  }
+
+  useEffect(() => {
+    const callback = (entries) => {
+      if (!isLoading && entries[0].isIntersecting) {
+        setCurrentPage(prev => prev + 1)
+      }
+    }
+    if (loadingRef) {
+      const observer = new IntersectionObserver(callback)
+      observer.observe(loadingRef.current);
+    }
+  }, [loadingRef])
+
+  useEffect(() => {
+    fetchMediaList();
+  }, [currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+    setMediaList([]);
+  }, [selectedGenres, media_type, sort_method, query])
 
 
   return (
