@@ -234,7 +234,7 @@ const ContentPage = ({content, director, actors, content_type}) => {
                 page === ACTOR &&
                 <div className="film__actors">
                   <h2>Actors</h2>
-                  {actors ? <ActorList actors={actors.slice(0, 5)} className='film__actors-list'/> : ''}
+                  {actors ? <ActorList actors={actors} className='film__actors-list'/> : ''}
                 </div>
               }
               {
