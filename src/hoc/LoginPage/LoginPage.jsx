@@ -19,7 +19,7 @@ const LoginPage = ({submit, type}) => {
   useEffect(() => {
     document.title = `${process.env.REACT_APP_PROJECT_NAME} - ${type}`
     return () => document.title = process.env.REACT_APP_PROJECT_NAME;
-  }, [])
+  }, [type])
 
   const onSubmit = (e) => {
     e.preventDefault();

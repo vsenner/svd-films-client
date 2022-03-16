@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import MovieController from "../../controllers/movie-controller";
 import {useSelector} from "react-redux";
 import {Link, useParams} from "react-router-dom";
-import {getImage} from "../../UI/getImage";
+import {getSmallImage} from "../../UI/getSmallImage";
 import {
   addFavourite,
   addLater,
@@ -59,7 +59,7 @@ const ContentPage = ({content, director, actors, content_type}) => {
     }
 
     return () => document.title = process.env.REACT_APP_PROJECT_NAME;
-  }, [id, user.id, content_type, content?.[title]])
+  }, [id, user.id, content_type, content, title])
 
   const router = useNavigate()
   const {page} = useParams()
@@ -73,7 +73,7 @@ const ContentPage = ({content, director, actors, content_type}) => {
           <div className="film-page__film film">
             <div className="film__main">
               <div className="film__poster">
-                <img src={content.poster_path ? getImage(content.poster_path) : placeholder} alt="Poster"
+                <img src={content.poster_path ? getSmallImage(content.poster_path) : placeholder} alt="Poster"
                      width='300px'/>
               </div>
               <div className="film__info info">

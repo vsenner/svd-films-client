@@ -5,12 +5,13 @@ import {Link, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import MediaItem from './MediaItem/MediaItem'
 import UpButton from "../../UI/UpButton/UpButton";
+import {getOriginalImage} from "../../../UI/getSmallImage";
 
 const POPULARITY = 'popularity';
 const VOTE_AVERAGE = 'vote_average';
 const RELEASE_DATE = 'primary_release_date';
 
-const MediaList = () => {
+const MediaList = ({setBackgroundImage}) => {
   const [mediaList, setMediaList] = useState([])
   const selectedGenres = useSelector((state) => state.movies.genres)
   const [currentPage, setCurrentPage] = useState(0);
@@ -24,7 +25,10 @@ const MediaList = () => {
     const sortMethod = sort_method + '.desc'
     if (!isLoading) {
       setIsLoading(true);
-      document.title = `${process.env.REACT_APP_PROJECT_NAME} - ${sort_method === POPULARITY ? 'Popular' : sort_method === VOTE_AVERAGE ? 'Best' : sort_method === RELEASE_DATE ? 'Recent' : ''}`
+
+      document.title = `${process.env.REACT_APP_PROJECT_NAME} - 
+      ${sort_method === POPULARITY ? 'Popular' : sort_method === VOTE_AVERAGE ? 'Best' : sort_method === RELEASE_DATE ? 'Recent' : ''}`
+
       if (media_type === 'movie') {
         document.title += ` Movies`;
         TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
@@ -32,6 +36,9 @@ const MediaList = () => {
           select: false
         }], sortMethod, currentPage)
           .then((data) => {
+              if (currentPage === 1) {
+                setBackgroundImage(getOriginalImage(data.results[0]?.backdrop_path))
+              }
               setMediaList(prev => [...prev, ...data.results])
               setIsLoading(false);
             }
@@ -41,6 +48,9 @@ const MediaList = () => {
         document.title += ` Series`;
         TMDBMovieController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
           .then((data) => {
+              if (currentPage === 1) {
+                setBackgroundImage(getOriginalImage(data.results[0]?.backdrop_path))
+              }
               setMediaList(prev => [...prev, ...data.results])
               setIsLoading(false);
             }
@@ -53,6 +63,9 @@ const MediaList = () => {
           select: true
         }], sortMethod, currentPage)
           .then((data) => {
+              if (currentPage === 1) {
+                setBackgroundImage(getOriginalImage(data.results[0]?.backdrop_path))
+              }
               setMediaList(prev => [...prev, ...data.results])
               setIsLoading(false);
             }
@@ -62,6 +75,9 @@ const MediaList = () => {
         document.title = `${process.env.REACT_APP_PROJECT_NAME} - "${query}"`;
         TMDBMovieController.search(query, sort_method, currentPage).then(data => {
           if (data.total_pages >= currentPage) {
+            if (currentPage === 1) {
+              setBackgroundImage(getOriginalImage(data.results[0]?.backdrop_path))
+            }
             setMediaList(prev => [...prev, ...data.results]);
             setIsLoading(false);
           }
@@ -82,20 +98,20 @@ const MediaList = () => {
   }, [])
 
   useEffect(() => {
-    if(currentPage > 0) {
+    if (currentPage > 0) {
       fetchMediaList();
     }
     // eslint-disable-next-line
   }, [currentPage]);
 
+
+  console.log(currentPage)
   useEffect(() => {
     setCurrentPage(0);
     setMediaList([]);
+
     return () => document.title = process.env.REACT_APP_PROJECT_NAME;
   }, [selectedGenres, media_type, sort_method, query])
-
-
-  console.log(currentPage)
 
   return (
     <div className='media-list'>
