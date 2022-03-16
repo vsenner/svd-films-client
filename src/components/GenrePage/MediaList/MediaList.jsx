@@ -24,7 +24,9 @@ const MediaList = () => {
     const sortMethod = sort_method + '.desc'
     if (!isLoading) {
       setIsLoading(true);
+      document.title = `${process.env.REACT_APP_PROJECT_NAME} - ${sort_method === POPULARITY ? 'Popular' : sort_method === VOTE_AVERAGE ? 'Best' : sort_method === RELEASE_DATE ? 'Recent' : ''}`
       if (media_type === 'movie') {
+        document.title += ` Movies`;
         TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
           id: 16,
           select: false
@@ -36,6 +38,7 @@ const MediaList = () => {
           )
       }
       if (media_type === 'tv') {
+        document.title += ` Series`;
         TMDBMovieController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
           .then((data) => {
               setMediaList(prev => [...prev, ...data.results])
@@ -44,6 +47,7 @@ const MediaList = () => {
           )
       }
       if (media_type === 'cartoons') {
+        document.title += ` Cartoons`;
         TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
           id: 16,
           select: true
@@ -55,6 +59,7 @@ const MediaList = () => {
           )
       }
       if (query) {
+        document.title = `${process.env.REACT_APP_PROJECT_NAME} - "${query}"`;
         TMDBMovieController.search(query, sort_method, currentPage).then(data => {
           if (data.total_pages >= currentPage) {
             setMediaList(prev => [...prev, ...data.results]);
@@ -86,6 +91,7 @@ const MediaList = () => {
   useEffect(() => {
     setCurrentPage(0);
     setMediaList([]);
+    return () => document.title = process.env.REACT_APP_PROJECT_NAME;
   }, [selectedGenres, media_type, sort_method, query])
 
 

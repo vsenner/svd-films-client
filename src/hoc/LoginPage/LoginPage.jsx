@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './LoginPage.scss'
 import {Link} from "react-router-dom";
 import {useNavigate} from "react-router";
@@ -15,6 +15,11 @@ const LoginPage = ({submit, type}) => {
   const [loading, setLoading] = useState(false)
 
   const router = useNavigate();
+
+  useEffect(() => {
+    document.title = `${process.env.REACT_APP_PROJECT_NAME} - ${type}`
+    return () => document.title = process.env.REACT_APP_PROJECT_NAME;
+  }, [])
 
   const onSubmit = (e) => {
     e.preventDefault();
