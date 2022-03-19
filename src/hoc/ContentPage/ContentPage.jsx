@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import MovieController from "../../controllers/movie-controller";
 import {useSelector} from "react-redux";
 import {Link, useParams} from "react-router-dom";
-import {getImage} from "../../UI/getImage";
 import {
   addFavourite,
   addLater,
@@ -18,6 +17,7 @@ import {useNavigate} from "react-router";
 import TVController from "../../controllers/tv-controller";
 import ActorList from "./ActorList/ActorList";
 import VideoList from "./VideoList/VideoList";
+import {getImage} from "../../utils";
 
 const minsToHours = (mins) => `${Math.floor(mins / 60)}h ${mins % 60}m`;
 

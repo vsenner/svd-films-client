@@ -43,5 +43,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/debounce": "^1.2.1",
+    "scss": "^0.2.4"
   }
 }

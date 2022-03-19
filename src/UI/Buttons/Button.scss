@@ -1,0 +1,15 @@
+@import "../styleVariables";
+
+.btn {
+  border-radius: 6px;
+}
+
+.btn- {
+  &primary {
+    background-color: $primaryColor;
+    color: $lightColor;
+  }
+  &secondary {
+    background-color:  $primaryColor;
+  }
+}

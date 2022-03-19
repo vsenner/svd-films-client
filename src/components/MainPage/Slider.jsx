@@ -7,9 +7,9 @@ import {SwiperSlide} from "swiper/react/swiper-react";
 import ratingStar from "../../images/star.png"
 import {Link} from "react-router-dom";
 import TruncatedText from "../UI/TruncatedText/TruncatedText";
-import {getImage} from "../../UI/getImage";
 import Loader from "../UI/Loader/Loader";
 import TMDBMovieController from "../../controllers/tmdb-movie-controller";
+import {getImage} from "../../utils";
 
 SwiperCore.use([Navigation]);
 

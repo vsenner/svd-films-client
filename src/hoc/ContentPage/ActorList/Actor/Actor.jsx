@@ -1,6 +1,6 @@
 import React from 'react';
 import './Actor.scss'
-import {getImage} from "../../../../UI/getImage";
+import {getImage} from "../../../../utils";
 
 const Actor = ({profile_path, name}) => {
   return (
