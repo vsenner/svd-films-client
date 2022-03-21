@@ -11,5 +11,5 @@ It gives an opportunity to:
 In this project we have used React(and some TypeScript) for the front-end & Express(Node.js) for the back-end.
 This product uses the TMDB API but is not endorsed or certified by TMDB.
 
-![alt text](preview.png "SVD-Films")
+![Preview](preview.png "SVD-Films")
 Demo: [SVD-Films](https://youthful-tereshkova-42b5d8.netlify.app/)
