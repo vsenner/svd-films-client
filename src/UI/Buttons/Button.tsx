@@ -20,7 +20,7 @@ const defaultStyle = {
 
 const Button:FC<ButtonStyles> =
   (
-    {height , width, text, onClick, type}
+    {height , width, children, onClick, type}
   ) => {
     return (
       <button
@@ -32,7 +32,7 @@ const Button:FC<ButtonStyles> =
           }
         }
         onClick={onClick}>
-        {text}
+        {children}
       </button>
     )
   }

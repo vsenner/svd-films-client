@@ -1,27 +1,27 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {getImage} from "../../utils";
-const NavbarMediaList = ({media, clearFilms}) => {
+const NavbarMediaList = ({media_list, clearFilms, media_type}) => {
 
 
   return (
     <div className={'navbar__media-list'}>
-      {media.map(film =>
-        <Link key={film.id}
+      {media_list.map(media =>
+        <Link key={media.id}
               className={'navbar__media-list__item'}
-              to={`/${film.media_type}/${film.id}/overview`}
+              to={`/${media_type}/${media.id}/overview`}
               onClick={() => clearFilms('')}
         >
 
           <img className={'navbar__media-list__item_img'}
-               src={film.poster_path
+               src={media.poster_path
                  ?
-                 getImage(film.poster_path)
+                 getImage(media.poster_path)
                  : 'https://i.ibb.co/3F9kRkx/no-poster.png'
                }
-               alt={film.id}/>
+               alt={media.id}/>
           <p className={'navbar__media-list__item_title'}>
-            {film.media_type === 'movie' ? film.original_title : film.name}
+            {media_type === 'movie' ? media.original_title : media.name}
           </p>
 
         </Link>

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './MediaList.scss'
-import TMDBMovieController from "../../../controllers/tmdb-movie-controller";
+import TmdbMediaController from "../../../controllers/tmdb-media-controller";
 import {Link, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import MediaItem from './MediaItem/MediaItem'
@@ -14,50 +14,48 @@ const MediaList = () => {
   const [mediaList, setMediaList] = useState([])
   const selectedGenres = useSelector((state) => state.movies.genres)
   const [currentPage, setCurrentPage] = useState(1);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {media_type, query, sort_method} = useParams()
 
   const loadingRef = useRef();
 
+  const setMediaData = (data) => {
+    setMediaList(prev => [...prev, ...data.results])
+    setIsLoading(false);
+  }
+
+  function randomInt(min = 1, max = 100000000) { // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
+
   const fetchMediaList = () => {
     const sortMethod = sort_method + '.desc'
     if (!isLoading) {
       setIsLoading(true)
-      if (media_type === 'movie') {
-        TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
+      if (media_type === 'movie' && !query) {
+        TmdbMediaController.getMoviesWithGenres([...selectedGenres, {
           id: 16,
           select: false
         }], sortMethod, currentPage)
-          .then((data) => {
-              setMediaList(prev => [...prev, ...data.results])
-              setIsLoading(false);
-            }
-          )
+          .then(setMediaData)
       }
-      if (media_type === 'tv') {
-        TMDBMovieController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
-          .then((data) => {
-              setMediaList(prev => [...prev, ...data.results])
-              setIsLoading(false);
-            }
-          )
+      if (media_type === 'tv' && !query) {
+        TmdbMediaController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
+          .then(setMediaData)
       }
-      if (media_type === 'cartoons') {
-        TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
+      if (media_type === 'cartoons' && !query) {
+        TmdbMediaController.getMoviesWithGenres([...selectedGenres, {
           id: 16,
           select: true
         }], sortMethod, currentPage)
-          .then((data) => {
-              setMediaList(prev => [...prev, ...data.results])
-              setIsLoading(false);
-            }
-          )
+          .then(setMediaData)
       }
-      if (query) {
-        TMDBMovieController.search(query, sort_method, currentPage).then(data => {
+      if (query && media_type) {
+        TmdbMediaController.search(query,media_type, sort_method, currentPage).then(data => {
           if (data.total_pages >= currentPage) {
-            setMediaList(prev => [...prev, ...data.results]);
+            setMediaList(prev => [...prev, ...data.list]);
             setIsLoading(false);
           }
         })
@@ -79,7 +77,6 @@ const MediaList = () => {
   }, [])
 
   useEffect(() => {
-    console.log('here2 Page - ', currentPage);
     fetchMediaList();
     // eslint-disable-next-line
   }, [currentPage]);
@@ -92,7 +89,7 @@ const MediaList = () => {
 
   return (
     <div className='media-list'>
-      <div className='media-list__buttons'>
+      {!query ? <div className='media-list__buttons'>
         <Link
           to={`/genres/${media_type ?? `search/${query}`}/${POPULARITY}`}
           className={sort_method === POPULARITY ? 'active' : null}
@@ -111,19 +108,19 @@ const MediaList = () => {
         >
           Release date
         </Link>
-      </div>
+      </div>: null}
       <div className='film-grid'>
         {
           mediaList?.map(media => {
-              const type = media_type ? (media_type === 'tv' ? 'tv' : 'movie') : (media.media_type === 'tv' ? 'tv' : 'movie')
+              const type = media_type === 'all' ? (media.media_type === 'tv' ? 'tv' : 'movie') : media_type
               return (
                 <MediaItem
-                  key={media.id}
-                  poster_path={media.poster_path}
+                  key={media.id + randomInt()}
+                  poster_path={media.poster_path ?? null}
                   original_title={media.original_title}
                   name={type === 'tv' ? media.name : media.title}
                   id={media.id}
-                  type={media.title ? 'movie' : 'tv'}
+                  type={type}
                   year={new Date(type === 'tv' ? media.first_air_date : media.release_date).getFullYear()}
                 />)
             }

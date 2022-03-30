@@ -1,6 +1,6 @@
 import '../../hoc/ContentPage/ContentPage.scss';
 import React, {useEffect, useState} from 'react';
-import TMDBMovieController from "../../controllers/tmdb-movie-controller";
+import TmdbMediaController from "../../controllers/tmdb-media-controller";
 import {useParams} from "react-router-dom";
 import ContentPage from "../../hoc/ContentPage/ContentPage";
 
@@ -11,13 +11,13 @@ const TvPage = () => {
   const [director, setDirector] = useState(null)
 
   useEffect(() => {
-    TMDBMovieController.getTVById(id).then((data) => {
+    TmdbMediaController.getTVById(id).then((data) => {
       setTV(data);
     })
-    TMDBMovieController.getTVActorsById(id).then((actors) => {
+    TmdbMediaController.getTVActorsById(id).then((actors) => {
       setActors(actors)
     })
-    TMDBMovieController.getTVDirectorById(id).then((director) => {
+    TmdbMediaController.getTVDirectorById(id).then((director) => {
       setDirector(director)
     })
   }, [id])

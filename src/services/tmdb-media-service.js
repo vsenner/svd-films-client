@@ -2,7 +2,7 @@
 
 import instance from "../API/instance";
 
-export default class TMDBMovieService {
+export default class TmdbMediaService {
   static async getPopular() {
     return (await instance.get('/movie/popular')).data
   }
@@ -27,8 +27,16 @@ export default class TMDBMovieService {
     return (await instance.get('/genre/tv/list')).data
   }
 
-  static async search(query, page = 1) {
+  static async multiSearch(query, page = 1) {
     return (await instance.get(`search/multi?language=en-US&query=${query}&page=${page}&include_adult=true`)).data
+  }
+
+  static async tvSearch(query, page = 1) {
+    return (await instance.get(`search/tv?language=en-US&query=${query}&page=${page}&include_adult=true`)).data
+  }
+
+  static async movieSearch(query, page = 1) {
+    return (await instance.get(`search/movie?language=en-US&query=${query}&page=${page}&include_adult=true`)).data
   }
 
   static async getTVCreditsById(id) {

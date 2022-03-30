@@ -8,7 +8,7 @@ import ratingStar from "../../images/star.png"
 import {Link} from "react-router-dom";
 import TruncatedText from "../UI/TruncatedText/TruncatedText";
 import Loader from "../UI/Loader/Loader";
-import TMDBMovieController from "../../controllers/tmdb-movie-controller";
+import TmdbMediaController from "../../controllers/tmdb-media-controller";
 import {getImage} from "../../utils";
 
 SwiperCore.use([Navigation]);
@@ -18,7 +18,7 @@ const Slider = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    TMDBMovieController.getPopular().then(resp => {
+    TmdbMediaController.getPopular().then(resp => {
       setSlides(resp.results.slice(0, 10))
     }).finally(() => setLoading(false));
     // eslint-disable-next-line
