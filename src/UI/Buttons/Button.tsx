@@ -9,7 +9,6 @@ export enum ButtonType {
 interface ButtonStyles {
   height?: number,
   width?: number,
-  text: string,
   type: ButtonType,
   onClick?: MouseEventHandler<HTMLButtonElement>,
 }
@@ -18,9 +17,9 @@ const defaultStyle = {
   height: 40, width: 100
 };
 
-const Button:FC<ButtonStyles> =
+const Button: FC<ButtonStyles> =
   (
-    {height , width, children, onClick, type}
+    {height, width, children, onClick, type}
   ) => {
     return (
       <button

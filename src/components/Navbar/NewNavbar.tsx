@@ -11,37 +11,31 @@ import TmdbMediaController from "../../controllers/tmdb-media-controller";
 import Button, {ButtonType} from "../../UI/Buttons/Button";
 import {getInitials} from "../../utils";
 import LanguageDropDown from "./LanguageDropDown/LanguageDropDown";
-
+import {IMovie, ITv, mediaTypes} from "../../models/media";
 
 const NewNavbar = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [media, setMedia] = useState<[]>([]);
-  const [selected, setSelected] = useState<string>('All');
-  const [mediaType, setMediaType] = useState<string>('all');
+  const [media, setMedia] = useState<IMovie[] | ITv[]>([]);
+  const [selectedMediaType, setSelectedMediaType] = useState<mediaTypes>(mediaTypes.ALL);
   const [activeSelect, setActiveSelect] = useState<boolean>(false);
   const [activeSearch, setActiveSearch] = useState<boolean>(false);
 
   const closeNavbarMediaList = () => {
     setActiveSearch(false);
     setMedia([]);
-    setSearchQuery('');
+    if(searchInput.current) {
+      searchInput.current.value = '';
+    }
   };
 
-  const selectSearchType = (type?: string, selected?: string) => {
-    if(!activeSelect) {
-      setActiveSearch(false);
-    }
-    if(type && selected){
-      setMediaType(type);
-      setSelected(selected);
-    }
-    setActiveSelect(prev => !prev);
+  const selectSearchType = (type: mediaTypes) => {
+    setSelectedMediaType(type);
   }
 
   const submitFormHandler = (e: FormEvent) => {
     e.preventDefault();
-    router(`/genres/search/${mediaType}/${searchInput.current?.value}/popularity`);
-    closeNavbarMediaList();
+    router(`/genres/search/${selectedMediaType}/${searchInput.current?.value}/popularity`);
+    setActiveSearch(false);
   };
 
   const changeHandler = (e: InputEvent) => {
@@ -54,24 +48,26 @@ const NewNavbar = () => {
 
   useEffect(() => {
     if (searchQuery.length > 1) {
-      TmdbMediaController.navbarSearch(searchQuery, mediaType).then(data => {
+      TmdbMediaController.navbarSearch(searchQuery, selectedMediaType).then(data => {
         setMedia(data.list);
       });
     } else {
       setMedia([]);
     }
-  }, [searchQuery, mediaType]);
+  }, [searchQuery, selectedMediaType]);
 
   useEffect(() => {
-    document.addEventListener('click', (e) => {
+    const removeFocus = (e: MouseEvent) => {
       const target = e.target as Element;
-      if (/'navbar__film-list.+navbar__input|navbar__input.+navbar__film-list'/.test(target.className)) {
-        setActiveSearch(false);
+      if(!/navbar__input/.test(target.className)) {
+        setActiveSearch(false)
       }
-      if(/'navbar__search-type-list_active'/.test(target.className)){
-        setActiveSearch(false);
-      }
-    })
+    }
+    document.addEventListener('click', removeFocus)
+
+    return () => {
+      document.removeEventListener('click', removeFocus)
+    }
   }, []);
 
   const router = useNavigate();
@@ -82,50 +78,76 @@ const NewNavbar = () => {
   return (
     <div className='navbar'>
       <div className="navbar__container">
-        <Button  text={'FVDS'} type={ButtonType.primary}
+        <Button type={ButtonType.primary}
                 height={40}
                 width={80}
                 onClick={() => router(`/`)}>
+          SVD
         </Button>
 
-        {/*<Link to='/genres/movie/popularity' className="navbar__link">*/}
-        {/*  Movies*/}
-        {/*</Link>*/}
+        <div className="navbar__links">
+          <Link to='/genres/movie/popularity' className="navbar__link">
+            Movies
+          </Link>
+          <Link to='/genres/tv/popularity' className="navbar__link">
+            Serials
+          </Link>
+          <Link to='/genres/cartoons/popularity' className="navbar__link">
+            Cartoons
+          </Link>
+        </div>
 
         <div className="navbar__search">
-          <div className="navbar__search-type">
-            <div className={`navbar__search-type_selected`} onClick={() => selectSearchType()}>
-              <span className="navbar__search-type_selected-text">{selected}</span>
-              <img className={`navbar__search-type_selected-icon${activeSelect ? '_active' : ''}`} src={arrow} alt="search"/>
-            </div>
-            <div className={`navbar__search-type-list${activeSelect ? '_active' : ''}`}>
-              <span className="navbar__search-type_item" id={'movie'} onClick={() => selectSearchType('movie', `Movie's`)}>Movie's</span>
-              <span className="navbar__search-type_item" id={'tv'} onClick={() => selectSearchType('tv', `TV's`)}>TV's</span>
-              <span className="navbar__search-type_item" id={'all'} onClick={() => selectSearchType('all', `ALL`)}>ALL</span>
-            </div>
+          <div className="navbar__select select"
+               onMouseLeave={() => activeSelect ? setActiveSelect(false) : null}
+          >
+            <button className={`select__item select__item_selected`} onClick={() => setActiveSelect(prev => !prev)}>
+              <span>{selectedMediaType}</span>
+              <img className={activeSelect ? ' active' : ''} src={arrow} alt="choose search type"/>
+            </button>
+            <ul className={`select__list ${activeSelect ? 'active' : ''}`}>
+              <li className="select__item">
+                <button id={'movie'}
+                        onClick={() => selectSearchType(mediaTypes.MOVIE)}>
+                  <i className="fas fa-film"/>
+                  {mediaTypes.MOVIE}'s
+                </button>
+              </li>
+              <li className="select__item">
+                <button id={'tv'}
+                        onClick={() => selectSearchType(mediaTypes.TV)}>
+                  <i className="fas fa-tv"/>
+                  {mediaTypes.TV}'s
+                </button>
+              </li>
+              <li className="select__item">
+                <button id={'all'}
+                        onClick={() => selectSearchType(mediaTypes.ALL)}>
+                  <i className="fas fa-search"/>
+                  {mediaTypes.ALL}
+                </button>
+              </li>
+            </ul>
           </div>
           <form
             onSubmit={submitFormHandler}
-            className={'navbar__search-form'}
+            className='navbar__search-form'
           >
-            <label className={'navbar__search-input'}>
-              <input
-                className='navbar__input'
-                type="text"
-                ref={searchInput}
-                onFocus={() => {
-                  setActiveSearch(true);
-                  setActiveSelect(false);
-                }}
-                onChange={debounceInput}
-                placeholder={'Search'}
-              />
-
-            </label>
-            {media.length > 0 && activeSearch ?
-              <NavbarMediaList media_type={mediaType} media_list={media} clearFilms={setSearchQuery}/> : null}
+            <input
+              className='navbar__input'
+              type="text"
+              ref={searchInput}
+              onFocus={() => {setActiveSearch(true)}}
+              onChange={debounceInput}
+              placeholder={'Search'}
+            />
+            <button>
+              <img className={'navbar__search-icon'} src={searchIcon} alt="search"/>
+            </button>
           </form>
-          <img className={'navbar__search-icon'} src={searchIcon} alt="search"/>
+          {media.length > 0 && activeSearch ?
+            <NavbarMediaList media_type={selectedMediaType} media_list={media} afterRedirect={closeNavbarMediaList}/> : null
+          }
         </div>
 
 
@@ -133,7 +155,7 @@ const NewNavbar = () => {
 
 
         </div>
-        <Link className={'navbar__profile' + user.isAuth ? '_auth' : ''}
+        <Link className={`navbar__profile${user.isAuth ? '_auth' : ''}`}
               to={user.isAuth ? `/user/${user.id}` : '/login'}>
           {user.isAuth ?
             getInitials(user.username) :

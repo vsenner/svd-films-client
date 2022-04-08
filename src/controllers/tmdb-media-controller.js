@@ -1,4 +1,6 @@
 import TmdbMediaService from "../services/tmdb-media-service";
+import {mediaTypes} from "../models/media";
+import {sortMethods} from "../models/sortMethods";
 
 export default class TmdbMediaController {
   static async getPopular() {
@@ -63,17 +65,14 @@ export default class TmdbMediaController {
       let list = [];
       switch (type) {
         case 'all': {
-          console.log('ALL')
           list = await TmdbMediaService.multiSearch(query, page);
           break;
         }
         case 'movie': {
-          console.log('MOVIE')
           list = await TmdbMediaService.movieSearch(query, page);
           break;
         }
         case 'tv': {
-          console.log('TV')
           list = await TmdbMediaService.tvSearch(query, page);
           break;
         }
@@ -107,13 +106,33 @@ export default class TmdbMediaController {
     }
   }
 
-  static async search(query, type, sortMethod, page) {
+  static async search(query, type, sortMethod, page, media_type) {
     try {
       return this.mediaTypeSearch(query, type, page)
         .then(response => {
+          if (sortMethod === sortMethods.PRIMARY_RELEASE_DATE) {
+            switch (media_type) {
+              case mediaTypes.MOVIE:
+                sortMethod = sortMethods.MOVIE_RELEASE_DATE;
+                break;
+              case mediaTypes.TV:
+                sortMethod = sortMethods.TV_RELEASE_DATE;
+            }
+          }
           return {
             ...response,
-            list: response.list.sort((a, b) => b[sortMethod] - a[sortMethod])
+            list: response.list.sort((a, b) => {
+              if (sortMethod === sortMethods.PRIMARY_RELEASE_DATE) {
+                const aSortMethod = a.media_type === mediaTypes.MOVIE ? sortMethods.MOVIE_RELEASE_DATE : sortMethods.TV_RELEASE_DATE;
+                const bSortMethod = b.media_type === mediaTypes.MOVIE ? sortMethods.MOVIE_RELEASE_DATE : sortMethods.TV_RELEASE_DATE;
+                console.log(b[bSortMethod].split('-')[0], a[aSortMethod].split('-')[0])
+                return b[bSortMethod].split('-')[0] - a[aSortMethod].split('-')[0]
+              }
+              if(sortMethod === sortMethods.TV_RELEASE_DATE || sortMethod === sortMethods.MOVIE_RELEASE_DATE) {
+                return b[sortMethod].split('-')[0] - a[sortMethod].split('-')[0]
+              }
+              return b[sortMethod] - a[sortMethod]
+            })
           }
         });
     } catch (err) {
@@ -195,7 +214,6 @@ export default class TmdbMediaController {
           return {...prev, no: [...prev?.no, genre.id]}
         }
       }, {yes: [], no: []})
-
       return await TmdbMediaService.getMoviesByGenres(genresObj.yes, genresObj.no, sortParam, page);
     } catch (err) {
       throw err

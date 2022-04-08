@@ -5,10 +5,9 @@ import {Link, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import MediaItem from './MediaItem/MediaItem'
 import UpButton from "../../UI/UpButton/UpButton";
+import {sortMethods} from "../../../models/sortMethods";
+import {mediaTypes} from "../../../models/media";
 
-const POPULARITY = 'popularity';
-const VOTE_AVERAGE = 'vote_average';
-const RELEASE_DATE = 'primary_release_date';
 
 const MediaList = () => {
   const [mediaList, setMediaList] = useState([])
@@ -24,10 +23,6 @@ const MediaList = () => {
   const setMediaData = (data) => {
     setMediaList(prev => [...prev, ...data.results])
     setIsLoading(false);
-  }
-
-  function randomInt(min = 1, max = 100000000) { // min and max included
-    return Math.floor(Math.random() * (max - min + 1) + min)
   }
 
   const fetchMediaList = () => {
@@ -53,7 +48,7 @@ const MediaList = () => {
           .then(setMediaData)
       }
       if (query && media_type) {
-        TmdbMediaController.search(query,media_type, sort_method, currentPage).then(data => {
+        TmdbMediaController.search(query, media_type, sort_method, currentPage, media_type).then(data => {
           if (data.total_pages >= currentPage) {
             setMediaList(prev => [...prev, ...data.list]);
             setIsLoading(false);
@@ -86,42 +81,41 @@ const MediaList = () => {
     setMediaList([]);
   }, [selectedGenres, media_type, sort_method, query])
 
-
   return (
     <div className='media-list'>
-      {!query ? <div className='media-list__buttons'>
+      <div className='media-list__buttons'>
         <Link
-          to={`/genres/${media_type ?? `search/${query}`}/${POPULARITY}`}
-          className={sort_method === POPULARITY ? 'active' : null}
+          to={`/genres/${query ? `search/` : ''}${media_type}/${query}/${sortMethods.POPULARITY}`}
+          className={sort_method === sortMethods.POPULARITY ? 'active' : null}
         >
           Most popular
         </Link>
         <Link
-          to={`/genres/${media_type ?? `search/${query}`}/${VOTE_AVERAGE}`}
-          className={sort_method === VOTE_AVERAGE ? 'active' : null}
+          to={`/genres/${query ? `search/` : ''}${media_type}/${query}/${sortMethods.VOTE_AVERAGE}`}
+          className={sort_method === sortMethods.VOTE_AVERAGE ? 'active' : null}
         >
           Best rated
         </Link>
         <Link
-          to={`/genres/${media_type ?? `search/${query}`}/${RELEASE_DATE}`}
-          className={sort_method === RELEASE_DATE ? 'active' : null}
+          to={`/genres/${query ? `search/` : ''}${media_type}/${query}/${sortMethods.PRIMARY_RELEASE_DATE}`}
+          className={sort_method === sortMethods.PRIMARY_RELEASE_DATE ? 'active' : null}
         >
           Release date
         </Link>
-      </div>: null}
+      </div>
       <div className='film-grid'>
         {
           mediaList?.map(media => {
-              const type = media_type === 'all' ? (media.media_type === 'tv' ? 'tv' : 'movie') : media_type
+              const type = media_type === mediaTypes.ALL ? media.media_type : media_type
               return (
                 <MediaItem
-                  key={media.id + randomInt()}
+                  key={media.id}
                   poster_path={media.poster_path ?? null}
                   original_title={media.original_title}
                   name={type === 'tv' ? media.name : media.title}
                   id={media.id}
                   type={type}
-                  year={new Date(type === 'tv' ? media.first_air_date : media.release_date).getFullYear()}
+                  year={new Date(type === mediaTypes.TV ? media.first_air_date : media.release_date).getFullYear()}
                 />)
             }
           )
