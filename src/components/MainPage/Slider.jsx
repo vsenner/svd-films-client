@@ -7,7 +7,7 @@ import {SwiperSlide} from "swiper/react/swiper-react";
 import ratingStar from "../../images/star.png"
 import {Link} from "react-router-dom";
 import TruncatedText from "../UI/TruncatedText/TruncatedText";
-import {getImage} from "../../UI/getImage";
+import {getSmallImage} from "../../UI/getSmallImage";
 import Loader from "../UI/Loader/Loader";
 import TMDBMovieController from "../../controllers/tmdb-movie-controller";
 
@@ -30,11 +30,11 @@ const Slider = () => {
     <Swiper navigation={true} className="mySwiper">
       {slides.map(slide => <SwiperSlide key={slide.id}>
         <div className="slide-background-img">
-          <img src={getImage(slide.backdrop_path)} alt=""/>
+          <img src={getSmallImage(slide.backdrop_path)} alt=""/>
         </div>
         <div className="info-block">
           <Link to={`/movie/${slide.id}/overview`} className="info-block__film-poster">
-            <img src={getImage(slide.poster_path)}
+            <img src={getSmallImage(slide.poster_path)}
                  alt=""/>
           </Link>
           <div className="text-block">

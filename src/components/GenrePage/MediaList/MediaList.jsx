@@ -5,15 +5,16 @@ import {Link, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import MediaItem from './MediaItem/MediaItem'
 import UpButton from "../../UI/UpButton/UpButton";
+import {getOriginalImage} from "../../../UI/getSmallImage";
 
 const POPULARITY = 'popularity';
 const VOTE_AVERAGE = 'vote_average';
 const RELEASE_DATE = 'primary_release_date';
 
-const MediaList = () => {
+const MediaList = ({setBackgroundImage}) => {
   const [mediaList, setMediaList] = useState([])
   const selectedGenres = useSelector((state) => state.movies.genres)
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const {media_type, query, sort_method} = useParams()
@@ -23,40 +24,60 @@ const MediaList = () => {
   const fetchMediaList = () => {
     const sortMethod = sort_method + '.desc'
     if (!isLoading) {
-      setIsLoading(true)
+      setIsLoading(true);
+
+      document.title = `${process.env.REACT_APP_PROJECT_NAME} - 
+      ${sort_method === POPULARITY ? 'Popular' : sort_method === VOTE_AVERAGE ? 'Best' : sort_method === RELEASE_DATE ? 'Recent' : ''}`
+
       if (media_type === 'movie') {
+        document.title += ` Movies`;
         TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
           id: 16,
           select: false
         }], sortMethod, currentPage)
           .then((data) => {
+              if (currentPage === 1) {
+                setBackgroundImage(getOriginalImage(data.results[0]?.backdrop_path))
+              }
               setMediaList(prev => [...prev, ...data.results])
               setIsLoading(false);
             }
           )
       }
       if (media_type === 'tv') {
+        document.title += ` Series`;
         TMDBMovieController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
           .then((data) => {
+              if (currentPage === 1) {
+                setBackgroundImage(getOriginalImage(data.results[0]?.backdrop_path))
+              }
               setMediaList(prev => [...prev, ...data.results])
               setIsLoading(false);
             }
           )
       }
       if (media_type === 'cartoons') {
+        document.title += ` Cartoons`;
         TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
           id: 16,
           select: true
         }], sortMethod, currentPage)
           .then((data) => {
+              if (currentPage === 1) {
+                setBackgroundImage(getOriginalImage(data.results[0]?.backdrop_path))
+              }
               setMediaList(prev => [...prev, ...data.results])
               setIsLoading(false);
             }
           )
       }
       if (query) {
+        document.title = `${process.env.REACT_APP_PROJECT_NAME} - "${query}"`;
         TMDBMovieController.search(query, sort_method, currentPage).then(data => {
           if (data.total_pages >= currentPage) {
+            if (currentPage === 1) {
+              setBackgroundImage(getOriginalImage(data.results[0]?.backdrop_path))
+            }
             setMediaList(prev => [...prev, ...data.results]);
             setIsLoading(false);
           }
@@ -71,24 +92,26 @@ const MediaList = () => {
         setCurrentPage(prev => prev + 1)
       }
     }
-    if (loadingRef) {
-      const observer = new IntersectionObserver(callback)
-      observer.observe(loadingRef.current);
-    }
+    const observer = new IntersectionObserver(callback)
+    observer.observe(loadingRef.current);
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    console.log('here2 Page - ', currentPage);
-    fetchMediaList();
+    if (currentPage > 0) {
+      fetchMediaList();
+    }
     // eslint-disable-next-line
   }, [currentPage]);
 
-  useEffect(() => {
-    setCurrentPage(1);
-    setMediaList([]);
-  }, [selectedGenres, media_type, sort_method, query])
 
+  console.log(currentPage)
+  useEffect(() => {
+    setCurrentPage(0);
+    setMediaList([]);
+
+    return () => document.title = process.env.REACT_APP_PROJECT_NAME;
+  }, [selectedGenres, media_type, sort_method, query])
 
   return (
     <div className='media-list'>

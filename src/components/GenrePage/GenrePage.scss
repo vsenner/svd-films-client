@@ -1,5 +1,11 @@
 .genre-page {
+  background: no-repeat center center fixed;
+  background-size: cover;
+
+  transition: background-image 2s ease-in-out;
+
   .container {
+    background-color: #fff;
     max-width: 1540px;
     box-shadow: 0 0 55px 4px rgba(0,0,0,.5);
     width: 100%;

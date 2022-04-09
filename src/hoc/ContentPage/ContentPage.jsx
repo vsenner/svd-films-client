@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import MovieController from "../../controllers/movie-controller";
 import {useSelector} from "react-redux";
 import {Link, useParams} from "react-router-dom";
-import {getImage} from "../../UI/getImage";
+import {getSmallImage} from "../../UI/getSmallImage";
 import {
   addFavourite,
   addLater,
@@ -18,6 +18,7 @@ import {useNavigate} from "react-router";
 import TVController from "../../controllers/tv-controller";
 import ActorList from "./ActorList/ActorList";
 import VideoList from "./VideoList/VideoList";
+import placeholder from '../../images/no-poster.png'
 
 const minsToHours = (mins) => `${Math.floor(mins / 60)}h ${mins % 60}m`;
 
@@ -37,22 +38,28 @@ const ContentPage = ({content, director, actors, content_type}) => {
 
 
   useEffect(() => {
-    if (user.id) {
-      switch (content_type) {
-        case 'movie':
+    switch (content_type) {
+      case 'movie':
+        document.title = `Movie "${content ? content[title] : id}"`;
+        if (user.id) {
           MovieController.getUserFilmInfo(id, user.id).then(data => {
-            setUserFilmInfo(data)
-          })
-          break;
-        case 'tv':
+            setUserFilmInfo(data);
+          });
+        }
+        break;
+      case 'tv':
+        document.title = `Series "${content ? content[title] : id}"`;
+        if (user.id) {
           TVController.getUserTVInfo(id, user.id).then(data => {
             setUserFilmInfo(data)
           });
-          break;
-        default:
-      }
+        }
+        break;
+      default:
     }
-  }, [id, user.id, content_type])
+
+    return () => document.title = process.env.REACT_APP_PROJECT_NAME;
+  }, [id, user.id, content_type, content, title])
 
   const router = useNavigate()
   const {page} = useParams()
@@ -66,7 +73,8 @@ const ContentPage = ({content, director, actors, content_type}) => {
           <div className="film-page__film film">
             <div className="film__main">
               <div className="film__poster">
-                <img src={getImage(content.poster_path)} alt="Poster" width='300px'/>
+                <img src={content.poster_path ? getSmallImage(content.poster_path) : placeholder} alt="Poster"
+                     width='300px'/>
               </div>
               <div className="film__info info">
                 <div className="info__header">
@@ -197,48 +205,49 @@ const ContentPage = ({content, director, actors, content_type}) => {
               </div>
               {
                 page === OVERVIEW &&
-                  <div>
-                    <div className="film__description">
-                      <TruncatedText str={content.overview} n={300}/>
-                    </div>
-                    <div className="film__rating">
-                      <h2>Film Rating</h2>
-                      <div className="rating__row">
-                        <Rate avgRating={content.vote_average}
-                              content_type={content_type}
-                              action={user.isAuth ? rateFilm : redirectToLogin}
-                              title={content[title]}
-                              setUserFilmInfo={setUserFilmInfo}
-                              film_id={content.id}
-                              user_id={user.id}
-                        />
-                        <div className="rating__value">{content.vote_average}</div>
-                      </div>
-                      {userFilmInfo?.isRated ?
-                        <div className="rating__mine">
-                          My rating
-                          <span style={{background: userFilmInfo.rating < 5 ? 'red' : 'green'}}>{userFilmInfo.rating}</span>
-                          <button
-                            onClick={() => unRateFilm(setUserFilmInfo, content.id, user.id, content_type)}
-                            className="rating__remove"
-                          >
-                            Remove
-                          </button>
-                        </div>
-                        : null}
-                    </div>
+                <div>
+                  <div className="film__description">
+                    <TruncatedText str={content.overview} n={300}/>
                   </div>
+                  <div className="film__rating">
+                    <h2>Film Rating</h2>
+                    <div className="rating__row">
+                      <Rate avgRating={content.vote_average}
+                            content_type={content_type}
+                            action={user.isAuth ? rateFilm : redirectToLogin}
+                            title={content[title]}
+                            setUserFilmInfo={setUserFilmInfo}
+                            film_id={content.id}
+                            user_id={user.id}
+                      />
+                      <div className="rating__value">{content.vote_average}</div>
+                    </div>
+                    {userFilmInfo?.isRated ?
+                      <div className="rating__mine">
+                        My rating
+                        <span
+                          style={{background: userFilmInfo.rating < 5 ? 'red' : 'green'}}>{userFilmInfo.rating}</span>
+                        <button
+                          onClick={() => unRateFilm(setUserFilmInfo, content.id, user.id, content_type)}
+                          className="rating__remove"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                      : null}
+                  </div>
+                </div>
               }
               {
                 page === ACTOR &&
                 <div className="film__actors">
                   <h2>Actors</h2>
-                  {actors ? <ActorList actors={actors.slice(0, 5)} className='film__actors-list'/> : ''}
+                  {actors ? <ActorList actors={actors} className='film__actors-list'/> : ''}
                 </div>
               }
               {
                 page === VIDEO &&
-                  <VideoList className='film__video' content_type={content_type}/>
+                <VideoList className='film__video' content_type={content_type}/>
               }
 
             </div>
