@@ -81,23 +81,24 @@ const MediaList = () => {
     setMediaList([]);
   }, [selectedGenres, media_type, sort_method, query])
 
+
   return (
     <div className='media-list'>
       <div className='media-list__buttons'>
         <Link
-          to={`/genres/${query ? `search/` : ''}${media_type}/${query}/${sortMethods.POPULARITY}`}
+          to={`/genres/${query ? `search/` : ''}${media_type}/${query ? `${query}/` : ''}${sortMethods.POPULARITY}`}
           className={sort_method === sortMethods.POPULARITY ? 'active' : null}
         >
           Most popular
         </Link>
         <Link
-          to={`/genres/${query ? `search/` : ''}${media_type}/${query}/${sortMethods.VOTE_AVERAGE}`}
+          to={`/genres/${query ? `search/` : ''}${media_type}/${query ? `${query}/` : ''}${sortMethods.VOTE_AVERAGE}`}
           className={sort_method === sortMethods.VOTE_AVERAGE ? 'active' : null}
         >
           Best rated
         </Link>
         <Link
-          to={`/genres/${query ? `search/` : ''}${media_type}/${query}/${sortMethods.PRIMARY_RELEASE_DATE}`}
+          to={`/genres/${query ? `search/` : ''}${media_type}/${query ? `${query}/` : ''}${sortMethods.PRIMARY_RELEASE_DATE}`}
           className={sort_method === sortMethods.PRIMARY_RELEASE_DATE ? 'active' : null}
         >
           Release date
