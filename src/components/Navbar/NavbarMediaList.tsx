@@ -5,7 +5,7 @@ import {IMovie, ITv, mediaTypes} from "../../models/media";
 import './NavbarMediaList.scss'
 
 interface Iprops {
-  media_list: IMovie[] | ITv[],
+  media_list: (IMovie | ITv)[],
   media_type: mediaTypes
   afterRedirect?: () => void;
 }

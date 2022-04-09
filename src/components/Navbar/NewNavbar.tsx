@@ -1,4 +1,4 @@
-import React, {ChangeEventHandler, FormEvent, useCallback, useEffect, useRef, useState} from 'react';
+import React, {FormEvent, useCallback, useEffect, useRef, useState} from 'react';
 import './NewNavbar.scss'
 import {Link} from "react-router-dom";
 import debounce from "debounce";
@@ -15,7 +15,7 @@ import {IMovie, ITv, mediaTypes} from "../../models/media";
 
 const NewNavbar = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [media, setMedia] = useState<IMovie[] | ITv[]>([]);
+  const [media, setMedia] = useState<(IMovie | ITv)[]>([]);
   const [selectedMediaType, setSelectedMediaType] = useState<mediaTypes>(mediaTypes.ALL);
   const [activeSelect, setActiveSelect] = useState<boolean>(false);
   const [activeSearch, setActiveSearch] = useState<boolean>(false);
@@ -23,7 +23,7 @@ const NewNavbar = () => {
   const closeNavbarMediaList = () => {
     setActiveSearch(false);
     setMedia([]);
-    if(searchInput.current) {
+    if (searchInput.current) {
       searchInput.current.value = '';
     }
   };
@@ -43,13 +43,16 @@ const NewNavbar = () => {
     setSearchQuery(target.value);
   };
 
-  const debounceInput = useCallback(debounce(changeHandler, 500), []) as unknown as ChangeEventHandler<HTMLInputElement>// eslint-disable-line react-hooks/exhaustive-deps
+// eslint-disable-next-line
+  const debounceInput = useCallback(debounce(changeHandler, 500), []) as any;
   const searchInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (searchQuery.length > 1) {
       TmdbMediaController.navbarSearch(searchQuery, selectedMediaType).then(data => {
-        setMedia(data.list);
+        if (data.list) {
+          setMedia(data.list);
+        }
       });
     } else {
       setMedia([]);
@@ -59,7 +62,7 @@ const NewNavbar = () => {
   useEffect(() => {
     const removeFocus = (e: MouseEvent) => {
       const target = e.target as Element;
-      if(!/navbar__input/.test(target.className)) {
+      if (!/navbar__input/.test(target.className)) {
         setActiveSearch(false)
       }
     }
@@ -137,7 +140,9 @@ const NewNavbar = () => {
               className='navbar__input'
               type="text"
               ref={searchInput}
-              onFocus={() => {setActiveSearch(true)}}
+              onFocus={() => {
+                setActiveSearch(true)
+              }}
               onChange={debounceInput}
               placeholder={'Search'}
             />
@@ -146,7 +151,8 @@ const NewNavbar = () => {
             </button>
           </form>
           {media.length > 0 && activeSearch ?
-            <NavbarMediaList media_type={selectedMediaType} media_list={media} afterRedirect={closeNavbarMediaList}/> : null
+            <NavbarMediaList media_type={selectedMediaType} media_list={media}
+                             afterRedirect={closeNavbarMediaList}/> : null
           }
         </div>
 
