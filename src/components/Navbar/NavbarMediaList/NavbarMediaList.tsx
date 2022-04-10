@@ -1,8 +1,9 @@
 import React, {FC} from 'react';
 import {Link} from "react-router-dom";
-import {getImage} from "../../utils";
-import {IMovie, ITv, mediaTypes} from "../../models/media";
+import {getSmallImage} from "../../../utils";
+import {IMovie, ITv, mediaTypes} from "../../../models/media";
 import './NavbarMediaList.scss'
+import TruncatedText from "../../UI/TruncatedText/TruncatedText";
 
 interface Iprops {
   media_list: (IMovie | ITv)[],
@@ -33,7 +34,7 @@ const NavbarMediaList: FC<Iprops> = ({media_list, media_type, afterRedirect}) =>
                   <img
                     src={media.poster_path
                       ?
-                      getImage(media.poster_path)
+                      getSmallImage(media.poster_path)
                       : 'https://i.ibb.co/3F9kRkx/no-poster.png'
                     }
                     alt={title}/>
@@ -41,7 +42,7 @@ const NavbarMediaList: FC<Iprops> = ({media_list, media_type, afterRedirect}) =>
               </div>
               <div className="dropdown-list__right">
                 <p className='dropdown-list__title'>
-                  {title}
+                  <TruncatedText>{title}</TruncatedText>
                 </p>
                 <p className='dropdown-list__subtitle'>
                   {year}

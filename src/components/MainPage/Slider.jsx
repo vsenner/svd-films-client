@@ -9,7 +9,7 @@ import {Link} from "react-router-dom";
 import TruncatedText from "../UI/TruncatedText/TruncatedText";
 import Loader from "../UI/Loader/Loader";
 import TmdbMediaController from "../../controllers/tmdb-media-controller";
-import {getImage} from "../../utils";
+import {getSmallImage} from "../../utils";
 
 SwiperCore.use([Navigation]);
 
@@ -30,11 +30,11 @@ const Slider = () => {
     <Swiper navigation={true} className="mySwiper">
       {slides.map(slide => <SwiperSlide key={slide.id}>
         <div className="slide-background-img">
-          <img src={getImage(slide.backdrop_path)} alt=""/>
+          <img src={getSmallImage(slide.backdrop_path)} alt=""/>
         </div>
         <div className="info-block">
           <Link to={`/movie/${slide.id}/overview`} className="info-block__film-poster">
-            <img src={getImage(slide.poster_path)}
+            <img src={getSmallImage(slide.poster_path)}
                  alt=""/>
           </Link>
           <div className="text-block">
@@ -48,7 +48,9 @@ const Slider = () => {
               </div>}
 
               <div className="text-block__description">
-                <TruncatedText str={slide.overview} n={200} path={`/movie/${slide.id}/overview`}/>
+                <TruncatedText n={200} path={`/movie/${slide.id}/overview`}>
+                  {slide.overview}
+                </TruncatedText>
               </div>
             </div>
           </div>

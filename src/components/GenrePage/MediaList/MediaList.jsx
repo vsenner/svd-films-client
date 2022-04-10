@@ -59,15 +59,22 @@ const MediaList = () => {
   }
 
   useEffect(() => {
+    let observer;
     const callback = (entries) => {
       if (!isLoading && entries[0].isIntersecting) {
         setCurrentPage(prev => prev + 1)
       }
     }
     if (loadingRef) {
-      const observer = new IntersectionObserver(callback)
+      observer = new IntersectionObserver(callback)
       observer.observe(loadingRef.current);
     }
+    return () => {
+      if(loadingRef.current) {
+        observer.unobserve(loadingRef.current);
+      }
+    }
+
     // eslint-disable-next-line
   }, [])
 
@@ -104,9 +111,10 @@ const MediaList = () => {
           Release date
         </Link>
       </div>
-      <div className='film-grid'>
-        {
-          mediaList?.map(media => {
+      {
+        mediaList.length ?
+          <div className='film-grid'>
+            {mediaList.map(media => {
               const type = media_type === mediaTypes.ALL ? media.media_type : media_type
               return (
                 <MediaItem
@@ -118,10 +126,12 @@ const MediaList = () => {
                   type={type}
                   year={new Date(type === mediaTypes.TV ? media.first_air_date : media.release_date).getFullYear()}
                 />)
-            }
-          )
-        }
-      </div>
+            })}
+          </div>
+          :
+          <h2>No such films found ;(</h2>
+      }
+
       <div className="media-list__loading" ref={loadingRef}/>
       <UpButton/>
     </div>

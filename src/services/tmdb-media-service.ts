@@ -15,6 +15,9 @@ interface ICredits {
   crew: ICrew[]
 }
 
+const MIN_VOTE_COUNT = 200;
+const MIN_VOTE_COUNT_BEST_RATED = 5000;
+
 export default class TmdbMediaService {
   static async getPopularMovies(): Promise<IMediaData> {
     return (await instance.get('/movie/popular')).data
@@ -66,7 +69,7 @@ export default class TmdbMediaService {
 
   static async getMoviesByGenres(genresYes: number[], genresNo: number[], sortParam: string = 'popularity.desc', page: number): Promise<{ results: IMovie[] }> {
     try {
-      const vote_counts = sortParam === 'vote_average.desc' ? 5000 : 500
+      const vote_counts = sortParam === 'vote_average.desc' ? MIN_VOTE_COUNT_BEST_RATED : MIN_VOTE_COUNT
       return (await instance.get(`/discover/movie?page=${page}&language=en-US&with_genres=${genresYes}&without_genres=${genresNo}&sort_by=${sortParam}&primary_release_date.lte=${Date.now()}&vote_count.gte=${vote_counts}`)).data
     } catch (err) {
       throw new Error('Server Error!')
@@ -75,7 +78,7 @@ export default class TmdbMediaService {
 
   static async getTVsByGenres(genresYes: number[], genresNo: number[], sortParam: string = 'popularity.desc', page: number): Promise<{ results: ITv[] }> {
     try {
-      const vote_counts: number = sortParam === 'vote_average.desc' ? 5000 : 500
+      const vote_counts: number = sortParam === 'vote_average.desc' ? MIN_VOTE_COUNT_BEST_RATED : MIN_VOTE_COUNT
       return (await instance.get(`/discover/tv?page=${page}&language=en-US&with_genres=${genresYes}&without_genres=${genresNo}&sort_by=${sortParam}&primary_release_date.lte=${Date.now()}&vote_count.gte=${vote_counts}`)).data
     } catch (err) {
       throw new Error('Server Error!')

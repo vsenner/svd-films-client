@@ -2,7 +2,7 @@ import React, {FormEvent, useCallback, useEffect, useRef, useState} from 'react'
 import './NewNavbar.scss'
 import {Link} from "react-router-dom";
 import debounce from "debounce";
-import NavbarMediaList from "./NavbarMediaList";
+import NavbarMediaList from "./NavbarMediaList/NavbarMediaList";
 import {useNavigate} from "react-router";
 import searchIcon from '../../images/search.svg';
 import arrow from '../../images/caret-down.svg';
@@ -19,6 +19,7 @@ const NewNavbar = () => {
   const [selectedMediaType, setSelectedMediaType] = useState<mediaTypes>(mediaTypes.ALL);
   const [activeSelect, setActiveSelect] = useState<boolean>(false);
   const [activeSearch, setActiveSearch] = useState<boolean>(false);
+  const [showMenu, setShowMenu] = useState<boolean>(false);
 
   const closeNavbarMediaList = () => {
     setActiveSearch(false);
@@ -43,6 +44,9 @@ const NewNavbar = () => {
     setSearchQuery(target.value);
   };
 
+  const closeMenu = () => showMenu ? setShowMenu(false) : null
+
+
 // eslint-disable-next-line
   const debounceInput = useCallback(debounce(changeHandler, 500), []) as any;
   const searchInput = useRef<HTMLInputElement>(null);
@@ -66,12 +70,20 @@ const NewNavbar = () => {
         setActiveSearch(false)
       }
     }
-    document.addEventListener('click', removeFocus)
+    document.addEventListener('click', removeFocus);
 
     return () => {
       document.removeEventListener('click', removeFocus)
     }
   }, []);
+
+  useEffect(() => {
+    if(showMenu) {
+      document.body.classList.add('lock')
+    } else {
+      document.body.classList.remove('lock')
+    }
+  }, [showMenu])
 
   const router = useNavigate();
 
@@ -88,16 +100,30 @@ const NewNavbar = () => {
           SVD
         </Button>
 
-        <div className="navbar__links">
-          <Link to='/genres/movie/popularity' className="navbar__link">
-            Movies
-          </Link>
-          <Link to='/genres/tv/popularity' className="navbar__link">
-            Serials
-          </Link>
-          <Link to='/genres/cartoons/popularity' className="navbar__link">
-            Cartoons
-          </Link>
+        <div className={`navbar__menu menu ${showMenu ? 'active' : ''}`}>
+          <div className="menu__bg" onClick={closeMenu}/>
+          <button className="menu__burger" onClick={() => setShowMenu(prev => !prev)}>
+            <span/>
+            <span/>
+            <span/>
+          </button>
+          <ul className="menu__links">
+            <li className="menu__link">
+              <Link to='/genres/movie/popularity' onClick={closeMenu}>
+                Movies
+              </Link>
+            </li>
+            <li className="menu__link">
+              <Link to='/genres/tv/popularity' onClick={closeMenu}>
+                Series
+              </Link>
+            </li>
+            <li className="menu__link">
+              <Link to='/genres/cartoons/popularity' onClick={closeMenu}>
+                Cartoons
+              </Link>
+            </li>
+          </ul>
         </div>
 
         <div className="navbar__search">
@@ -155,17 +181,12 @@ const NewNavbar = () => {
                              afterRedirect={closeNavbarMediaList}/> : null
           }
         </div>
-
-
-        <div className="navbar__wide-area">
-
-
-        </div>
         <Link className={`navbar__profile${user.isAuth ? '_auth' : ''}`}
               to={user.isAuth ? `/user/${user.id}` : '/login'}>
           {user.isAuth ?
             getInitials(user.username) :
-            <span>Sign up</span>}
+            <React.Fragment>Sign up</React.Fragment>
+          }
         </Link>
         <LanguageDropDown/>
       </div>

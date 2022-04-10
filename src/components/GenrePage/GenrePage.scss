@@ -1,6 +1,7 @@
 .genre-page {
   .container {
     max-width: 1540px;
+    min-height: calc(100vh - 100px);
     box-shadow: 0 0 55px 4px rgba(0,0,0,.5);
     width: 100%;
   }

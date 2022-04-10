@@ -1,5 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import './LanguageDropDown.scss'
+import arrow from '../../../images/caret-down.svg'
 
 const languages = [
   {id: 0, name: 'Русский', shortname: 'ru', flag: 'https://www.worldometers.info/img/flags/rs-flag.gif'},
@@ -28,37 +29,35 @@ const LanguageDropDown = () => {
   }, [])
 
   return (
-    <div className='lang'
-         onClick={() => setShowDropDown(!showDropDown)}
-         style={{background: showDropDown ? '#fff' : 'transparent'}}
+    <div className={`lang ${showDropDown ? 'active' : ''}`}
+         onMouseLeave={() => showDropDown ? setShowDropDown(false) : null}
     >
-      <span className="lang__selected" style={{color: showDropDown ? 'orange' : 'white'}}>
+      <button className="lang__selected"
+              onClick={() => setShowDropDown(!showDropDown)}
+      >
         {selectedLang.toUpperCase()}
-      </span>
-      {showDropDown ?
-        <div className='lang__dropdown'>
-          <ul className='lang__list'>
-            {languages.map(lang =>
-              lang.shortname !== selectedLang ?
-                <li
-                  key={lang.id}
-                  className='lang__item'
-                  onClick={() => {
-                    localStorage.setItem('lang', lang.shortname);
-                    document.location.reload();
-                  }}
-                >
-                  <img src={lang.flag} alt={lang.name}/>
-                  <span className="lang__name">{lang.name}</span>
-                </li>
-                :
-                null)
-            }
-          </ul>
-        </div>
-        :
-        null
-      }
+        <img className='lang__arr' src={arrow} alt="arrow"/>
+      </button>
+      <div className='lang__dropdown'>
+        <ul className='lang__list'>
+          {languages.map(lang =>
+            lang.shortname !== selectedLang ?
+              <li
+                key={lang.id}
+                className='lang__item'
+                onClick={() => {
+                  localStorage.setItem('lang', lang.shortname);
+                  document.location.reload();
+                }}
+              >
+                <img src={lang.flag} alt={lang.name}/>
+                <span className="lang__name">{lang.name}</span>
+              </li>
+              :
+              null)
+          }
+        </ul>
+      </div>
     </div>
   );
 };
