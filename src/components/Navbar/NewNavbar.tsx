@@ -5,7 +5,6 @@ import debounce from "debounce";
 import NavbarMediaList from "./NavbarMediaList/NavbarMediaList";
 import {useNavigate} from "react-router";
 import searchIcon from '../../images/search.svg';
-import arrow from '../../images/caret-down.svg';
 import {useSelector} from "react-redux";
 import TmdbMediaController from "../../controllers/tmdb-media-controller";
 import Button, {ButtonType} from "../../UI/Buttons/Button";
@@ -20,6 +19,7 @@ const NewNavbar = () => {
   const [activeSelect, setActiveSelect] = useState<boolean>(false);
   const [activeSearch, setActiveSearch] = useState<boolean>(false);
   const [showMenu, setShowMenu] = useState<boolean>(false);
+  const [showSearch, setShowSearch] = useState<boolean>(false);
 
   const closeNavbarMediaList = () => {
     setActiveSearch(false);
@@ -35,7 +35,12 @@ const NewNavbar = () => {
 
   const submitFormHandler = (e: FormEvent) => {
     e.preventDefault();
-    router(`/genres/search/${selectedMediaType}/${searchInput.current?.value}/popularity`);
+    if(searchInput?.current?.value) {
+      router(`/genres/search/${selectedMediaType}/${searchInput.current?.value}/popularity`);
+    }
+    if(showSearch) {
+      setShowSearch(false)
+    }
     setActiveSearch(false);
   };
 
@@ -45,6 +50,15 @@ const NewNavbar = () => {
   };
 
   const closeMenu = () => showMenu ? setShowMenu(false) : null
+
+  const openSearchBar = () => {
+    setShowSearch(true);
+  }
+
+  const closeSearchBar = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setShowSearch(false);
+  }
 
 
 // eslint-disable-next-line
@@ -93,12 +107,12 @@ const NewNavbar = () => {
   return (
     <div className='navbar'>
       <div className="navbar__container">
-        <Button type={ButtonType.primary}
-                height={40}
-                width={80}
-                onClick={() => router(`/`)}>
-          SVD
-        </Button>
+        <div className="navbar__logo">
+          <Button type={ButtonType.primary}
+                  onClick={() => router(`/`)}>
+            SVD
+          </Button>
+        </div>
 
         <div className={`navbar__menu menu ${showMenu ? 'active' : ''}`}>
           <div className="menu__bg" onClick={closeMenu}/>
@@ -126,13 +140,13 @@ const NewNavbar = () => {
           </ul>
         </div>
 
-        <div className="navbar__search">
+        <div className={`navbar__search ${showSearch ? 'active' : ''}`}>
           <div className="navbar__select select"
                onMouseLeave={() => activeSelect ? setActiveSelect(false) : null}
           >
             <button className={`select__item select__item_selected`} onClick={() => setActiveSelect(prev => !prev)}>
               <span>{selectedMediaType}</span>
-              <img className={activeSelect ? ' active' : ''} src={arrow} alt="choose search type"/>
+              <i className={`fas fa-caret-down ${activeSelect ? ' active' : ''}`}/>
             </button>
             <ul className={`select__list ${activeSelect ? 'active' : ''}`}>
               <li className="select__item">
@@ -170,17 +184,25 @@ const NewNavbar = () => {
                 setActiveSearch(true)
               }}
               onChange={debounceInput}
-              placeholder={'Search'}
+              placeholder='Search SVD'
             />
-            <button>
-              <img className={'navbar__search-icon'} src={searchIcon} alt="search"/>
+            <button className='navbar__search-icon'>
+              <img src={searchIcon} alt="search"/>
             </button>
+            <div className="navbar__close-icon">
+              <button onClick={closeSearchBar}>
+                🗙
+              </button>
+            </div>
           </form>
           {media.length > 0 && activeSearch ?
             <NavbarMediaList media_type={selectedMediaType} media_list={media}
                              afterRedirect={closeNavbarMediaList}/> : null
           }
         </div>
+        <button className='navbar__search-button' onClick={openSearchBar}>
+          <img src={searchIcon} alt="search"/>
+        </button>
         <Link className={`navbar__profile${user.isAuth ? '_auth' : ''}`}
               to={user.isAuth ? `/user/${user.id}` : '/login'}>
           {user.isAuth ?

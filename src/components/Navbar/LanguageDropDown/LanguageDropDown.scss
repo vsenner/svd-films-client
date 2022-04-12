@@ -1,4 +1,4 @@
-@import "../../../UI/styleVariables";
+@import "../../../style/styleVariables";
 
 .lang {
   cursor: pointer;
@@ -30,7 +30,6 @@
   }
 
   &__arr {
-    filter: invert(100%) sepia(1%) saturate(4417%) hue-rotate(81deg) brightness(119%) contrast(100%);
     width: 12px;
     margin-left: 7px;
     margin-top: 2px;
