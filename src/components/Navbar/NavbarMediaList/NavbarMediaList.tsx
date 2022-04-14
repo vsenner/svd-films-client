@@ -5,13 +5,13 @@ import {IMovie, ITv, mediaTypes} from "../../../models/media";
 import './NavbarMediaList.scss'
 import TruncatedText from "../../UI/TruncatedText/TruncatedText";
 
-interface Iprops {
+interface IProps {
   media_list: (IMovie | ITv)[],
   media_type: mediaTypes
   afterRedirect?: () => void;
 }
 
-const NavbarMediaList: FC<Iprops> = ({media_list, media_type, afterRedirect}) => {
+const NavbarMediaList: FC<IProps> = ({media_list, media_type, afterRedirect}) => {
   return (
     <div className='navbar__dropdown-list dropdown-list'>
       {media_list.map(media => {
@@ -23,6 +23,7 @@ const NavbarMediaList: FC<Iprops> = ({media_list, media_type, afterRedirect}) =>
             title = media.name;
             year = media?.first_air_date?.split('-')[0]
           }
+
           return (
             <Link key={media.id}
                   className='dropdown-list__item'
@@ -42,7 +43,7 @@ const NavbarMediaList: FC<Iprops> = ({media_list, media_type, afterRedirect}) =>
               </div>
               <div className="dropdown-list__right">
                 <p className='dropdown-list__title'>
-                  <TruncatedText>{title}</TruncatedText>
+                  <TruncatedText n={100} moreSymbol={'...'}>{title}</TruncatedText>
                 </p>
                 <p className='dropdown-list__subtitle'>
                   {year}

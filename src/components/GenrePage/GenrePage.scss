@@ -1,8 +1,15 @@
+@import "../../style/styleVariables";
+@import "../../style/resolutionVariables";
+
 .genre-page {
+  background: $secondaryColor2;
+
   .container {
+    padding-top: 30px;
+    background: $lightColor;
     max-width: 1540px;
     min-height: calc(100vh - 100px);
-    box-shadow: 0 0 55px 4px rgba(0,0,0,.5);
+    box-shadow: 0 0 55px 4px rgba(0, 0, 0, .5);
     width: 100%;
   }
 }

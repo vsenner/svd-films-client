@@ -1,4 +1,7 @@
+@import "../../../../style/resolutionVariables";
+
 .genre-list__column {
+  min-width: 280px;
   white-space: nowrap;
   padding: 10px 15px;
 
@@ -8,9 +11,15 @@
 
 }
 
+@media (max-width: $phoneResolution) {
+  .genre-list__column {
+    min-width: auto;
+  }
+}
+
 .genre-list__header{
   display: grid;
-  grid-template-columns: 40px 40px auto;
+  grid-template-columns: 40px 40px min-content;
   border-bottom: 1px solid teal;
   padding-bottom: 5px;
   & div:last-child {

@@ -1,24 +1,31 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import './TruncatedText.scss'
 import {Link} from "react-router-dom";
 
-const TruncatedText = ({children, n = 150, path = null}) => {
-  const [string, setString] = useState(children);
+interface IProps {
+  children: any,
+  n?: number,
+  path?: string,
+  moreSymbol?: any
+}
+
+const TruncatedText: FC<IProps> = ({children, n = 150, path = null, moreSymbol = 'MORE'}) => {
+  const [string, setString] = useState<string>(children);
 
   useEffect(() => {
     setString(truncate(string, n))
     // eslint-disable-next-line
   }, [])
 
-  function truncate(str, n) {
+  function truncate(str: string, n: number): string {
     str = str.substring(0, n - n / 10);
     return str.substring(0, str.lastIndexOf(' '));
   }
 
   const buttonHandler = () => setString(children);
 
-  if(!children) return null;
   if (children.length <= n) return (<span>{children}</span>);
+
   return (
     <div>
       {string}
@@ -27,13 +34,14 @@ const TruncatedText = ({children, n = 150, path = null}) => {
           <Link
             to={path}
             className='show_more'>
-            MORE
+            {moreSymbol}
           </Link>
           :
           <button
             onClick={buttonHandler}
-            className='show_more'>
-            MORE
+            className='show_more'
+          >
+            {moreSymbol}
           </button>
         :
         <button

@@ -7,29 +7,17 @@ export enum ButtonType {
 }
 
 interface ButtonStyles {
-  height?: number,
-  width?: number,
   type: ButtonType,
   onClick?: MouseEventHandler<HTMLButtonElement>,
 }
 
-const defaultStyle = {
-  height: 40, width: 100
-};
-
 const Button: FC<ButtonStyles> =
   (
-    {height, width, children, onClick, type}
+    {children, onClick, type}
   ) => {
     return (
       <button
         className={`btn btn-${type}`}
-        style={
-          {
-            height: (height || defaultStyle.height) + 'px',
-            width: (width || defaultStyle.width),
-          }
-        }
         onClick={onClick}>
         {children}
       </button>

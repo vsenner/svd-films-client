@@ -1,4 +1,5 @@
-@import "../GenrePageColors.scss";
+@import "../../../style/styleVariables";
+@import "../../../style/resolutionVariables";
 
 .media-list {
   h2 {
@@ -7,35 +8,78 @@
     font-size: 2.5em;
   }
   &__buttons {
-    display: inline-block;
-    background: $bgColor1;
-    padding: 15px 10px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    background: $primaryColor;
+    padding: 10px;
     border-radius: 5px;
     margin-bottom: 20px;
+    box-shadow: 0 0 3px rgba(0,0,0,.5);
 
     a {
+      text-align: center;
+      margin: 0 auto;
       padding: 10px;
       border-radius: 5px;
       font-size: 1.1em;
+      &:hover {
+        background: rgba($secondaryColor2, 0.2);
+      }
+
       &:not(:last-child) {
         margin-right: 20px;
       }
 
       &.active {
-        box-shadow: 0 0 3px $color1;
-        color: $color1;
-        background: $bgColor2;
+        box-shadow: 0 0 3px $secondaryColor;
+        color: $primaryColor;
+        background: $lightColor;
       }
     }
   }
 }
 
+@media (max-width: $phoneResolution) {
+  .media-list {
+    text-align: center;
+    &__buttons {
+      a {
+        padding: 15px;
+        width: 100%;
+        margin: 5px 0 !important;
+      }
+    }
+  }
+  
+}
+
 .film-grid {
+  text-align: left;
   padding-top: 20px;
-  border-top: 2px solid $color1;
+  border-top: 2px solid $secondaryColor;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 40px 60px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+@media (max-width: $largeTabletResolution) {
+  .film-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: $mediumTabletResolution) {
+  .film-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .film-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 .media-list__loading {

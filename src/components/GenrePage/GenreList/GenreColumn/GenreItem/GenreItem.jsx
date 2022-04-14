@@ -46,6 +46,7 @@ const GenreItem = ({genre, selectedGenres, setSelectedGenres, clear}) => {
           }
           setYes(prev => !prev)
         }}/>
+        <span/>
       </label>
       <label className='genre-list__label'>
         <input type="radio" id={genre.id + 1} className='genre-list__no' name={genre.id} onChange={() => {}} checked={no} onClick={() => {
@@ -57,6 +58,7 @@ const GenreItem = ({genre, selectedGenres, setSelectedGenres, clear}) => {
           }
           setNo(prev => !prev)
         }}/>
+        <span/>
       </label>
       <label htmlFor={genre.id} className="genre-list__name">
         {genre.name}

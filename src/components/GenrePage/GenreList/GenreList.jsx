@@ -7,10 +7,12 @@ import TmdbMediaController from "../../../controllers/tmdb-media-controller";
 import {useParams} from "react-router";
 import {useDispatch} from "react-redux";
 
+const SMALL_SCREEN_WIDTH = 1100;
+
 const GenreList = () => {
   const [genres, setGenres] = useState([]);
-  const [selectedGenres, setSelectedGenres] = useState([])
-  const [genresInColumn, setGenresInColumn] = useState(0)
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [genresInColumn, setGenresInColumn] = useState(null);
   const [clear, setClear] = useState(false)
   const {width} = useWindowDimensions();
 
@@ -67,23 +69,20 @@ const GenreList = () => {
     setSelectedGenres([])
   }
 
-  return genres && genresInColumn  && !query ? (
-    <div className="genre-list">
-      <div className="genre-list__flex">
-        {width > 700 ?
-          <div className="genre-list__row">
-            {genresInColumn ? getGenreColumns(3) : null}
-          </div>
-          :
-          <div className="genre-list__row">
+  return genres && genresInColumn && !query ? (
+      <div className="genre-list">
+        <div className="genre-list__row">
+          {width > SMALL_SCREEN_WIDTH ?
+            getGenreColumns(3)
+            :
             <GenreColumn
               genres={genres}
               selectedGenres={selectedGenres}
               setSelectedGenres={setSelectedGenres}
               clear={clear}
             />
-          </div>
-        }
+          }
+        </div>
         <div className='genre-list__bottom'>
           <Button onClick={() => dispatch({type: 'CHANGE_GENRES', payload: selectedGenres})}>
             Submit
@@ -93,8 +92,8 @@ const GenreList = () => {
           </Button>
         </div>
       </div>
-    </div>
-  ) : null;
+    ) :
+    null;
 };
 
 export default GenreList;

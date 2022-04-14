@@ -1,19 +1,15 @@
-@import "../GenrePageColors.scss";
+@import "../../../style/styleVariables";
+@import "../../../style/resolutionVariables";
 
-.genre-list{
-  display: flex;
-  font-size: 20px;
+.genre-list {
+  font-size: 1.25em;
+  color: $darkColor;
+  margin: 0 auto 40px auto;
+  width: 80%;
+  flex-direction: column;
+  align-items: flex-end;
 
-  &__flex {
-    width: 80%;
-    margin: 10px auto;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-  }
-
-  &__bottom{
+  &__bottom {
     display: flex;
     width: 100%;
     padding-top: 15px;
@@ -21,8 +17,9 @@
   }
 
   &__row {
-    box-shadow: 0 0 5px rgba(0,0,0,.5);
-    background: $bgColor1;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+    background: $primaryColor;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -35,5 +32,13 @@
       grid-template-columns: 1fr;
     }
   }
+}
 
+@media (max-width: $phoneResolution) {
+  .genre-list {
+    font-size: 1em;
+    &__row {
+      padding: 0;
+    }
+  }
 }
