@@ -1,84 +1,56 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './MediaList.scss'
-import TMDBMovieController from "../../../controllers/tmdb-movie-controller";
+import TmdbMediaController from "../../../controllers/tmdb-media-controller";
 import {Link, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import MediaItem from './MediaItem/MediaItem'
 import UpButton from "../../UI/UpButton/UpButton";
-import {getOriginalImage} from "../../../UI/getSmallImage";
+import {sortMethods} from "../../../models/sortMethods";
+import {mediaTypes} from "../../../models/media";
 
-const POPULARITY = 'popularity';
-const VOTE_AVERAGE = 'vote_average';
-const RELEASE_DATE = 'primary_release_date';
 
-const MediaList = ({setBackgroundImage}) => {
+const MediaList = () => {
   const [mediaList, setMediaList] = useState([])
   const selectedGenres = useSelector((state) => state.movies.genres)
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {media_type, query, sort_method} = useParams()
 
   const loadingRef = useRef();
 
+  const setMediaData = (data) => {
+    setMediaList(prev => [...prev, ...data.results])
+    setIsLoading(false);
+  }
+
   const fetchMediaList = () => {
     const sortMethod = sort_method + '.desc'
     if (!isLoading) {
-      setIsLoading(true);
-
-      document.title = `${process.env.REACT_APP_PROJECT_NAME} - 
-      ${sort_method === POPULARITY ? 'Popular' : sort_method === VOTE_AVERAGE ? 'Best' : sort_method === RELEASE_DATE ? 'Recent' : ''}`
-
-      if (media_type === 'movie') {
-        document.title += ` Movies`;
-        TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
+      setIsLoading(true)
+      if (media_type === 'movie' && !query) {
+        TmdbMediaController.getMoviesWithGenres([...selectedGenres, {
           id: 16,
           select: false
         }], sortMethod, currentPage)
-          .then((data) => {
-              if (currentPage === 1) {
-                setBackgroundImage(getOriginalImage(data.results[0]?.backdrop_path))
-              }
-              setMediaList(prev => [...prev, ...data.results])
-              setIsLoading(false);
-            }
-          )
+          .then(setMediaData)
       }
-      if (media_type === 'tv') {
-        document.title += ` Series`;
-        TMDBMovieController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
-          .then((data) => {
-              if (currentPage === 1) {
-                setBackgroundImage(getOriginalImage(data.results[0]?.backdrop_path))
-              }
-              setMediaList(prev => [...prev, ...data.results])
-              setIsLoading(false);
-            }
-          )
+      if (media_type === 'tv' && !query) {
+        TmdbMediaController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
+          .then(setMediaData)
       }
-      if (media_type === 'cartoons') {
-        document.title += ` Cartoons`;
-        TMDBMovieController.getMoviesWithGenres([...selectedGenres, {
+      if (media_type === 'cartoons' && !query) {
+        TmdbMediaController.getMoviesWithGenres([...selectedGenres, {
           id: 16,
           select: true
         }], sortMethod, currentPage)
-          .then((data) => {
-              if (currentPage === 1) {
-                setBackgroundImage(getOriginalImage(data.results[0]?.backdrop_path))
-              }
-              setMediaList(prev => [...prev, ...data.results])
-              setIsLoading(false);
-            }
-          )
+          .then(setMediaData)
       }
-      if (query) {
-        document.title = `${process.env.REACT_APP_PROJECT_NAME} - "${query}"`;
-        TMDBMovieController.search(query, sort_method, currentPage).then(data => {
+      if (query && media_type) {
+        TmdbMediaController.search(query, media_type, sort_method, currentPage, media_type).then(data => {
           if (data.total_pages >= currentPage) {
-            if (currentPage === 1) {
-              setBackgroundImage(getOriginalImage(data.results[0]?.backdrop_path))
-            }
-            setMediaList(prev => [...prev, ...data.results]);
+            setMediaList(prev => [...prev, ...data.list]);
             setIsLoading(false);
           }
         })
@@ -87,72 +59,79 @@ const MediaList = ({setBackgroundImage}) => {
   }
 
   useEffect(() => {
+    let observer;
     const callback = (entries) => {
       if (!isLoading && entries[0].isIntersecting) {
         setCurrentPage(prev => prev + 1)
       }
     }
-    const observer = new IntersectionObserver(callback)
-    observer.observe(loadingRef.current);
+    if (loadingRef) {
+      observer = new IntersectionObserver(callback)
+      observer.observe(loadingRef.current);
+    }
+    return () => {
+      if(loadingRef.current) {
+        observer.unobserve(loadingRef.current);
+      }
+    }
+
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    if (currentPage > 0) {
-      fetchMediaList();
-    }
+    fetchMediaList();
     // eslint-disable-next-line
   }, [currentPage]);
 
-
-  console.log(currentPage)
   useEffect(() => {
-    setCurrentPage(0);
+    setCurrentPage(1);
     setMediaList([]);
-
-    return () => document.title = process.env.REACT_APP_PROJECT_NAME;
   }, [selectedGenres, media_type, sort_method, query])
+
 
   return (
     <div className='media-list'>
       <div className='media-list__buttons'>
         <Link
-          to={`/genres/${media_type ?? `search/${query}`}/${POPULARITY}`}
-          className={sort_method === POPULARITY ? 'active' : null}
+          to={`/genres/${query ? `search/` : ''}${media_type}/${query ? `${query}/` : ''}${sortMethods.POPULARITY}`}
+          className={sort_method === sortMethods.POPULARITY ? 'active' : null}
         >
           Most popular
         </Link>
         <Link
-          to={`/genres/${media_type ?? `search/${query}`}/${VOTE_AVERAGE}`}
-          className={sort_method === VOTE_AVERAGE ? 'active' : null}
+          to={`/genres/${query ? `search/` : ''}${media_type}/${query ? `${query}/` : ''}${sortMethods.VOTE_AVERAGE}`}
+          className={sort_method === sortMethods.VOTE_AVERAGE ? 'active' : null}
         >
           Best rated
         </Link>
         <Link
-          to={`/genres/${media_type ?? `search/${query}`}/${RELEASE_DATE}`}
-          className={sort_method === RELEASE_DATE ? 'active' : null}
+          to={`/genres/${query ? `search/` : ''}${media_type}/${query ? `${query}/` : ''}${sortMethods.PRIMARY_RELEASE_DATE}`}
+          className={sort_method === sortMethods.PRIMARY_RELEASE_DATE ? 'active' : null}
         >
           Release date
         </Link>
       </div>
-      <div className='film-grid'>
-        {
-          mediaList?.map(media => {
-              const type = media_type ? (media_type === 'tv' ? 'tv' : 'movie') : (media.media_type === 'tv' ? 'tv' : 'movie')
+      {
+        mediaList.length ?
+          <div className='film-grid'>
+            {mediaList.map(media => {
+              const type = media_type === mediaTypes.ALL ? media.media_type : media_type
               return (
                 <MediaItem
                   key={media.id}
-                  poster_path={media.poster_path}
+                  poster_path={media.poster_path ?? null}
                   original_title={media.original_title}
                   name={type === 'tv' ? media.name : media.title}
                   id={media.id}
-                  type={media.title ? 'movie' : 'tv'}
-                  year={new Date(type === 'tv' ? media.first_air_date : media.release_date).getFullYear()}
+                  type={type}
+                  year={new Date(type === mediaTypes.TV ? media.first_air_date : media.release_date).getFullYear()}
                 />)
-            }
-          )
-        }
-      </div>
+            })}
+          </div>
+          :
+          <h2>No such films found ;(</h2>
+      }
+
       <div className="media-list__loading" ref={loadingRef}/>
       <UpButton/>
     </div>

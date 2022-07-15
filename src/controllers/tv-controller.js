@@ -1,5 +1,5 @@
 import TVService from "../services/tv-service";
-import TMDBTVService from "../services/tmdb-movie-service";
+import TMDBTVService from "../services/tmdb-media-service";
 
 export default class TVController {
 
@@ -20,7 +20,6 @@ export default class TVController {
 
 
   static async getFavourite(user_id) {
-    console.log('THERE');
     const addedTVs = await TVService.getFavourite(user_id);
     return this.getTVList(addedTVs);
   };

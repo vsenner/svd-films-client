@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import TMDBMovieController from "../../../controllers/tmdb-movie-controller";
+import TmdbMediaController from "../../../controllers/tmdb-media-controller";
 import {useParams} from "react-router-dom";
 import YoutubeVideo from "../../../components/UI/YoutubeVideo/YoutubeVideo";
 import './VideoList.scss'
@@ -11,12 +11,12 @@ const VideoList = ({className, content_type}) => {
   useEffect(() => {
     switch (content_type) {
       case 'movie':
-        TMDBMovieController.getMovieTrailers(id).then((data) => {
+        TmdbMediaController.getMovieTrailers(id).then((data) => {
           setVideos(data)
         });
         break;
       default:
-        TMDBMovieController.getTVTrailers(id).then((data) => {
+        TmdbMediaController.getTVTrailers(id).then((data) => {
           setVideos(data)
         });
     }

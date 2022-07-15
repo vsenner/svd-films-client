@@ -1,8 +1,8 @@
 import './App.scss';
 import Router from "./Router/Router";
-import Navbar from "./Navbar/Navbar";
 import {useEffect} from "react";
 import AuthController from "../controllers/auth-controller";
+import NewNavbar from "./Navbar/NewNavbar";
 
 function App() {
 
@@ -18,7 +18,7 @@ function App() {
 
   return (
       <div className="App">
-        <Navbar/>
+        <NewNavbar/>
         <Router/>
       </div>
   );

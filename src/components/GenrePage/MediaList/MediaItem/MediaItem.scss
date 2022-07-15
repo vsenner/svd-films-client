@@ -5,7 +5,10 @@ $descriptionColor: #666464;
 .media-item{
   display: flex;
   flex-direction: column;
+  height: 100%;
+
   &__img {
+    width: 100%;
     position: relative;
   }
 

@@ -1,10 +1,10 @@
 import MovieService from "../services/movie-service";
-import TMDBMovieService from "../services/tmdb-movie-service";
+import TmdbMediaService from "../services/tmdb-media-service";
 
 export default class MovieController {
 
   static async getMovieList(id_list) {
-    const films = await Promise.allSettled(id_list.map(film => TMDBMovieService.getMovieById(film.id)));
+    const films = await Promise.allSettled(id_list.map(film => TmdbMediaService.getMovieById(film.id)));
     return films.reduce((prev, film, index) => {
       if(film.status === 'fulfilled'){
         return [...prev, {

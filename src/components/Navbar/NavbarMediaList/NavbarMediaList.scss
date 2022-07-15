@@ -1,0 +1,45 @@
+@import "../../../style/styleVariables";
+
+.dropdown-list {
+  width: 100%;
+  max-height: 80vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 3px;
+  top: 100%;
+  left: 0;
+  position: absolute;
+  background-color: black;
+  z-index: 2;
+
+  &__image {
+    width: 75px;
+  }
+
+  &__item {
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+    padding: 15px;
+    outline: none;
+
+    &:hover {
+      background: lighten($darkColor, 5);
+    }
+  }
+
+  &__right {
+    margin-left: 20px;
+    font-size: 0.95em;
+  }
+
+  &__title {
+  }
+
+  &__subtitle {
+    font-size: 0.85em;
+    margin-top: 5px;
+    color: $grayColor;
+  }
+}

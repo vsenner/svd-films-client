@@ -38,28 +38,22 @@ const ContentPage = ({content, director, actors, content_type}) => {
 
 
   useEffect(() => {
-    switch (content_type) {
-      case 'movie':
-        document.title = `Movie "${content ? content[title] : id}"`;
-        if (user.id) {
+    if (user.id) {
+      switch (content_type) {
+        case 'movie':
           MovieController.getUserFilmInfo(id, user.id).then(data => {
-            setUserFilmInfo(data);
-          });
-        }
-        break;
-      case 'tv':
-        document.title = `Series "${content ? content[title] : id}"`;
-        if (user.id) {
+            setUserFilmInfo(data)
+          })
+          break;
+        case 'tv':
           TVController.getUserTVInfo(id, user.id).then(data => {
             setUserFilmInfo(data)
           });
-        }
-        break;
-      default:
+          break;
+        default:
+      }
     }
-
-    return () => document.title = process.env.REACT_APP_PROJECT_NAME;
-  }, [id, user.id, content_type, content, title])
+  }, [id, user.id, content_type])
 
   const router = useNavigate()
   const {page} = useParams()
@@ -68,13 +62,15 @@ const ContentPage = ({content, director, actors, content_type}) => {
 
   return (
     <div className='film-page'>
+      <div className="blurred-bg">
+        <img src={getOriginalImage(content?.poster_path)} alt="background"/>
+      </div>
       <div className="container">
         {content ?
           <div className="film-page__film film">
             <div className="film__main">
               <div className="film__poster">
-                <img src={content.poster_path ? getSmallImage(content.poster_path) : placeholder} alt="Poster"
-                     width='300px'/>
+                <img src={getSmallImage(content.poster_path)} alt="Poster" width='300px'/>
               </div>
               <div className="film__info info">
                 <div className="info__header">
@@ -166,7 +162,9 @@ const ContentPage = ({content, director, actors, content_type}) => {
                       <span>Director</span>
                       {
                         director.name ||
-                        <TruncatedText str={director?.map(dir => dir.name).join(', ')} n={55}/>
+                        <TruncatedText n={55}>
+                          {director?.map(dir => dir.name).join(', ')}
+                        </TruncatedText>
                       }
                     </div>
                     :
@@ -207,7 +205,9 @@ const ContentPage = ({content, director, actors, content_type}) => {
                 page === OVERVIEW &&
                 <div>
                   <div className="film__description">
-                    <TruncatedText str={content.overview} n={300}/>
+                    <TruncatedText n={300}>
+                      {content.overview}
+                    </TruncatedText>
                   </div>
                   <div className="film__rating">
                     <h2>Film Rating</h2>
@@ -242,12 +242,12 @@ const ContentPage = ({content, director, actors, content_type}) => {
                 page === ACTOR &&
                 <div className="film__actors">
                   <h2>Actors</h2>
-                  {actors ? <ActorList actors={actors} className='film__actors-list'/> : ''}
+                  {actors ? <ActorList actors={actors.slice(0, 5)} className='film__actors-list'/> : ''}
                 </div>
               }
               {
                 page === VIDEO &&
-                <VideoList className='film__video' content_type={content_type}/>
+                  <VideoList className='film__video' content_type={content_type}/>
               }
 
             </div>

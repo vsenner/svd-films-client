@@ -3,18 +3,20 @@ import './GenreList.scss';
 import GenreColumn from "./GenreColumn/GenreColumn";
 import useWindowDimensions from "../../../hooks/useWindowDimensions";
 import Button from "../../UI/Button/Button";
-import TMDBMovieController from "../../../controllers/tmdb-movie-controller";
+import TmdbMediaController from "../../../controllers/tmdb-media-controller";
 import {useParams} from "react-router";
 import {useDispatch} from "react-redux";
 
+const SMALL_SCREEN_WIDTH = 1100;
+
 const GenreList = () => {
   const [genres, setGenres] = useState([]);
-  const [selectedGenres, setSelectedGenres] = useState([])
-  const [genresInColumn, setGenresInColumn] = useState(0)
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [genresInColumn, setGenresInColumn] = useState(null);
   const [clear, setClear] = useState(false)
   const {width} = useWindowDimensions();
 
-  const {media_type} = useParams()
+  const {media_type, query} = useParams()
 
   useEffect(() => {
     clearSelectedGenres();
@@ -24,23 +26,22 @@ const GenreList = () => {
 
   useEffect(() => {
     setGenres(null)
-    console.log('THERE');
     if (media_type === 'movie') {
-      TMDBMovieController.getAllMovieGenres().then(data => {
+      TmdbMediaController.getAllMovieGenres().then(data => {
           setGenres(data)
           setGenresInColumn(Math.ceil(data.length / 3));
         }
       )
     }
     if (media_type === 'tv') {
-      TMDBMovieController.getAllTVGenres().then(data => {
+      TmdbMediaController.getAllTVGenres().then(data => {
           setGenres(data)
           setGenresInColumn(Math.ceil(data.length / 3));
         }
       )
     }
     if (media_type === 'cartoons') {
-      TMDBMovieController.getAllCartoonGenres().then(data => {
+      TmdbMediaController.getAllCartoonGenres().then(data => {
           setGenres(data)
           setGenresInColumn(Math.ceil(data.length / 3));
         }
@@ -68,23 +69,20 @@ const GenreList = () => {
     setSelectedGenres([])
   }
 
-  return genres && genresInColumn ? (
-    <div className="genre-list">
-      <div className="genre-list__flex">
-        {width > 700 ?
-          <div className="genre-list__row">
-            {genresInColumn ? getGenreColumns(3) : null}
-          </div>
-          :
-          <div className="genre-list__row">
+  return genres && genresInColumn && !query ? (
+      <div className="genre-list">
+        <div className="genre-list__row">
+          {width > SMALL_SCREEN_WIDTH ?
+            getGenreColumns(3)
+            :
             <GenreColumn
               genres={genres}
               selectedGenres={selectedGenres}
               setSelectedGenres={setSelectedGenres}
               clear={clear}
             />
-          </div>
-        }
+          }
+        </div>
         <div className='genre-list__bottom'>
           <Button onClick={() => dispatch({type: 'CHANGE_GENRES', payload: selectedGenres})}>
             Submit
@@ -94,8 +92,8 @@ const GenreList = () => {
           </Button>
         </div>
       </div>
-    </div>
-  ) : null;
+    ) :
+    null;
 };
 
 export default GenreList;

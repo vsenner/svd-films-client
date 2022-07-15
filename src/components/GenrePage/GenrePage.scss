@@ -1,13 +1,15 @@
-.genre-page {
-  background: no-repeat center center fixed;
-  background-size: cover;
+@import "../../style/styleVariables";
+@import "../../style/resolutionVariables";
 
-  transition: background-image 2s ease-in-out;
+.genre-page {
+  background: $secondaryColor2;
 
   .container {
-    background-color: #fff;
+    padding-top: 30px;
+    background: $lightColor;
     max-width: 1540px;
-    box-shadow: 0 0 55px 4px rgba(0,0,0,.5);
+    min-height: calc(100vh - 100px);
+    box-shadow: 0 0 55px 4px rgba(0, 0, 0, .5);
     width: 100%;
   }
 }

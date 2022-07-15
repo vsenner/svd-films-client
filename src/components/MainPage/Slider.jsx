@@ -7,9 +7,9 @@ import {SwiperSlide} from "swiper/react/swiper-react";
 import ratingStar from "../../images/star.png"
 import {Link} from "react-router-dom";
 import TruncatedText from "../UI/TruncatedText/TruncatedText";
-import {getSmallImage} from "../../UI/getSmallImage";
 import Loader from "../UI/Loader/Loader";
-import TMDBMovieController from "../../controllers/tmdb-movie-controller";
+import TmdbMediaController from "../../controllers/tmdb-media-controller";
+import {getSmallImage} from "../../utils";
 
 SwiperCore.use([Navigation]);
 
@@ -18,7 +18,7 @@ const Slider = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    TMDBMovieController.getPopular().then(resp => {
+    TmdbMediaController.getPopular().then(resp => {
       setSlides(resp.results.slice(0, 10))
     }).finally(() => setLoading(false));
     // eslint-disable-next-line
@@ -48,7 +48,9 @@ const Slider = () => {
               </div>}
 
               <div className="text-block__description">
-                <TruncatedText str={slide.overview} n={200} path={`/movie/${slide.id}/overview`}/>
+                <TruncatedText n={200} path={`/movie/${slide.id}/overview`}>
+                  {slide.overview}
+                </TruncatedText>
               </div>
             </div>
           </div>
