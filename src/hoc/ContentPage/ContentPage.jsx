@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import MovieController from "../../controllers/movie-controller";
 import {useSelector} from "react-redux";
 import {Link, useParams} from "react-router-dom";
+import {getSmallImage} from "../../UI/getSmallImage";
 import {
   addFavourite,
   addLater,
@@ -17,7 +18,7 @@ import {useNavigate} from "react-router";
 import TVController from "../../controllers/tv-controller";
 import ActorList from "./ActorList/ActorList";
 import VideoList from "./VideoList/VideoList";
-import {getOriginalImage, getSmallImage} from "../../utils";
+import placeholder from '../../images/no-poster.png'
 
 const minsToHours = (mins) => `${Math.floor(mins / 60)}h ${mins % 60}m`;
 
@@ -246,7 +247,7 @@ const ContentPage = ({content, director, actors, content_type}) => {
               }
               {
                 page === VIDEO &&
-                <VideoList className='film__video' content_type={content_type}/>
+                  <VideoList className='film__video' content_type={content_type}/>
               }
 
             </div>

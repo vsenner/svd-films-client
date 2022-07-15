@@ -1,14 +1,16 @@
 import './GenrePage.scss'
 import GenreList from "./GenreList/GenreList";
 import MediaList from "./MediaList/MediaList";
+import {useState} from "react";
 
 const GenrePage = () => {
+  const [backgroundImage, setBackgroundImage] = useState('');
 
   return (
-    <div className='genre-page'>
+    <div className='genre-page' style={{backgroundImage: `url("${backgroundImage}")`}}>
       <div className="container">
         <GenreList />
-        <MediaList />
+        <MediaList setBackgroundImage={setBackgroundImage}/>
       </div>
     </div>
   );

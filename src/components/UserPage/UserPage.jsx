@@ -24,11 +24,14 @@ const UserPage = () => {
     UserController.getUserInfo(user_id).then(userData => {
       setUser(userData);
       setUsernameInput(userData.username);
+      document.title = `${process.env.REACT_APP_PROJECT_NAME} - ${userData.username}`
     }).catch(err => console.log(err));
 
     UserController.getUserImage(user_id).then(img => {
       setImage(img ? `${BASE64}, ${img}` : null);
     })
+
+    return () => document.title = process.env.REACT_APP_PROJECT_NAME
   }, [user_id])
 
   const logout = async () => {

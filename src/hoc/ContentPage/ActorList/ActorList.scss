@@ -1,4 +1,6 @@
 .actor-list {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 50px 10px;
   justify-content: space-between;
 }
