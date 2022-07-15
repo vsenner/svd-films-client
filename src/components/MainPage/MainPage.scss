@@ -1,3 +1,6 @@
+@import "../../style/styleVariables";
+@import "../../style/resolutionVariables";
+
 .main-page {
   background: #000;
   flex: 1 1 auto;
@@ -22,6 +25,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.swiper-button-prev, .swiper-button-next{
+  color: $grayColor !important;
 }
 
 /////////////////////////////////////////////////
@@ -52,6 +59,9 @@
   justify-content: center;
   align-items: center;
   width: 300px;
+  &:hover{
+    box-shadow: 0 0 20px black;
+  }
 }
 
 .text-block{
@@ -92,5 +102,28 @@
     margin-top: 20px;
     font-size: 14pt;
     text-align: left;
+  }
+}
+
+@media (max-width: $largeTabletResolution){
+  .info-block{
+    flex-direction: column;
+    align-items: safe center;
+  }
+  .text-block{
+    margin: 30px 0;
+  }
+}
+
+@media (max-width: $phoneResolution){
+  .info-block__film-poster{
+    width: 250px;
+  }
+
+  .text-block{
+    width: 300px;
+    &__description{
+      width: 250px;
+    }
   }
 }

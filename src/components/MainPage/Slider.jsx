@@ -4,7 +4,7 @@ import "swiper/swiper-bundle.css";
 import {Navigation} from "swiper";
 import SwiperCore from "swiper";
 import {SwiperSlide} from "swiper/react/swiper-react";
-import ratingStar from "../../images/star.png"
+import ratingStar from "../../images/Star.svg"
 import {Link} from "react-router-dom";
 import TruncatedText from "../UI/TruncatedText/TruncatedText";
 import Loader from "../UI/Loader/Loader";
@@ -23,6 +23,8 @@ const Slider = () => {
     }).finally(() => setLoading(false));
     // eslint-disable-next-line
   }, [localStorage.lang])
+
+  let maxAmountOfSymbols = window.innerWidth <= 479 ? 150 : 200;
 
   return loading ?
     <Loader/>
@@ -48,7 +50,7 @@ const Slider = () => {
               </div>}
 
               <div className="text-block__description">
-                <TruncatedText n={200} path={`/movie/${slide.id}/overview`}>
+                <TruncatedText n={maxAmountOfSymbols} path={`/movie/${slide.id}/overview`}>
                   {slide.overview}
                 </TruncatedText>
               </div>
