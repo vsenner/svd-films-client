@@ -17,7 +17,7 @@ import {useNavigate} from "react-router";
 import TVController from "../../controllers/tv-controller";
 import ActorList from "./ActorList/ActorList";
 import VideoList from "./VideoList/VideoList";
-import {getOriginalImage, getSmallImage} from "../../utils";
+import {getSmallImage} from "../../utils";
 
 const minsToHours = (mins) => `${Math.floor(mins / 60)}h ${mins % 60}m`;
 
@@ -31,10 +31,27 @@ const ContentPage = ({content, director, actors, content_type}) => {
   const [userFilmInfo, setUserFilmInfo] = useState(null);
 
   const title = content_type === 'tv' ? 'name' : 'title';
-  const duration = content_type === 'tv' ? minsToHours(content?.episode_run_time[0]) : minsToHours(content?.runtime)
   const production_year = new Date(content_type === 'tv' ? content?.first_air_date : content?.release_date).getFullYear();
   const production_years = content_type === 'tv' ? `${production_year} - ${content?.in_production ? '...' : `${content?.last_air_date?.split('-')[0]}`}` : production_year;
 
+  const getDuration = (content) =>{
+    if(content_type === 'tv'){
+      if(isNaN(content?.episode_run_time[0])){
+        return null
+      }
+      else{
+        return minsToHours(content?.episode_run_time[0])
+      }
+    }
+    else{
+      if(isNaN(content?.runtime)){
+        return null
+      }
+      else{
+        return minsToHours(content?.runtime)
+      }
+    }
+  }
 
   useEffect(() => {
     if (user.id) {
@@ -49,6 +66,11 @@ const ContentPage = ({content, director, actors, content_type}) => {
             setUserFilmInfo(data)
           });
           break;
+        case 'cartoons':
+          MovieController.getUserFilmInfo(id, user.id).then(data => {
+            setUserFilmInfo(data)
+          })
+          break;
         default:
       }
     }
@@ -61,9 +83,6 @@ const ContentPage = ({content, director, actors, content_type}) => {
 
   return (
     <div className='film-page'>
-      <div className="blurred-bg">
-        <img src={getOriginalImage(content?.poster_path)} alt="background"/>
-      </div>
       <div className="container">
         {content ?
           <div className="film-page__film film">
@@ -83,17 +102,18 @@ const ContentPage = ({content, director, actors, content_type}) => {
                     </div>
                   </div>
                   <div className="info__row_start">
-                    <div className="info__rating">{content.vote_average} &#9733;</div>
+                    <div className="info__rating"><span className="info__rating_star"/>{content.vote_average}</div>
+
                     {content.adult ?
                       <div className='info__adult'>18+</div>
                       :
                       null
                     }
-                    <div className="info__countries">
+                    <div className="info__countries" style={{color: 'white'}}>
                       {content.production_countries.map(country => country.iso_3166_1).join(', ')}
                     </div>
                     <div className="info__status"
-                         style={{color: content.status === 'Post Production' ? '#d00203' : '#00c803'}}>
+                         style={{color: content.status === 'Post Production' ? '#D85757' : '#5AD857'}}>
                       {content.status}
                     </div>
                   </div>
@@ -102,22 +122,22 @@ const ContentPage = ({content, director, actors, content_type}) => {
                 <div className="info__row">
                   <button className='info__btn'>
                     {userFilmInfo?.isFavourite ?
-                      <i onClick={() => removeFavourite(setUserFilmInfo, content.id, user.id, content_type)}
-                         className="fas fa-heart"/>
+                      <div onClick={() => removeFavourite(setUserFilmInfo, content.id, user.id, content_type)}
+                         className="info__filledHeart"/>
                       :
-                      <i
+                      <div
                         onClick={user.isAuth ? () => addFavourite(setUserFilmInfo, content.id, user.id, content_type) : redirectToLogin}
-                        className="far fa-heart"/>
+                        className="info__emptyHeart"/>
                     }
                   </button>
                   <button className='info__btn'>
                     {userFilmInfo?.isLater ?
-                      <i onClick={() => removeLater(setUserFilmInfo, content.id, user.id, content_type)}
-                         className="fas fa-bookmark"/>
+                      <div onClick={() => removeLater(setUserFilmInfo, content.id, user.id, content_type)}
+                         className="info__filledBookmark"/>
                       :
-                      <i
+                      <div
                         onClick={user.isAuth ? () => addLater(setUserFilmInfo, content.id, user.id, content_type) : redirectToLogin}
-                        className="far fa-bookmark"/>}
+                        className="info__emptyBookmark"/>}
                   </button>
                 </div>
 
@@ -141,10 +161,10 @@ const ContentPage = ({content, director, actors, content_type}) => {
                       null
                   }
                   {
-                    duration ?
+                    getDuration(content) ?
                       <div className="info__row">
                         <span>Duration</span>
-                        {duration}
+                        {getDuration(content)}
                       </div>
                       :
                       null
@@ -190,13 +210,13 @@ const ContentPage = ({content, director, actors, content_type}) => {
 
             <div className="film__bottom">
               <div className="film__links">
-                <h2 className={page === OVERVIEW ? 'active' : null}>
+                <h2 className={page === OVERVIEW ? 'active' : 'unActiveFirst'}>
                   <Link to={`/${content_type}/${content.id}/overview`}>Overview</Link>
                 </h2>
-                <h2 className={page === ACTOR ? 'active' : null}>
+                <h2 className={page === ACTOR ? 'active' : 'unActive'}>
                   <Link to={`/${content_type}/${content.id}/actor`}>Actors</Link>
                 </h2>
-                <h2 className={page === VIDEO ? 'active' : null}>
+                <h2 className={page === VIDEO ? 'active' : 'unActive'}>
                   <Link to={`/${content_type}/${content.id}/video`}>Trailers</Link>
                 </h2>
               </div>
@@ -204,9 +224,9 @@ const ContentPage = ({content, director, actors, content_type}) => {
                 page === OVERVIEW &&
                 <div>
                   <div className="film__description">
-                    <TruncatedText n={300}>
+                    <div>
                       {content.overview}
-                    </TruncatedText>
+                    </div>
                   </div>
                   <div className="film__rating">
                     <h2>Film Rating</h2>
@@ -224,8 +244,11 @@ const ContentPage = ({content, director, actors, content_type}) => {
                     {userFilmInfo?.isRated ?
                       <div className="rating__mine">
                         My rating
-                        <span
-                          style={{background: userFilmInfo.rating < 5 ? 'red' : 'green'}}>{userFilmInfo.rating}</span>
+                        <div className='rating__circle'>
+                          <span>
+                            {userFilmInfo.rating}
+                          </span>
+                        </div>
                         <button
                           onClick={() => unRateFilm(setUserFilmInfo, content.id, user.id, content_type)}
                           className="rating__remove"

@@ -1,5 +1,11 @@
 $fontColor1: #b5b5b5;
 $fontColor2: #8c8c8c;
+@import "src/style/styleVariables";
+@import "src/style/resolutionVariables";
+
+* h2{
+  font-weight: normal;
+}
 
 .blurred-bg {
   position: absolute;
@@ -19,10 +25,9 @@ $fontColor2: #8c8c8c;
   overflow: hidden;
   position: relative;
   flex: 1 1 auto;
-  background: rgba(24, 56, 151, 0.36) no-repeat;
+  background: $grayColor;
   background-size: cover;
   display: flex;
-
   h2 {
     font-size: 1.5em;
   }
@@ -33,31 +38,32 @@ $fontColor2: #8c8c8c;
 
   .film {
     z-index: 1;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
     flex: 1 1 auto;
-    width: 1140px;
-    padding: 100px 20px 100px 20px;
-    background: rgba(0, 0, 0, 0.8);
+    padding: 50px 20px 300px 20px;
+    background: linear-gradient(0deg, rgb(112, 112, 112) 0%, rgba(41,41,41,1) 100%);
     color: #ebe8e8;
-
     &__links {
-      border-bottom: 2px solid #454343;
+      border-bottom: 1px solid #ffffff;
       margin-top: 40px;
       padding-bottom: 20px;
       display: flex;
       h2 {
         padding: 0 20px;
-        font-weight: 400;
-        color: #666666;
+        font-weight: 300;
+        color: $grayColor;
         &:first-child {
           padding: 0 20px 0 0;
         }
-        &:hover {
-          color: orange;
+        &.unActive:hover{
+          padding: 0 19.4px;
+          font-weight: 400;
         }
-
+        &.unActiveFirst:hover{
+          padding: 0 18px 0 0;
+          font-weight: 400;
+        }
         &.active {
-          font-weight: 600;
+          font-weight: 400;
           font-size: 1.5em;
           color: #e9e9e9;
         }
@@ -74,6 +80,12 @@ $fontColor2: #8c8c8c;
 
     &__poster {
       width: 35%;
+      overflow: hidden;
+      min-width: 300px;
+      border-radius: 15px;
+      /*img{
+
+      }*/
     }
 
     &__main {
@@ -98,20 +110,45 @@ $fontColor2: #8c8c8c;
             margin-right: 20px;
           }
         }
+        &__emptyHeart{
+          display: inline-block;
+          background: url("../../images/FavWhite.svg");
+          width: 33.4px;
+          height: 29px;
+        }
+        &__filledHeart{
+          display: inline-block;
+          background: url("../../images/FavWhiteFilled.svg");
+          width: 33.4px;
+          height: 29px;
+        }
+
+        &__emptyBookmark{
+          display: inline-block;
+          background: url("../../images/BookMarkWhite.svg");
+          width: 25px;
+          height: 30px;
+        }
+        &__filledBookmark{
+          display: inline-block;
+          background: url("../../images/BookMarkWhiteFilled.svg");
+          width: 25px;
+          height: 30px;
+        }
 
         &__header {
           .info__title {
             font-size: 32px;
-
+            font-weight: 300;
             span {
-              font-size: 0.7em;
+              font-size: 24px;
               margin-left: 10px;
               color: $fontColor1;
             }
           }
 
           .info__tagline {
-            margin-top: 5px;
+            margin: 5px 0 10px 0;
             font-size: 18px;
             color: $fontColor1;
           }
@@ -125,8 +162,23 @@ $fontColor2: #8c8c8c;
           }
 
           .info__rating {
+            display: flex;
             padding-right: 5px;
-            color: #f0c140 !important;
+            color: #ffffff !important;
+          }
+
+          .info__rating_star{
+            position: relative;
+            align-items: center;
+            top: -4px;
+            margin-right: 5px;
+            width: 30px;
+            height: 28px;
+            background: url("../../images/Star.svg");
+          }
+
+          .info__countries{
+            color: white;
           }
         }
 
@@ -170,7 +222,6 @@ $fontColor2: #8c8c8c;
         h2 {
           margin-bottom: 10px;
         }
-
         padding-right: 80px;
         font-size: 18px;
         margin-bottom: 40px;
@@ -179,12 +230,15 @@ $fontColor2: #8c8c8c;
       .film__rating {
         margin-top: 20px;
         font-size: 1.2em;
+        font-weight: 300;
         .rating__row {
           margin-top: 10px;
           display: flex;
-          align-items: flex-end;
           font-size: 46px;
           line-height: 0.75;
+        }
+        .rating__body{
+          color: $lightGreyColor;
         }
         .rating__value {
           padding-left: 10px;
@@ -194,11 +248,21 @@ $fontColor2: #8c8c8c;
           margin-top: 15px;
           font-size: 20px;
           letter-spacing: 0.1em;
-          span {
+          .rating__circle{
             display: inline-block;
+            margin-left: 7px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
-            margin-left: 5px;
-            padding: 2px 7px;
+            background: #d7d7d7;
+            span {
+              display: inline-block;
+              width: 30px;
+              height: 30px;
+              color: #575757;
+              padding: 4px 0;
+              text-align: center;
+            }
           }
 
           .rating__remove {
@@ -214,4 +278,53 @@ $fontColor2: #8c8c8c;
     }
   }
 }
+
+@media (max-width: $largeTabletResolution){
+  .info__title{
+    max-width: 600px;
+  }
+  .film__main{
+    flex-direction: column;
+    align-items: safe center;
+  }
+}
+
+@media (max-width: $mediumTabletResolution){
+  .film-page{
+    .film{
+      padding: 50px 5px 300px 5px;
+    }
+  }
+  .film-page .film__main .info{
+    margin-left: 0;
+  }
+}
+
+@media (max-width: $phoneResolution){
+  .film-page .film__main .info__row span{
+    min-width: 140px;
+  }
+  .rating__row{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .rating__value{
+    padding: 15px 0 0 0;
+  }
+  .film-page .film__bottom .film__rating .rating__row{
+    font-size: 36px;
+  }
+  .film-page .film__links h2:first-child{
+    padding: 0 10px 0 0;
+  }
+  .film-page .film__links h2{
+    padding: 0 10px 0 0;
+  }
+
+}
+
+
+
+
 

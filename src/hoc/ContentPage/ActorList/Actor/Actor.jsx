@@ -7,7 +7,7 @@ const Actor = ({profile_path, name}) => {
     <div className='actor'>
       <img src={profile_path ? getSmallImage(profile_path) : 'https://static.tildacdn.com/tild3035-3530-4839-a234-326238363638/no-photo-man.png'} alt={name} className='actor__photo'/>
       <div className="actor__name">
-        {name}
+        {name.length > 15 ? name.slice(0,14).concat('...') : name}
       </div>
     </div>
   );

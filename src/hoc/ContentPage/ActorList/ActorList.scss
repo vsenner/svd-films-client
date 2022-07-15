@@ -1,4 +1,13 @@
+@import "src/style/styleVariables";
+@import "src/style/resolutionVariables";
+
 .actor-list {
   display: flex;
   justify-content: space-between;
+}
+
+@media(max-width: $largeTabletResolution){
+  .actor-list{
+    flex-direction: column;
+  }
 }

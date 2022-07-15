@@ -3,9 +3,9 @@ import GenrePage from "../components/GenrePage/GenrePage";
 import MoviePage from "../components/MoviePage/MoviePage";
 import UserPage from "../components/UserPage/UserPage";
 import SignUpPage from "../components/SignUpPage/SignUpPage";
+import IndividualMediaPage from "../components/IndividualMediaPage/IndividualMediaPage";
 import React from "react";
 import TVPage from "../components/TVPage/TVPage";
-import IndividualMediaPage from "../components/IndividualMediaPage/IndividualMediaPage";
 import SignInPage from "../components/SignInPage/SignInPage";
 
 const allAccessRoutes = [
@@ -13,6 +13,7 @@ const allAccessRoutes = [
   {path: '/genres/:media_type/:sort_method' , component: <GenrePage/>},
   {path: '/genres/search/:media_type/:query/:sort_method' , component: <GenrePage/>},
   {path: '/movie/:id/:page' , component: <MoviePage/>},
+  {path: '/cartoons/:id/:page' , component: <MoviePage/>},
   {path: '/tv/:id/:page' , component: <TVPage/>},
 ]
 
