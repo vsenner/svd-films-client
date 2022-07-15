@@ -1,0 +1,53 @@
+@import "src/style/styleVariables";
+@import "src/style/resolutionVariables";
+
+.hiddenButton {
+  visibility: hidden;
+  z-index: 100;
+  position : fixed;
+  top:90%;
+  right: 5%;
+  height: 80px;
+  width:80px;
+  background: #ACACACFF;
+}
+
+.Arrow{
+
+}
+
+.visibleButton {
+  visibility:visible;
+  z-index: 100;
+  position : fixed;
+  bottom: 2%;
+  right: 2%;
+  text-align: center;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  background: #ACACACFF;
+  &__Arrow{
+    content: url("../../../images/Arrow.svg");
+    position: relative;
+    left:30%;
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/*@media(max-width: $largeTabletResolution){
+  .visibleButton{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+  }
+}
+
+@media(max-width: $phoneResolution){
+  .visibleButton{
+    height: 70px;
+    width:70px;
+    border-radius: 50%;
+  }
+}*/

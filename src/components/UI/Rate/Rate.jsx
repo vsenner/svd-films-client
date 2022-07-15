@@ -5,7 +5,7 @@ import Star from "./Star/Star";
 const Rate = ({avgRating, action, film_id, user_id, setUserFilmInfo,content_type, title}) => {
   const [ratingActive, setRatingActive] = useState({
     width: avgRating * 10,
-    color: '#ffd300',
+    color: '#ffffff',
   })
 
   useEffect(() => {
@@ -24,14 +24,16 @@ const Rate = ({avgRating, action, film_id, user_id, setUserFilmInfo,content_type
         className="rating__item"
         value={i} name="rating"
         onMouseEnter={() => {
-          setRatingActive({color: 'cyan', width: (i + 1) * 10});
+          setRatingActive({color: '#ffffff', width: (i + 1) * 10});
         }}
       />)
   }, [action, film_id, setUserFilmInfo, user_id, content_type, title])
 
   const mouseLeaveHandler = () => {
-    setRatingActive({color: '#ffd300', width: avgRating * 10})
+    setRatingActive({color: '#ffffff', width: avgRating * 10})
   }
+
+  console.log(ratingActive.color);
 
   return (
     <form className='rating-form'>
