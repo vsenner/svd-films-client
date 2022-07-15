@@ -1,15 +1,21 @@
-$hoverBgColor: rgba(28, 28, 28, 0.64);
-$hoverColor: #f0ac1c;
+@import "../../../../style/styleVariables";
+@import "../../../../style/resolutionVariables";
+
+$hoverBgColor: rgba(28, 28, 28, 0.28);
 $descriptionColor: #666464;
 
 .media-item{
   display: flex;
   flex-direction: column;
   height: 100%;
-
+  background: linear-gradient(0deg, rgba(217,217,217,1) 0%, rgba(172,172,172,1) 100%);
+  padding: 10px 25px 5px;
+  border-radius: 15px;
   &__img {
     width: 100%;
     position: relative;
+    border-radius: 15px;
+    overflow: hidden;
   }
 
   &__hover {
@@ -23,23 +29,109 @@ $descriptionColor: #666464;
   }
 
   &__name {
-    margin-top: 5px;
+    margin-top: 7px;
     font-size: 1.15em;
     font-weight: 500;
+    text-align: center;
   }
 
-  &__description {
+  &__info-row-1 {
+    color: $descriptionColor;
+    display: flex;
+    justify-content: space-between;
+    margin: 7px 0 7px 0;
+  }
+
+  &__info-item {
     color: $descriptionColor;
     font-size: 0.9em;
+    text-align: center;
+  }
+
+  &__info-row-2{
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between;
+  }
+
+  &__emptyHeart{
+    display: inline-block;
+    background: url("../../../../images/Fav.svg");
+    width: 33.4px;
+    height: 29px;
+  }
+  &__emptyHeart:hover, &__filledHeart:hover{
+    display: inline-block;
+    background: url("../../../../images/FavHover.svg");
+    width: 33.4px;
+    height: 29px;
+  }
+  &__filledHeart{
+    display: inline-block;
+    background: url("../../../../images/FavFilled.svg");
+    width: 33.4px;
+    height: 29px;
+  }
+
+  &__emptyBookmark{
+    background: url("../../../../images/BookMark.svg");
+    display: inline-block;
+    width: 25px;
+    height: 30px;
+    margin-right: 7px;
+  }
+  &__filledBookmark{
+    background: url("../../../../images/BookMarkFilled.svg");
+    display: inline-block;
+    width: 25px;
+    height: 30px;
+    margin-right: 7px;
+  }
+  &__emptyBookmark:hover, &__filledBookmark:hover{
+    background: url("../../../../images/BookMarkHover.svg");
+    display: inline-block;
+    width: 25px;
+    height: 30px;
+    margin-right: 7px;
+  }
+
+  &__favorite{
+    background: url("../../../../images/Fav.svg");
+    display: inline-block;
+    width: 33.4px;
+    height: 29px;
+  }
+
+  &__rating{
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+  }
+
+  &__star{
+    display: inline-block;
+    background: url("../../../../images/StarBlack.svg");
+    width: 30px;
+    height: 28px;
+    margin-right: 3px;
   }
 
   &:hover {
-    .media-item__name {
-      color: $hoverColor;
-    }
-
+    background: linear-gradient(0deg, rgba(211,211,211,1) 0%, rgba(130,130,130,1) 100%);
     .media-item__hover {
       background: $hoverBgColor;
+      border-radius: 15px;
     }
   }
+
+  &:active{
+    background: linear-gradient(0deg, rgba(217,217,217,1) 0%, rgba(172,172,172,1) 100%);
+  }
+}
+
+@media (max-width: $phoneResolution) {
+  .media-item {
+
+  }
+
 }

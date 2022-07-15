@@ -83,14 +83,14 @@ const GenreList = () => {
             />
           }
         </div>
-        <div className='genre-list__bottom'>
-          <Button onClick={() => dispatch({type: 'CHANGE_GENRES', payload: selectedGenres})}>
-            Submit
-          </Button>
-          <Button onClick={clearSelectedGenres}>
-            Clear
-          </Button>
-        </div>
+          <div className='genre-list__bottom'>
+              <Button onClick={() => dispatch({type: 'CHANGE_GENRES', payload: selectedGenres})}>
+                  Submit
+              </Button>
+              <Button onClick={clearSelectedGenres}>
+                  Clear
+              </Button>
+          </div>
       </div>
     ) :
     null;

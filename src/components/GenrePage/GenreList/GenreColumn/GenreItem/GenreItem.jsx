@@ -46,10 +46,12 @@ const GenreItem = ({genre, selectedGenres, setSelectedGenres, clear}) => {
           }
           setYes(prev => !prev)
         }}/>
-        <span/>
+        <span className='genre-list__yes-custom'>
+          <span className='genre-list__yes-custom__inner-circle'/>
+        </span>
       </label>
       <label className='genre-list__label'>
-        <input type="radio" id={genre.id + 1} className='genre-list__no' name={genre.id} onChange={() => {}} checked={no} onClick={() => {
+        <input type="radio" className='genre-list__no' id={genre.id + 1} name={genre.id} onChange={() => {}} checked={no} onClick={() => {
           if(no){
             unselectToggle(genre.id)
           }else{
@@ -58,7 +60,9 @@ const GenreItem = ({genre, selectedGenres, setSelectedGenres, clear}) => {
           }
           setNo(prev => !prev)
         }}/>
-        <span/>
+        <span className='genre-list__no-custom'>
+          <span className='genre-list__no-custom__inner-circle'/>
+        </span>
       </label>
       <label htmlFor={genre.id} className="genre-list__name">
         {genre.name}

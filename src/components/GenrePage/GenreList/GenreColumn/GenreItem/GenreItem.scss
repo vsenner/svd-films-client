@@ -13,41 +13,31 @@
 
 .genre-list__name {
   margin-left: 5px;
-}
-
-.genre-list__label {
-  width: 20px;
-  height: 20px;
-  border: 2px solid $secondaryColor2;
+  color: white;
 }
 
 .genre-list__yes, .genre-list__no {
-  display: none;
+  position: absolute;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
-.genre-list__yes:checked, .genre-list__no:checked {
-  & + span {
-    position: relative;
-    &::before {
-      content: '✓';
-      position: absolute;
-      color: $darkColor;
-      font-size: 1.1em;
-      font-weight: 600;
-      top: 11px;
-      left: 0;
-    }
-  }
+.genre-list__yes-custom, .genre-list__no-custom{
+  position: absolute;
+  cursor: pointer;
+  margin-top: 1px;
+  width: 20px;
+  height: 20px;
+  background-image: url("../../../../../images/Radio.svg");
 }
 
-.genre-list__no:checked + span {
-  &::before {
-    font-size: 1.8em;
-    top: -1px;
-    font-weight: 400;
-    left: -4px;
-    content: '⨯';
-  }
+.genre-list__yes:checked + .genre-list__yes-custom{
+  background-image: url("../../../../../images/RadioYesCheked.svg");
+}
+
+.genre-list__no:checked + .genre-list__no-custom{
+  background-image: url("../../../../../images/RadioNoCheked.svg");
 }
 
 @media (max-width: $phoneResolution) {

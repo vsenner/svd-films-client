@@ -2,13 +2,13 @@
 @import "../../style/resolutionVariables";
 
 .genre-page {
-  background: $secondaryColor2;
-
+  background: $lightDarkColor;
+  min-height: 100vh;
   .container {
-    padding-top: 30px;
-    background: $lightColor;
+    padding-top: 40px;
+    background: $grayColor;
     max-width: 1540px;
-    min-height: calc(100vh - 100px);
+    min-height: 100vh;
     box-shadow: 0 0 55px 4px rgba(0, 0, 0, .5);
     width: 100%;
   }

@@ -2,20 +2,26 @@
 @import "../../../style/resolutionVariables";
 
 .media-list {
-  h2 {
-    margin-top: 100px;
+  background: #575757;
+  margin-top: 40px;
+  border-top-left-radius: 60px;
+  border-top-right-radius: 60px;
+  min-height: 100vh;
+  &__no-such-films{
     text-align: center;
     font-size: 2.5em;
+    margin: 10px 50px 0 50px;
+    padding-top: 30px;
+    border-top: 1px solid $darkColor;
+    min-height: 100vh;
   }
   &__buttons {
     display: inline-flex;
+    color: $lightGreyColor;
+    font-weight: 400;
     flex-wrap: wrap;
-    background: $primaryColor;
+    margin: 30px 30px 10px 30px;
     padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 3px rgba(0,0,0,.5);
-
     a {
       text-align: center;
       margin: 0 auto;
@@ -23,7 +29,7 @@
       border-radius: 5px;
       font-size: 1.1em;
       &:hover {
-        background: rgba($secondaryColor2, 0.2);
+        color: $grayColor;
       }
 
       &:not(:last-child) {
@@ -31,9 +37,7 @@
       }
 
       &.active {
-        box-shadow: 0 0 3px $secondaryColor;
-        color: $primaryColor;
-        background: $lightColor;
+        color: white;
       }
     }
   }
@@ -55,24 +59,24 @@
 
 .film-grid {
   text-align: left;
-  padding-top: 20px;
-  border-top: 2px solid $secondaryColor;
+  margin: 10px 50px 0 50px;
+  padding-top: 30px;
+  border-top: 1px solid $darkColor;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 40px 60px;
   width: fit-content;
-  margin: 0 auto;
+}
+
+@media (max-width: 1250px) {
+  .film-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: $largeTabletResolution) {
   .film-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (max-width: $mediumTabletResolution) {
-  .film-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

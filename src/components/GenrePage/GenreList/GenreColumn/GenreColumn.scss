@@ -6,7 +6,7 @@
   padding: 10px 15px;
 
   &:not(:last-child) {
-    border-right: 1px solid teal;
+    border-right: 1px solid #292929;
   }
 
 }
@@ -20,15 +20,5 @@
 .genre-list__header{
   display: grid;
   grid-template-columns: 40px 40px min-content;
-  border-bottom: 1px solid teal;
   padding-bottom: 5px;
-  & div:last-child {
-    margin-left: 5px;
-  }
-  & div:nth-child(1) {
-    color: #139613;
-  }
-  & div:nth-child(2) {
-    color: #ea0000;
-  }
 }

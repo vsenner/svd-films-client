@@ -7,11 +7,12 @@ import MediaItem from './MediaItem/MediaItem'
 import UpButton from "../../UI/UpButton/UpButton";
 import {sortMethods} from "../../../models/sortMethods";
 import {mediaTypes} from "../../../models/media";
+import Loader from "../../UI/Loader/Loader";
 
 
 const MediaList = () => {
   const [mediaList, setMediaList] = useState([])
-  const selectedGenres = useSelector((state) => state.movies.genres)
+  const selectedGenres = useSelector((state) => state?.movies.genres)
   const [currentPage, setCurrentPage] = useState(1);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -27,39 +28,38 @@ const MediaList = () => {
 
   const fetchMediaList = () => {
     const sortMethod = sort_method + '.desc'
-    if (!isLoading) {
-      setIsLoading(true)
-      if (media_type === 'movie' && !query) {
-        TmdbMediaController.getMoviesWithGenres([...selectedGenres, {
-          id: 16,
-          select: false
-        }], sortMethod, currentPage)
-          .then(setMediaData)
-      }
-      if (media_type === 'tv' && !query) {
-        TmdbMediaController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
-          .then(setMediaData)
-      }
-      if (media_type === 'cartoons' && !query) {
-        TmdbMediaController.getMoviesWithGenres([...selectedGenres, {
-          id: 16,
-          select: true
-        }], sortMethod, currentPage)
-          .then(setMediaData)
-      }
-      if (query && media_type) {
-        TmdbMediaController.search(query, media_type, sort_method, currentPage, media_type).then(data => {
-          if (data.total_pages >= currentPage) {
-            setMediaList(prev => [...prev, ...data.list]);
-            setIsLoading(false);
-          }
-        })
-      }
+    setIsLoading(true)
+    if (media_type === 'movie' && !query) {
+      TmdbMediaController.getMoviesWithGenres([...selectedGenres, {
+        id: 16,
+        select: false
+      }], sortMethod, currentPage)
+        .then(setMediaData)
+    }
+    if (media_type === 'tv' && !query) {
+      TmdbMediaController.getSeriesWithGenres(selectedGenres, sortMethod, currentPage)
+        .then(setMediaData)
+    }
+    if (media_type === 'cartoons' && !query) {
+      TmdbMediaController.getMoviesWithGenres([...selectedGenres, {
+        id: 16,
+        select: true
+      }], sortMethod, currentPage)
+        .then(setMediaData)
+    }
+    if (query && media_type) {
+      TmdbMediaController.search(query, media_type, sort_method, currentPage, media_type).then(data => {
+        if (data.total_pages >= currentPage) {
+          setMediaList(prev => [...prev, ...data.list]);
+          setIsLoading(false);
+        }
+      })
     }
   }
 
   useEffect(() => {
     let observer;
+    let observerRefValue = null;
     const callback = (entries) => {
       if (!isLoading && entries[0].isIntersecting) {
         setCurrentPage(prev => prev + 1)
@@ -69,10 +69,13 @@ const MediaList = () => {
       observer = new IntersectionObserver(callback)
       observer.observe(loadingRef.current);
     }
+    if (loadingRef.current) {
+      observer.unobserve(loadingRef.current);
+      observerRefValue = loadingRef.current;
+    }
     return () => {
-      if(loadingRef.current) {
-        observer.unobserve(loadingRef.current);
-      }
+      if (observerRefValue)
+        observer.unobserve(observerRefValue);
     }
 
     // eslint-disable-next-line
@@ -85,9 +88,9 @@ const MediaList = () => {
 
   useEffect(() => {
     setCurrentPage(1);
+    setIsLoading(true)
     setMediaList([]);
   }, [selectedGenres, media_type, sort_method, query])
-
 
   return (
     <div className='media-list'>
@@ -112,26 +115,29 @@ const MediaList = () => {
         </Link>
       </div>
       {
-        mediaList.length ?
-          <div className='film-grid'>
-            {mediaList.map(media => {
-              const type = media_type === mediaTypes.ALL ? media.media_type : media_type
-              return (
-                <MediaItem
-                  key={media.id}
-                  poster_path={media.poster_path ?? null}
-                  original_title={media.original_title}
-                  name={type === 'tv' ? media.name : media.title}
-                  id={media.id}
-                  type={type}
-                  year={new Date(type === mediaTypes.TV ? media.first_air_date : media.release_date).getFullYear()}
-                />)
-            })}
-          </div>
+        isLoading ?
+          <Loader/>
           :
-          <h2>No such films found ;(</h2>
+          mediaList.length ?
+            <div className='film-grid'>
+              {mediaList.map(media => {
+                const type = media_type === mediaTypes.ALL ? media.media_type : media_type
+                return (
+                  <MediaItem
+                    key={media.id}
+                    poster_path={media.poster_path ?? null}
+                    original_title={media.original_title}
+                    name={type === 'tv' ? media.name : media.title}
+                    id={media.id}
+                    type={type}
+                    year={new Date(type === mediaTypes.TV ? media.first_air_date : media.release_date).getFullYear()}
+                    countries={media.country}
+                  />)
+              })}
+            </div>
+            :
+            <h2 className="media-list__no-such-films">No such films found ;(</h2>
       }
-
       <div className="media-list__loading" ref={loadingRef}/>
       <UpButton/>
     </div>
